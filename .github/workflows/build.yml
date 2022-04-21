@@ -13,7 +13,10 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: template.tex
-      - uses: actions/download-artifact@v3
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
         with:
-          name: template.pdf
+          name: pdf-result
+          path: template.pdf
+          retention-days: 5
  
