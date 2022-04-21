@@ -1,0 +1,15 @@
+texput.log
+*-blx.bib
+*.bbl
+*.aux
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lol
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
