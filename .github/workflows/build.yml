@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v2
+      - name: Set up versioning
+        run: echo "Last updated: `date`" > others/version.tex
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
