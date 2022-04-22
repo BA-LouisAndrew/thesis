@@ -13,3 +13,4 @@ texput.log
 *.run.xml
 *.synctex.gz
 *.toc
+*.pdf

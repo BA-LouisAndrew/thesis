@@ -20,5 +20,4 @@ jobs:
         with:
           name: pdf-result
           path: template.pdf
-          retention-days: 5
  
