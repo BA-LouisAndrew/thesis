@@ -1,17 +1,23 @@
-\chapter{Implementierung}
+\chapter{Implementation}
 
 [Beschreibung der Implementierung\footnotemark auf Basis des Entwurfs und der Methodologie / der geplanten Vorgehensweise zur Probleml\"osung im Kontext der Anforderungen. Hier ist Raum f\"ur Listings, wie z.B. das nun Folgende:
 
 
 \footnotetext{Beachten Sie bei der Implementierung und deren Dokumentation bitte Clean Code Empfehlungen (vgl. hierzu z.B. \autocite{martin2008}).} 
 
-\begin{lstlisting}[caption={Ein Beispiel: Hello World (Scala)}]
-object HelloWorld {
-  def main(args: Array[String]): Unit = {
-    println("Hello, world!")
-  }
-}
+\begin{lstlisting}[caption={Ein Beispiel: Hello World (JavaScript)}]
+const helloWorld = "Hello, world!"
+console.log(helloWorld)
 \end{lstlisting}
 
 Umfangreicher Quell-Code sollte in den Anhang ausgelagert werden.]
 
+\input{chapters/implementation/model.tex}
+\input{chapters/implementation/view.tex}
+\input{chapters/implementation/controller.tex}
+
+Optionals:
+\begin{itemize}
+  \item Architecture -> (can be in controller)
+  \item Techs 
+\end{itemize}
