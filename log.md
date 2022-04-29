@@ -1,5 +1,21 @@
 # DevLog
 
+## 29.04.2022
+- Write crteria based on ISO 
+- Tried citing ISO articles from the website
+- Refined analysis stage
+- Wrote tickets for implementation spike
+- **Implementation**
+  - Took a look into FDS tech stack
+  - Seems that node is the best lang to use. Node is **NOT GOOD** for heavy CPU-intensive processes.
+  - Taking into consideration -> What if external service takes a long time to respond?
+  - Alternative might be Kotlin or whatever. Golang might not be suitable as the libraries are not mature enough (Osvaldo)
+  - Exploring possibility of async operations with the FDS
+  - Intensive research on Redis -> Can be used for pubsub pattern 
+    -  https://www.youtube.com/watch?v=jgpVdJB2sKQ&ab_channel=WebDevSimplified
+    -  https://redis.io/docs/manual/pubsub/#programming-example
+- Watched golang tus video
+---
 ## 27.04.2022
 - Continued working on sequence diagram
 - Add another use case where the UI would be updated progressively (shows the progress of the validation)
