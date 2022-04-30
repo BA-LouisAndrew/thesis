@@ -1,5 +1,13 @@
 # Implementation Spike
 
+## Open Questions
+- **Async operations** -> What if the external endpoint takes a long time to resolve? Without async operation, the endpoint would be blocked
+ - One solution is to et this out of scope
+- What if request got interrupted? Does the check still run?
+ - https://github.com/BA-LouisAndrew/poc/tree/blocking-event -> POC to call a method without blocking the *"responsing"* thread.
+- So -----> Might be better to have an `async` operation by default. This way, when a request is interrupted, the scan would still run
+  - ALL communication would be handled via a message queue?
+
 ## FDS
 FDS is going to be a back end service with a database connection, with the primary function of firing multiple HTTP requests to external endpoints and evaluate its responses.
 Important points are
@@ -33,3 +41,4 @@ Important points are
 - Save temporary value
 - Save progress and stuff
 - Pub Sub?
+- But why use Redis when you already have MQ?

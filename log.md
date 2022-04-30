@@ -1,5 +1,16 @@
 # DevLog
 
+## 30.04.2022
+- Rethink async vs sync operation. More info take a look at `implementations/README`
+  - Sequence diagram
+  - User story
+  - Use cases
+- Create POC repo and tried out blocking event on node..
+- Might use node to save time and just allocate free time on more concerning items
+- What would happen if ALL communication is done via the MQ?
+- Learn MQ!
+---
+
 ## 29.04.2022
 - Write crteria based on ISO 
 - Tried citing ISO articles from the website
