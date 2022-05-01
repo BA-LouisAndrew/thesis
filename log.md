@@ -1,5 +1,14 @@
 # DevLog
 
+## 01.05.2022
+- Created POC on SSE (Server Sent Events)
+  - https://github.com/BA-LouisAndrew/poc/tree/server-sent-events
+  - Might be the solution for default validation solution
+  - Might solve the "individual check took a long time" issue
+- Take a look into MQ (RMQ vs Kafka)
+- Create front end for poc server (SSE)
+---
+
 ## 30.04.2022
 - Rethink async vs sync operation. More info take a look at `implementations/README`
   - Sequence diagram

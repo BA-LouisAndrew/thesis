@@ -51,3 +51,8 @@ Important points are
 - Save progress and stuff
 - Pub Sub?
 - But why use Redis when you already have MQ?
+
+## Notification
+- Kafka vs RabbitMQ?
+  - Kafka: https://www.youtube.com/watch?v=aj9CDZm0Glc&ab_channel=IBMTechnology
+  - RMQ: https://www.youtube.com/watch?v=7rkeORD4jSw
