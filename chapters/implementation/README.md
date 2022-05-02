@@ -33,6 +33,10 @@ Important points are
 - x Not good for heavy CPU-intensive computational things
 - ? How should I handle, if the external service takes a long time to return the response? -> Redis?
  
+### Python
+
+### Ruby
+ 
 ### Golang
 - x Have to learn
 - Built for speed
