@@ -1,5 +1,15 @@
+# Use Case Diagram
+A use case diagram is created to better visualize the flow and possible use cases of the application on a high level, without giving too much attention on how it will be implemented.
+![Use Case Diagram](https://github.com/BA-LouisAndrew/thesis/blob/main/diagrams/use-case.png?raw=true)
+
+### User Stories
+- As a stakeholder, I want to verify users, so that the company can have more confidence that the existing user base is trustworthy ★ <- `Emphasis of FDS`
+- As an employee, I want to be notified when a user seems suspicious, so that I can do necessary actions accordingly **?** <- `Emphasis on the message queue and notification system`
+
 # Sequence diagram
 Sequence diagrams for specific use cases are created. The specific use cases are represented in a sequence diagram each, to visualize it better and to help in converting the use case into its corresponding user stories.
+
+*Sequence diagram created and attached might be too technical and not suitable for a requirement analysis. To better analyze the non-technical requirements, a use case diagram might be preferred for this chapter.*
 
 ## UI-Registration-Event
 
