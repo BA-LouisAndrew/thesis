@@ -1,5 +1,9 @@
 # DevLog
 
+## 04.05.2022
+- Migrated project board from Trello to github and do some grooming 
+  - More automation!!1
+
 ## 01.05.2022
 - Created POC on SSE (Server Sent Events)
   - https://github.com/BA-LouisAndrew/poc/tree/server-sent-events
