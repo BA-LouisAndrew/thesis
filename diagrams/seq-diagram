@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-05-03T16:18:45.566Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36" etag="YPU3bD0gi4Jg30l8XyLG" version="17.5.0" type="github">
-  <diagram id="kgpKYQtTHZ0yAKxKKP6v" name="Page-1">
-    <mxGraphModel dx="1783" dy="2101" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+<mxfile host="app.diagrams.net" modified="2022-05-04T08:20:39.655Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36" etag="NhZsAx0Y7DPsOeilCpox" version="17.5.0" type="github" pages="2">
+  <diagram id="kgpKYQtTHZ0yAKxKKP6v" name="Sequence">
+    <mxGraphModel dx="1261" dy="1928" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -360,11 +360,6 @@
         <mxCell id="W-59SPopIl2sDg_N0n0p-136" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="1610" y="1021" width="350" height="389" as="geometry" />
         </mxCell>
-        <UserObject label="https://www.youtube.com/watch?v=xErwDaOc-Gs&amp;ab_channel=IBMTechnology" link="https://www.youtube.com/watch?v=xErwDaOc-Gs&amp;ab_channel=IBMTechnology" id="W-59SPopIl2sDg_N0n0p-137">
-          <mxCell style="text;whiteSpace=wrap;html=1;fontSize=11;" parent="1" vertex="1">
-            <mxGeometry x="1440" y="730" width="410" height="30" as="geometry" />
-          </mxCell>
-        </UserObject>
         <mxCell id="W-59SPopIl2sDg_N0n0p-138" value="Notification&#xa;(Broker)" style="shape=umlLifeline;perimeter=lifelinePerimeter;container=1;collapsible=0;recursiveResize=0;rounded=0;shadow=0;strokeWidth=1;" parent="1" vertex="1">
           <mxGeometry x="1960" y="850" width="100" height="800" as="geometry" />
         </mxCell>
@@ -953,14 +948,37 @@
         <mxCell id="JLEgz7WRGSEWko2dtFfu-51" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="2570" y="1949" width="700" height="401" as="geometry" />
         </mxCell>
-        <mxCell id="hZhdivJf0O5fVSEXzl-D-2" value="&lt;font style=&quot;font-size: 9px&quot;&gt;nice to have: retry strategy&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="hZhdivJf0O5fVSEXzl-D-2" value="&lt;font style=&quot;font-size: 9px&quot;&gt;nice to have: retry strategy&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="2980" y="1070" width="50" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="hZhdivJf0O5fVSEXzl-D-3" value="&lt;font style=&quot;font-size: 9px&quot;&gt;maybe check status from the API first&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="hZhdivJf0O5fVSEXzl-D-3" value="&lt;font style=&quot;font-size: 9px&quot;&gt;maybe check status from the API first&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="3034" y="1061" width="60" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="hZhdivJf0O5fVSEXzl-D-4" value="&lt;font style=&quot;font-size: 9px&quot;&gt;Or fake request with dummy data&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="hZhdivJf0O5fVSEXzl-D-4" value="&lt;font style=&quot;font-size: 9px&quot;&gt;Or fake request with dummy data&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="3094" y="1061" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="i6xGX0NyJJH2L9Be_6K3-2" value="&quot;Sync&quot; validation operation" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="830" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="i6xGX0NyJJH2L9Be_6K3-3" value="&quot;Async&quot; validation operation" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2530" y="730" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="i6xGX0NyJJH2L9Be_6K3-4" value="Use case with notification" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1570" y="740" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="ZtGqkxSLndLMy3y8YvF3" name="Use Case">
+    <mxGraphModel dx="1113" dy="731" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="NaZEw0iQUbATrSz1-Ci4-1" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cs.uwlax.edu/~mzheng/CS743Fall19/Notation.jpg;" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="520" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="NaZEw0iQUbATrSz1-Ci4-2" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://www.slideteam.net/media/catalog/product/cache/1280x720/u/s/use_case_diagram_to_fulfill_order_request_slide01.jpg;" vertex="1" parent="1">
+          <mxGeometry x="100" y="530" width="520" height="390" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
