@@ -1,8 +1,22 @@
 # DevLog
 
+> Devlog will **only be updated from `main` branch**. Please don't update it anywhere else.
+
 ## 04.05.2022
 - Migrated project board from Trello to github and do some grooming 
-  - More automation!!1
+  - More automation!!
+  - Automatic issue link with PR
+  - Milestone and integrated iteration period (https://github.com/orgs/BA-LouisAndrew/projects/1/settings/fields/3897303)
+- Create use case diagram and non-technical user stories out of it
+  - High level, only describe what the system would do and who shall benefit from it
+- CI/CD action to release 
+  - Easier to track progress between meetings with profs (`/thesis` repo)
+  - Copy-paste for other repos
+- Add description to SQR criteria: refine. 
+- Retry strats
+  - Define what to do if external is not accessible
+  - Design somewhat the API design for `retryStrategy` property
+---
 
 ## 01.05.2022
 - Created POC on SSE (Server Sent Events)
