@@ -60,3 +60,46 @@ Important points are
 - Kafka vs RabbitMQ?
   - Kafka: https://www.youtube.com/watch?v=aj9CDZm0Glc&ab_channel=IBMTechnology
   - RMQ: https://www.youtube.com/watch?v=7rkeORD4jSw
+
+## Retry Strategy
+The system is heavily reliant on external services to run its function. However, it is not guaranteed, that the external service that are being used would be always accessible. Retry-Strategy is a strategy to ensure that the external services are available, before running the validation process. 
+Possible solution might be:
+- First status check (e.g. HTTP call to `/health` endpoint) 
+- First do request with little HTTP body
+- First do request with dummy data
+
+Without a retry strategy, if an external service is unavailable, the check would be treated as a failed check, even though the personal data is actually trustworthy. To prevent a false-negative check result to happen, it would be useful to inform the user when an external service is inaccessible and skip the particular security check. 
+
+### Solution:
+- Have a status check
+  - Inspired by https://github.com/zsimo/node-redis-retry-strategy
+  - Valid retry strategy: 
+    ```json
+    {
+      "retryStrategy": {
+        "checkEndpoint": "/health",
+        "expectedStatus": 200, // Evaluated exclusively by its status code
+        "numberOfAttempts": 3, // 1-3
+        "delayOfAttempts": 1000, // Default: 200
+        "timeout": 1000 // No response in 1s -> next attempt
+      }
+    }
+    ```
+  - No retry strategy: 
+    ```json
+    {
+      "retryStrategy": null
+    }
+    ```
+- When status check fails: 
+  - If `retryStrategy` is provided: skip check, attach info in response
+    ```json
+      {
+        "skipped": [{ "name": "adsajkld", "reason": "status check failed" }]
+      }
+    ```
+  - If `retryStrategy` is nullish: check is fails. `fraudScore += failScore`
+- Explanation
+  - Request with little data / dummy data -> User has to define the endpoint and possibly the data to be passed. Add more complexity?
+  - Health check might be as simple as firing a request to a stable endpoint and asserting the result
+- The health endpoint can as well be the same endpoint used for validation, but it will be called without any request body, and therefore the expected status code (e.g. `400`) can be passed into the `expectedStatus` attribute
