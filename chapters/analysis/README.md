@@ -6,7 +6,7 @@ A use case diagram is created to better visualize the flow and possible use case
 - As a stakeholder, I want to verify users, so that the company can have more confidence that the existing user base is trustworthy ★ <- `Emphasis of FDS`
 - As an employee, I want to be notified when a user seems suspicious, so that I can do necessary actions accordingly **?** <- `Emphasis on the message queue and notification system`
 
-# Sequence diagram
+# Sequence diagram -> TODO: Move to conception
 Sequence diagrams for specific use cases are created. The specific use cases are represented in a sequence diagram each, to visualize it better and to help in converting the use case into its corresponding user stories.
 
 *Sequence diagram created and attached might be too technical and not suitable for a requirement analysis. To better analyze the non-technical requirements, a use case diagram might be preferred for this chapter.*
@@ -62,54 +62,58 @@ What's going to be implemented is actually a table that list criteria (in mind: 
 ![Relevance table](https://github.com/BA-LouisAndrew/thesis/blob/main/resources/relevance_table.jpeg?raw=true)
 
 ## SQR based on ISO/EIC 25010:2011
+This is very important, to establish a **scientific** base and how to evaluate the project.
 **Functional Suitability**
-- Completeness -> Covers all specified tasks -> **4** 
-- Correctness -> Provides the correct result of a task -> **4**
-- Appropriateness -> Functions are able to accomplish specified task in a well manner -> **3**
+- Completeness -> System covers all the specified tasks listed on the requirement analysis -> **4** 
+- Correctness -> System provides correct results of the tasks listed on the requirement analysis -> **4**
+- Appropriateness -> System accomplishes to fulfill the tasks listed on the requirement analysis -> **3**
 
 **Reliability**
-- Maturity -> *System is able to meet needs for reliability* --- **Not sure if this is right!** -> **3**
-- Availability -> System is operational and accessible -> **4**
-- Fault tolerance -> System still operates well enough, despite hardware and/or software faulty -> **3**
+- Maturity -> System is stable during every day use -> **3**
+- Availability -> System is operational and accessible (ideally via a web browser and no installation is needed) -> **4**
+- Fault tolerance -> System still operates well enough, despite software fault -> **3**
 - Recoverability -> System can recover data in the event of an interruption / failure -> **4** 
 
 **Performance Efficiency**
-- Time behavior -> Response and processing times, and throughput rates of a system while performing its functions -> **3**
-- Resource Utilization -> Amount and types of resources used -> **1**
-- Capacity -> Maximum limits of a system parameter -> **1**
+- Time behavior -> Response and processing time of the system is reasonable -> **3**
+- Resource Utilization -> Amount and types of resources used by the system is kept as minimum as possible -> **1**
+- Capacity -> Maximum limits of a system parameter is within a reasonable range for everyday use -> **1**
   
 **Usability**
-- Appropriateness Recognizability -> How well can it be recognized, that a system is appropriate for the current need -> **1**
-- Learnability -> How easy to learn how to use the system -> **3**
-- Operability -> System has attributes that make it easy to operate -> **4**
-- User Error Protection -> System can protect users against making errors -> **2**
-- User Interface Aesthetics -> User interface is pleasing -> **4**
+- Appropriateness Recognizability -> It can be easily recognized, that the system is suitable for the current user need -> **1**
+- Learnability -> It's easy to learn how to use the system -> **3**
+- Operability -> The system is easy to operate -> **4**
+- User Error Protection -> System can protect or prevent users against making errors -> **2**
+- User Interface Aesthetics -> User interface is aesthetically pleasing -> **4**
 - Accessibility -> System can be used with the widest range of characteristics and capabilities -> **1**
+  - Might add this #resource: https://developer.mozilla.org/en-US/docs/Web/Accessibility
 
 **Security**
-- Confidentiality -> System is able to ensure that data is only accessible to those who have authorized access -> **4**
-- Integrity -> System is able to prevent unauthorized access and modification to computer programs -> **3**
+- Confidentiality -> System is able to ensure that data is only accessible to those who have authorized access -> **2**
+  - Take note -> this is important for the *production* system, but this thesis project won't dive deep into auth
+- Integrity -> System is able to prevent unauthorized access and modification to computer programs -> **2**
 - Non-repudiation -> Actions or events can be proven to have taken place -> **4**
-- Accountability -> Actions of an unauthorized user can be traced back -> **3**
+- Accountability -> Actions of an unauthorized user can be traced back -> **1**
 - Authenticity -> How well the identity of a subject / resource can be proved -> **1**
   
 **Compatibility**
-- Co-existence -> System can perform its required functions efficiently while sharing a common environment and resources with other systems, without negatively impacting any other product -> **4**
-- Interoperability -> Two or more systems, products, or components are able to exchange information and use it -> **1**
+- Co-existence -> System can perform its required functions efficiently while sharing a common environment and resources with other systems, without negatively impacting any other product -> **2**
+- Interoperability -> Two or more systems, products, or components are able to exchange information and use it -> **4**
 
 **Maintainability**
 - Modularity -> Component of system can be changed with minimal impact on the other component -> **3**
+  - TDD, define interface before writing its implementation
 - Reusability -> Asset can be used in more than one system -> **1**
-- Analysability -> `Refers to the effectiveness of an impact assessment on intended changes. In addition, it also refers to the diagnosis of deficiencies or causes of failures, or to identify parts to be modified.` -> ???
-- Modifiability -> System can be modified without introducing defects or degrading existing product quality -> **3**
-- Testability -> Test criteria for a system is effective -> **4**
+- Analyzability -> Activities within the system can be easily analyzed (e.g.: in form of logging) -> **2**
+- Modifiability -> System can be modified without introducing defects or degrading existing product quality -> **4**
+- Testability -> Test criteria for a system is effective and preferably can be run automatically -> **4**
  
 **Portability**
 - Adaptability -> System can be adapted for different or evolving HW, SW or other usage env -> **1**
 - Installability -> System can be un- and/or installed successfully -> **3**
-- Replaceability -> Product can replace another comparable product -> **1**
+- Replaceability -> System as a product can replace another comparable product -> **1**
 
-## Resources
+## #Resources
 - https://asq.org/quality-resources/software-quality
 - https://www.iso.org/standard/35733.html
 - https://link.springer.com/chapter/10.1007/978-3-319-97925-0_42
