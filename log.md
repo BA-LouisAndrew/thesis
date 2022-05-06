@@ -2,6 +2,15 @@
 
 > Devlog will **only be updated from `main` branch**. Please don't update it anywhere else.
 
+## 06.05.2022
+- Took a look into how to setup RMQ
+  - Cloud hosted AMQP
+  - Running local instance with docker
+- Took a look into producer/consumer code snippets 
+  - Express + AMQP -> Possible. Establish a connection once on server start
+  - Consumer, not sure yet. See how it goes
+- POC for AMQP coming soon
+
 ## 04.05.2022
 - Migrated project board from Trello to github and do some grooming 
   - More automation!!
