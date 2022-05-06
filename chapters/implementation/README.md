@@ -58,8 +58,23 @@ Important points are
 
 ## Notification
 - Kafka vs RabbitMQ?
-  - Kafka: https://www.youtube.com/watch?v=aj9CDZm0Glc&ab_channel=IBMTechnology
-  - RMQ: https://www.youtube.com/watch?v=7rkeORD4jSw
+  - Kafka: https://www.youtube.com/watch?v=aj9CDZm0Glc&ab_channel=IBMTechnology ★
+  - ~~RMQ: https://www.youtube.com/watch?v=7rkeORD4jSw~~
+
+### Setup
+**To run RMQ locally**
+
+```
+docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management
+```
+
+**Production/Staging**
+On PROD/INT, it might be better to have a dedicated RabbitMQ instance running on the cloud, rather than having to have a separate machine that would serve it. One solution for cloud-hosted RabbitMQ would be [CloudAMQP](https://www.cloudamqp.com/docs/index.html)
+
+**Producer/Consumer**
+- https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html
+- Only open a connection once, and use it for ALL functions. [resource](https://stackoverflow.com/a/32379842)
+
 
 ## Retry Strategy
 The system is heavily reliant on external services to run its function. However, it is not guaranteed, that the external service that are being used would be always accessible. Retry-Strategy is a strategy to ensure that the external services are available, before running the validation process. 
