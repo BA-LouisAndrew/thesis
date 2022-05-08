@@ -2,6 +2,17 @@
 
 > Devlog will **only be updated from `main` branch**. Please don't update it anywhere else.
 
+## 08.05.2022
+- RabbitMQ -> Create Setup, consumer, producer + setup with express
+  - Very possible. Now PubSub is not hard
+  - Backbone of the project going forward
+- POC -> Create template with TS, middleware, linting for future uses
+- Database 
+  - Use MongoDB atlas
+  - Create POC with Prisma as external ORM (type safety)
+  - Use redis for caching. Faster response time
+  - Set redis key/value pair, not available -> go to prisma (MongoDB)
+
 ## 06.05.2022
 - Took a look into how to setup RMQ
   - Cloud hosted AMQP
