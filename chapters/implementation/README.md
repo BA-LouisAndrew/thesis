@@ -62,12 +62,6 @@ Important points are
   - ~~RMQ: https://www.youtube.com/watch?v=7rkeORD4jSw~~
 
 ### Setup
-**To run RMQ locally**
-
-```
-docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management
-```
-
 **Production/Staging**
 On PROD/INT, it might be better to have a dedicated RabbitMQ instance running on the cloud, rather than having to have a separate machine that would serve it. One solution for cloud-hosted RabbitMQ would be [CloudAMQP](https://www.cloudamqp.com/docs/index.html)
 
@@ -123,3 +117,13 @@ Without a retry strategy, if an external service is unavailable, the check would
   - Request with little data / dummy data -> User has to define the endpoint and possibly the data to be passed. Add more complexity?
   - Health check might be as simple as firing a request to a stable endpoint and asserting the result
 - The health endpoint can as well be the same endpoint used for validation, but it will be called without any request body, and therefore the expected status code (e.g. `400`) can be passed into the `expectedStatus` attribute
+
+## Database
+Which database to use? -> MongoDB. Document-based database that has a JSON-like document structure to save certain data is preferred here. Using relational database might mean that the validation rule might have to be separated across several tables, which would increase the complexity of the project without bringing that much value in itself. The data structure used to define the validation rule is also more complex and unstructured, which is not suitable for a relational database. 
+
+### MongoDB
+- Document based DB
+- Cloud solution: Mongo Atlas. No need of having a dedicated server to host a database
+- Connection to external ORM library -> Prisma: Perfect ORM connection between a database and TypeScript
+  - POC!!-> https://github.com/BA-LouisAndrew/poc/tree/ft/I/18--database
+- Prisma -> Type safety while querying database. 
