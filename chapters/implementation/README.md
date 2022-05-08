@@ -50,12 +50,6 @@ Important points are
 - x Have to learn
 - Framework: Spring
 
-### Redis
-- Save temporary value
-- Save progress and stuff
-- Pub Sub?
-- But why use Redis when you already have MQ?
-
 ## Notification
 - Kafka vs RabbitMQ?
   - Kafka: https://www.youtube.com/watch?v=aj9CDZm0Glc&ab_channel=IBMTechnology ★
@@ -127,3 +121,11 @@ Which database to use? -> MongoDB. Document-based database that has a JSON-like 
 - Connection to external ORM library -> Prisma: Perfect ORM connection between a database and TypeScript
   - POC!!-> https://github.com/BA-LouisAndrew/poc/tree/ft/I/18--database
 - Prisma -> Type safety while querying database. 
+
+### Redis
+Easy to use. Tutorial: https://www.youtube.com/watch?v=oaJq1mQ3dFI&ab_channel=TraversyMedia
+- Save temporary value
+- Save progress and stuff
+- POC: https://github.com/BA-LouisAndrew/poc/tree/ft/I/17--redis. Done with redis on localhost
+  - Use case: just to make it complicated
+  - Use caching for rules DB! Save a stringified rule
