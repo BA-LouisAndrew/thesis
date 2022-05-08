@@ -75,6 +75,11 @@ On PROD/INT, it might be better to have a dedicated RabbitMQ instance running on
 - https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html
 - Only open a connection once, and use it for ALL functions. [resource](https://stackoverflow.com/a/32379842)
 
+**Resources**
+- Setup: https://github.com/postwait/node-amqp
+- Persist message: https://www.rabbitmq.com/tutorials/tutorial-two-javascript.html
+- PubSub: https://www.rabbitmq.com/tutorials/tutorial-three-javascript.html
+- POC: https://github.com/BA-LouisAndrew/poc/tree/ft/I/16--setup-rmq
 
 ## Retry Strategy
 The system is heavily reliant on external services to run its function. However, it is not guaranteed, that the external service that are being used would be always accessible. Retry-Strategy is a strategy to ensure that the external services are available, before running the validation process. 
