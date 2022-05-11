@@ -132,3 +132,8 @@ Easy to use. Tutorial: https://www.youtube.com/watch?v=oaJq1mQ3dFI&ab_channel=Tr
 
 ## Swagger
 Swagger plays an important role on this project. With swagger, an API specification or contract can be created before the implementation begins. By determining how the API should look like beforehand, the development can be done more efficiently. POC: https://github.com/BA-LouisAndrew/poc/tree/ft/I/20--swagger
+
+## UI
+Web framework that will be used to build the user interface is Vue3. Vue3 is chosen here specifically for its ease of use, and its growing community library support, that would be very beneficial in developing complex UI components, such as forms.
+
+A component library would also be used for the UI project to speed up the development and to create more time to focus on the integration of the UI with the FDS. The component library Chakra UI is chosen here, as it is easy to use and is quite popular on the front end developer community. Chakra UI is originally a component library for another web-framework, ReactJS. The VueJS adaptation of Chakra UI will be used for this project.
