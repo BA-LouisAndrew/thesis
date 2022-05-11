@@ -4,6 +4,10 @@
 
 ## 11.05.22
 - Add info on main document about swagger
+- Decided to use Vue3 + Chakra
+  - Easy to use + understand
+  - Chakra is a godsend
+  - Open for other possibility (tailwind?)
 
 ## 10.05.22
 - Setup Swagger + JSDoc auto generate
