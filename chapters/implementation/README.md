@@ -133,23 +133,14 @@ Without a retry strategy, if an external service is unavailable, the check would
   - Same object convention (use exactly what will be passed to the API)
 - Example for `got`. Maybe I can link on how to configure this? https://github.com/sindresorhus/got/blob/2ac07e1b60f59e2219bd6c2809a9e40f56b146b6/documentation/7-retry.md
   ```json
-    {
-  	limit: 2,
-  	methods: [
-  		'GET', 'POST'
-  	],
-  	statusCodes: [ // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-  		408,
-  		500,
-  		502,
-  		524
-  	],
-  	errorCodes: [
-  		'ETIMEDOUT',
-  		'ECONNRESET',
-  	],
-  	maxRetryAfter: undefined,
-  	calculateDelay: ({computedValue}) => computedValue,
+  {
+    "limit": 2,
+    "methods": ["GET", "POST"],
+    "statusCodes": [
+      // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+      408, 500, 502, 524
+    ],
+    "errorCodes": ["ETIMEDOUT", "ECONNRESET"],
   }
   ```
 - Links
@@ -159,6 +150,13 @@ Without a retry strategy, if an external service is unavailable, the check would
 ## Database
 
 Which database to use? -> MongoDB. Document-based database that has a JSON-like document structure to save certain data is preferred here. Using relational database might mean that the validation rule might have to be separated across several tables, which would increase the complexity of the project without bringing that much value in itself. The data structure used to define the validation rule is also more complex and unstructured, which is not suitable for a relational database.
+
+> Statement above is not needed
+
+**New Statement** <br />
+With the setup of FDS + Prisma, it doesn't really matter which database we use, as long as it is supported with the Prisma library. Prisma is useful to create a layer of abstraction (ORM) and enable easy access on application layer to the backend. The type of backend is interchangeable, and a schema file for Prisma each for document based and relation-based database will be provided to enable the flexibility.
+
+As the FDS is created using JavaScript and relies heavily on JSON-like object, using MongoDB for the demonstration application will be preferred for its simplicity and ease of use.
 
 ### MongoDB
 
