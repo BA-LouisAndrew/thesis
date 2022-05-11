@@ -9,6 +9,17 @@
   - Chakra is a godsend
   - Open for other possibility (tailwind?)
 - Add info on retry strats using external
+- Add statement on SQL vs Mongo
+  - Flexibility: Not restraining to one DB type. Everything is ok, using Prisma
+  - Provide 2 config files
+- Moved phase #phase
+  - I Implementation - Spike: From 1-15 -> 1-11
+  - II Concept - Spike: From 16-22 -> 12-21
+    - API design, mock up etc might need more work!
+  - III Implementation: From 2 weeks -> 3 weeks
+    - Might need more time. Refine  if needed
+  - Buffer: From 2 weeks -> 5 days.
+    - Not sure
 
 ## 10.05.22
 - Setup Swagger + JSDoc auto generate
