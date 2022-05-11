@@ -129,3 +129,6 @@ Easy to use. Tutorial: https://www.youtube.com/watch?v=oaJq1mQ3dFI&ab_channel=Tr
 - POC: https://github.com/BA-LouisAndrew/poc/tree/ft/I/17--redis. Done with redis on localhost
   - Use case: just to make it complicated
   - Use caching for rules DB! Save a stringified rule
+
+## Swagger
+Swagger plays an important role on this project. With swagger, an API specification or contract can be created before the implementation begins. By determining how the API should look like beforehand, the development can be done more efficiently. POC: https://github.com/BA-LouisAndrew/poc/tree/ft/I/20--swagger
