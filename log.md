@@ -2,6 +2,12 @@
 
 > Devlog will **only be updated from `main` branch**. Please don't update it anywhere else.
 
+## 11.05.22
+- Add info on main document about swagger
+
+## 10.05.22
+- Setup Swagger + JSDoc auto generate
+
 ## 08.05.2022
 - RabbitMQ -> Create Setup, consumer, producer + setup with express
   - Very possible. Now PubSub is not hard
@@ -36,7 +42,6 @@
 - Retry strats
   - Define what to do if external is not accessible
   - Design somewhat the API design for `retryStrategy` property
----
 
 ## 01.05.2022
 - Created POC on SSE (Server Sent Events)
@@ -45,7 +50,6 @@
   - Might solve the "individual check took a long time" issue
 - Take a look into MQ (RMQ vs Kafka)
 - Create front end for poc server (SSE)
----
 
 ## 30.04.2022
 - Rethink async vs sync operation. More info take a look at `implementations/README`
@@ -56,7 +60,6 @@
 - Might use node to save time and just allocate free time on more concerning items
 - What would happen if ALL communication is done via the MQ?
 - Learn MQ!
----
 
 ## 29.04.2022
 - Write crteria based on ISO 
@@ -73,7 +76,7 @@
     -  https://www.youtube.com/watch?v=jgpVdJB2sKQ&ab_channel=WebDevSimplified
     -  https://redis.io/docs/manual/pubsub/#programming-example
 - Watched golang tus video
----
+
 ## 27.04.2022
 - Continued working on sequence diagram
 - Add another use case where the UI would be updated progressively (shows the progress of the validation)
