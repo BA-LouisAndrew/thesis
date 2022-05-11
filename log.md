@@ -8,6 +8,7 @@
   - Easy to use + understand
   - Chakra is a godsend
   - Open for other possibility (tailwind?)
+- Add info on retry strats using external
 
 ## 10.05.22
 - Setup Swagger + JSDoc auto generate
