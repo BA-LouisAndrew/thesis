@@ -1,6 +1,15 @@
 # DevLog
 
-> Devlog will **only be updated from `main` branch**. Please don't update it anywhere else.
+## 12.05.22
+- Create system diagram
+- Create SW architecture diagram
+- Create architecture + tech stack diagram
+- Took a look into scientific papers abt MVC
+- Took a look into JSON-rules engine
+  - Not going to use it
+  - Build something more suitable
+  - Evaluating conditions, but not per se a rules engine
+- Create model for validation rule. Heavily inspired by json-rules-engine
 
 ## 11.05.22
 - Add info on main document about swagger
