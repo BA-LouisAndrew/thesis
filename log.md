@@ -1,5 +1,12 @@
 # DevLog
 
+## 13.05.22
+- Checked out tsoa: https://tsoa-community.github.io/docs/getting-started.html
+  - Better swagger generation
+  - MVC pattern
+  - First class TypeScript support
+- Created model for customer and validation rule.
+
 ## 12.05.22
 - Create system diagram
 - Create SW architecture diagram
@@ -9,7 +16,7 @@
   - Not going to use it
   - Build something more suitable
   - Evaluating conditions, but not per se a rules engine
-- Create model for validation rule. Heavily inspired by json-rules-engine
+- Create model for validation rule. Heavily inspired by `json-rules-engine`
 
 ## 11.05.22
 - Add info on main document about swagger
