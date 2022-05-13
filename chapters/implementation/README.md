@@ -188,6 +188,11 @@ Swagger plays an important role on this project. With swagger, an API specificat
 Also: going to most likely use another syntax of writing my express controller -> https://tsoa-community.github.io/docs/introduction.html
 -- POC WIP
 
+### TSOA
+Going to use a framework on top of express -> `tsoa`. Tsoa -> Typescript compliant. Auto-generate OAS. OOP-Like MVC structure.
+Generate Schema from controller structure -> Better docs.
+Cons: Non-REST compliant API (`/subscribe`) -> Custom handler (Non MVC-like structure)
+
 ## UI
 
 Web framework that will be used to build the user interface is Vue3. Vue3 is chosen here specifically for its ease of use, and its growing community library support, that would be very beneficial in developing complex UI components, such as forms.
