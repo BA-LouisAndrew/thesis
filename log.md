@@ -6,6 +6,7 @@
   - MVC pattern
   - First class TypeScript support
 - Created model for customer and validation rule.
+- Create POC on tsoa: https://github.com/BA-LouisAndrew/poc/tree/ft/II/58--tsoa
 
 ## 12.05.22
 - Create system diagram
