@@ -184,6 +184,9 @@ Easy to use. Tutorial: https://www.youtube.com/watch?v=oaJq1mQ3dFI&ab_channel=Tr
 
 Swagger plays an important role on this project. With swagger, an API specification or contract can be created before the implementation begins. By determining how the API should look like beforehand, the development can be done more efficiently. POC: https://github.com/BA-LouisAndrew/poc/tree/ft/I/20--swagger
 
+Also: going to most likely use another syntax of writing my express controller -> https://tsoa-community.github.io/docs/introduction.html
+-- POC WIP
+
 ## UI
 
 Web framework that will be used to build the user interface is Vue3. Vue3 is chosen here specifically for its ease of use, and its growing community library support, that would be very beneficial in developing complex UI components, such as forms.
