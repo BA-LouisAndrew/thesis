@@ -1,5 +1,13 @@
 # DevLog
 
+## 14.05.22
+- Tried out TSOA MVC + blocking process. It's very fine
+- Used Redis as primary data source (see implementation/readme for more info)
+- Groomed UI mockup tickets
+- Download resource on
+  - Stateless web service
+  - Why exception handling might not be the best idea
+
 ## 13.05.22
 - Checked out tsoa: https://tsoa-community.github.io/docs/getting-started.html
   - Better swagger generation
