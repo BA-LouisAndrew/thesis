@@ -20,11 +20,25 @@
 
 ## FDS
 
-### implementation notes
+### Rules Engine
 - https://github.com/CacheControl/json-rules-engine/tree/master/src -> See codebase to "rebuild" the rules engine from scratch
 - https://www.npmjs.com/package/jsonpath -> "$.xyz"-like syntax to access attrs
 
-FDS is going to be a back end service with a database connection, with the primary function of firing multiple HTTP requests to external endpoints and evaluate its responses.
+FDS is going to be a back end service with a database connection, with the primary function of firing multiple HTTP requests to external endpoints and evaluate its responses. Heavily reliant on `evaluate` function.
+
+**What if multiple requests are being fired?**
+- POC: https://github.com/BA-LouisAndrew/poc/tree/ft/II/57--rules-engine
+
+**Everything based on redis POC: https://github.com/BA-LouisAndrew/poc/tree/ft/II/57--rules-engine-redis**
+  - Use redis as "redux"
+  - One single source of truth
+  - Stateless web service
+    - https://cs.calvin.edu/courses/cs/262/kvlinden/references/rodriguez-restfulWS.pdf
+    - https://www.crummy.com/writing/RESTful-Web-Services/RESTful_Web_Services.pdf <- TODO: read
+
+**Minimize the use of try-catch**
+  - *"Exception Handling Defects: An Empirical Study"* -> Exception handling (throw, catch) == more defects
+  - https://ieeexplore.ieee.org/abstract/document/7961532
 
 Important points are
 
