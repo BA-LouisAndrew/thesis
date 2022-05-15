@@ -3,6 +3,7 @@
 ## 15.05.22
 - Create mockups in figma for all files!
   - Quite a big progress here ngl. Figma link: https://www.figma.com/file/5Egt43HhE16AZfy0TqZwWa/Bachelorarbeit---Mockups?node-id=504%3A4793
+- Going to use naive-ui rather than chakra for the front end component library (Chakra is made for Vue 2.x)
 
 ## 14.05.22
 - Tried out TSOA MVC + blocking process. It's very fine
