@@ -1,5 +1,9 @@
 # DevLog
 
+## 15.05.22
+- Create mockups in figma for all files!
+  - Quite a big progress here ngl. Figma link: https://www.figma.com/file/5Egt43HhE16AZfy0TqZwWa/Bachelorarbeit---Mockups?node-id=504%3A4793
+
 ## 14.05.22
 - Tried out TSOA MVC + blocking process. It's very fine
 - Used Redis as primary data source (see implementation/readme for more info)
