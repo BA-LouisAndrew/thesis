@@ -3,6 +3,7 @@
 ## 16.05.22
 - Add request parameter + body
   - Update figma file
+- Got confirmation from Prof. Schmidt that it's okay to start now. Creating "real" repos!
 
 ## 15.05.22
 - Create mockups in figma for all files!
