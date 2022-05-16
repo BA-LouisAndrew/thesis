@@ -31,6 +31,10 @@ export type Condition = {
    * @example true | 200 | 'success'
    */
   value: any;
+  /**
+   * Message to be returned if the condition fails
+   */
+  failMessage: string
 };
 
 /**
