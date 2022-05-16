@@ -1,5 +1,9 @@
 # DevLog
 
+## 16.05.22
+- Add request parameter + body
+  - Update figma file
+
 ## 15.05.22
 - Create mockups in figma for all files!
   - Quite a big progress here ngl. Figma link: https://www.figma.com/file/5Egt43HhE16AZfy0TqZwWa/Bachelorarbeit---Mockups?node-id=504%3A4793

@@ -3,6 +3,8 @@
  * https://github.com/CacheControl/json-rules-engine/blob/master/docs/rules.md#constructorobject-optionsstring-json
  */
 
+type GenericObject = { [key: string]: any }
+
 /**
  * TODO: Decide which operations should be supported.
  */
@@ -94,4 +96,15 @@ export type ValidationRule = {
    * Retry strategy if the endpoint is not accessible.
    */
   retryStrategy?: RetryStrategy;
+  /**
+   * Used to determine the parameter on the endpoint URL. (e.g. endpointUrl: 'http://localhost/validate/{user}/{city}')
+   * Only available when the endpoint URL contains a URL parameter.
+   * @example { user: "$.firstName", city: "$.city" }
+   */
+  requestUrlParameter?: GenericObject
+  /**
+   * Request body to be passed to the external endpoint. Only available on `POST` and `PUT` HTTP methods.
+   * @example { user: "$.firstName", city: "$.city" } 
+   */
+  requestBody?: GenericObject
 };
