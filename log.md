@@ -1,5 +1,14 @@
 # DevLog
 
+## 17.05.22
+- Starting to work on project setup on backend + front end
+  - Backend
+    - Deployment on Heroku -> Better visibility on what's going on
+    - MongoDB Atlas for easier connection ("*Cloud Native*")
+    - Heroku-addon redis
+  - Frontend
+    - Netlify -> Github actions
+
 ## 16.05.22
 - Add request parameter + body
   - Update figma file
