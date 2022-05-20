@@ -1,5 +1,13 @@
 # DevLog
 
+## 19 + 20.05.22
+- Done with FDS rules CRUD
+  - Swagger spec, validation, MVC pattern
+  - Unit test
+  - Integration test with `supertest`
+- CI/CD update with prisma `npx prisma generate`
+- Whitelist mongo
+
 ## 17.05.22
 - Starting to work on project setup on backend + front end
   - Backend
