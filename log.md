@@ -1,5 +1,9 @@
 # DevLog
 
+## 25.05.22
+- Just received the confirmation from uni
+- Might not be going to update this log for dev stage
+
 ## 19 + 20.05.22
 - Done with FDS rules CRUD
   - Swagger spec, validation, MVC pattern
@@ -16,7 +20,6 @@
     - Heroku-addon redis
   - Frontend
     - Netlify -> Github actions
-
 ## 16.05.22
 - Add request parameter + body
   - Update figma file
