@@ -1,5 +1,10 @@
 # DevLog
 
+## 29.05.22
+- Been taking quite some days off to first take a step back before really focusing on writing the thesis
+- Going to talk with Raoul tomorrow about the current status and ask for time to focus solely on the thesis
+- More or less the app is kinda ok now, still quite some things needs to be done, but overall not bad
+
 ## 25.05.22
 - Just received the confirmation from uni
 - Might not be going to update this log for dev stage
