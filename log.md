@@ -1,5 +1,13 @@
 # DevLog
 
+## 06.06.22
+- Project is quite in a good shape now. Will work on the service that listens to the MQ tomorrow
+- 80% is here. After working on service that listens -> Going to start the writing part real soon
+- E2E test might not be ready for now, but let's see where it goes!
+- Lob API -> Only 300 requests per month! Shutting the rule down for now
+- Do I need to build a service ONLY for the external checks, or is it enough with the current setup for the demo (external checks live within FDS)
+- Other refinements + enhancement tickets will be done on later stages. Add tickets to the board!
+
 ## 29.05.22
 - Been taking quite some days off to first take a step back before really focusing on writing the thesis
 - Going to talk with Raoul tomorrow about the current status and ask for time to focus solely on the thesis
