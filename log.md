@@ -1,5 +1,8 @@
 # DevLog
 
+## 07.06.22
+- 80% is done. Moving on to the writing part
+
 ## 06.06.22
 - Project is quite in a good shape now. Will work on the service that listens to the MQ tomorrow
 - 80% is here. After working on service that listens -> Going to start the writing part real soon
