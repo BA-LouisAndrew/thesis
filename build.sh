@@ -1,6 +1,6 @@
 #!/bin/sh
 
-pdflatex template
+pdflatex --shell-escape template 
 bibtex template
-pdflatex template
-pdflatex template
+pdflatex --shell-escape template
+pdflatex --shell-escape template 

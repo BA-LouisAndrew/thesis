@@ -35,90 +35,163 @@ The \emph{condition} attribute plays an important role for a validation rule, as
 
 \newpage
 \begin{lstlisting}[caption={Validation rule example (JSON)}]
-  {
-    "name": "Example",
-    "skip": false,
-    "priority": 2,
-    "endpoint": "http://localhost:8000/validate",
-    "method": "GET",
-    "failScore": 0.7,
-    "condition": {
-      "path": "$.response.statusCode",
-      "type": "number",
-      "operator": "eq",
-      "value": 200,
-      "failMessage": "Status code doesn't equal to 200"
-    },
-    "requestUrlParameter": {},
-    "requestBody": {},
-    "requestHeader": {}
-  }
+{
+  "name": "Example",
+  "skip": false,
+  "priority": 2,
+  "endpoint": "http://localhost:8000/validate",
+  "method": "GET",
+  "failScore": 0.7,
+  "condition": {
+    "path": "$.response.statusCode",
+    "type": "number",
+    "operator": "eq",
+    "value": 200,
+    "failMessage": "Status code doesn't equal to 200"
+  },
+  "requestUrlParameter": {},
+  "requestBody": {},
+  "requestHeader": {}
+}
 \end{lstlisting}
 
 A validation rule might contain more than a single condition to pass an evaluation. In such cases, the user need to define whether how to determine whether an evaluation should pass: either pass an evaluation if \textbf{ALL} the conditions is true or pass an evaluation if \textbf{AT LEAST ONE (ANY)} of the conditions is true. This can be achieved by having the \emph{condition} attribute as an object with a single attribute, either \emph{all} or \emph{any} and an array of conditions as the attribute's value.
 
 \begin{lstlisting}[caption={Validation rule example with ALL conditions (JSON)}]
-  {
-    "name": "Example",
-    "skip": false,
-    "priority": 2,
-    "endpoint": "http://localhost:8000/validate",
-    "method": "GET",
-    "failScore": 0.7,
-    "condition": {
-      "all": [
-        {
-          "path": "$.response.statusCode",
-          "type": "number",
-          "operator": "eq",
-          "value": 200,
-          "failMessage": "Status code doesn't equal to 200"
-        },
-        {
-          "path": "$.response.body.valid_address",
-          "type": "boolean",
-          "operator": "eq",
-          "value": false,
-          "failMessage": "Address is invalid"
-        }
-      ]
-    },
-    "requestUrlParameter": {},
-    "requestBody": {},
-    "requestHeader": {}
-  }
+{
+  "name": "Example",
+  "skip": false,
+  "priority": 2,
+  "endpoint": "http://localhost:8000/validate",
+  "method": "GET",
+  "failScore": 0.7,
+  "condition": {
+    "all": [
+      {
+        "path": "$.response.statusCode",
+        "type": "number",
+        "operator": "eq",
+        "value": 200,
+        "failMessage": "Status code doesn't equal to 200"
+      },
+      {
+        "path": "$.response.body.valid_address",
+        "type": "boolean",
+        "operator": "eq",
+        "value": false,
+        "failMessage": "Address is invalid"
+      }
+    ]
+  },
+  "requestUrlParameter": {},
+  "requestBody": {},
+  "requestHeader": {}
+}
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Validation rule example with ANY conditions (JSON)}]
-  {
-    "name": "Example",
-    "skip": false,
-    "priority": 2,
-    "endpoint": "http://localhost:8000/validate",
-    "method": "GET",
-    "failScore": 0.7,
-    "condition": {
-      "any": [
-        {
-          "path": "$.response.statusCode",
-          "type": "number",
-          "operator": "eq",
-          "value": 200,
-          "failMessage": "Status code doesn't equal to 200"
-        },
-        {
-          "path": "$.response.body.valid_address",
-          "type": "boolean",
-          "operator": "eq",
-          "value": false,
-          "failMessage": "Address is invalid"
-        }
-      ]
-    },
-    "requestUrlParameter": {},
-    "requestBody": {},
-    "requestHeader": {}
-  }
+{
+  "name": "Example",
+  "skip": false,
+  "priority": 2,
+  "endpoint": "http://localhost:8000/validate",
+  "method": "GET",
+  "failScore": 0.7,
+  "condition": {
+    "any": [
+      {
+        "path": "$.response.statusCode",
+        "type": "number",
+        "operator": "eq",
+        "value": 200,
+        "failMessage": "Status code doesn't equal to 200"
+      },
+      {
+        "path": "$.response.body.valid_address",
+        "type": "boolean",
+        "operator": "eq",
+        "value": false,
+        "failMessage": "Address is invalid"
+      }
+    ]
+  },
+  "requestUrlParameter": {},
+  "requestBody": {},
+  "requestHeader": {}
+}
 \end{lstlisting}
 
 \subsubsection{Validation Result}
+
+A validation result is the result of a validation process. A validation result contains a resulting fraud score, which is the probability of a certain customer being a fraud. The algorithm to calculate the fraud score will be discussed as part of the \textbf{TODO: Link implementation}
+By evaluating the sequences listed on \autoref{subsection:regis} and \autoref{subsection:seq-notification}, the following attributes are needed:
+
+\begin{itemize}
+  \item A unique validation ID
+  \item A fraud score 
+\end{itemize}
+
+Furthermore, information regarding the total checks, runned checks, and additional information that contains the start and end date of the validation process as well as the customer information used for the validation are essential. The customer information is generic, and the system should be able to do a validation process regardless of its structure. The validation result should also return a list of validation rule names, whose evaluations are skipped due to its \emph{skip} attribute being set to \emph{true}.
+
+Even though the resulting fraud score determines the probability of a customer being a fraud, it is also important to further analyze the actual evaluation result of each validation rule. For example, a certain action can be run if the evaluation of a specific rule failed or the information regarding the rule evaluations can also be used to display the current progress of a validation process (implementation of this specific functionality will be discussed more in \textbf{TODO: cite to implementation}). 
+
+To provide such information on a validation result, the \emph{events} attribute will be introduced, which refers to rule evaluation events within a validation process. A rule evaluation event should contain the following attributes:
+
+\begin{itemize}
+  \item Unique identifier of the event (name of the rule being evaluated)
+  \item Status of the event (not started, failed, passed or running) 
+  \item If available, start date of a rule evaluation event 
+  \item If available, end date of a rule evaluation event 
+  \item A list of messages, containing error messages of an evaluation event
+\end{itemize}
+
+\begin{figure}[!ht]
+  \includegraphics[width=\textwidth]{diagrams/entity_validation_result.jpeg}
+  \caption{UML diagram of the validation result model}
+ \end{figure}
+ 
+\begin{lstlisting}[caption={Validation result example (JSON)}]
+{
+  "validationId": "3112dc4a-45f5-41b8-883a-715dcbe9a490",
+  "totalChecks": 3,
+  "runnedChecks": 2,
+  "skippedChecks": [
+    "Skip rule",
+  ],
+  "additionalInfo": {
+    "startDate": "2022-06-12T09:16:24.618Z",
+    "customerInformation": {
+      "firstName": "Scooby",
+      "lastName": "Doo",
+      "address": {
+        "streetName": "Suite 5000 185 Berry St",
+        "city": "San Fransisco",
+        "state": "CA",
+        "country": "United States",
+        "postalCode": 94107
+      },
+      "email": "scooby-doo@fraud.co",
+      "phoneNumber": "123131123"
+    }
+  },
+  "events": [
+    {
+      "name": "User's email domain is not blacklisted",
+      "status": "PASSED",
+      "dateStarted": "2022-06-12T09:16:34.694Z",
+      "dateEnded": "2022-06-12T09:16:39.725Z",
+      "messages": []
+    },
+    {
+      "name": "User's email is not blacklisted",
+      "status": "FAILED",
+      "dateStarted": "2022-06-12T09:16:39.725Z",
+      "dateEnded": "2022-06-12T09:16:44.756Z",
+      "messages": [
+        "User's email is blacklisted!"
+      ]
+    }
+  ],
+  "fraudScore": 0.425  
+}
+\end{lstlisting}
