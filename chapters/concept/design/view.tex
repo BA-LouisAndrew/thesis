@@ -25,12 +25,24 @@ According to the model of a validation rule, \emph{requestBody, requestHeader} a
 
 \subsubsection{Validation Form}
 
-A sample registration form is also created to give the user a possibility to run a validation process on a certain customer. The validation form is intended to be used by end customer, as a mean to register his-/herself into the system. Internal employees can also use the validation form to test the validation rules made.
-
 \begin{figure}[!h]
  \includegraphics[width=\textwidth]{diagrams/mockup_validation_form.png}
  \caption{Mock up of the validation form page}
 \end{figure}
 
+A sample registration form is also created to give the user a possibility to run a validation process on a certain customer. The validation form is intended to be used by end customer, as a mean to register his-/herself into the system. Internal employees can also use the validation form to test the validation rules made.
+
 The page should represent a customer model by displaying every attribute of a customer in a form field. \textbf{TODO: link to appendix -> customer UML?}. For demonstration purposes, it might be beneficial to have a list of sample customers, so that the user can run a validation on a certain set of customers quickly, without having to first fill out the form by him-/herself. To provide this functionality, a list of buttons, containing a description text of the sample customer will be displayed next to the validation form. Upon clicking on one of the button, the validation form will be filled with the sample customer's data and the user can directly click on the \textsc{Validate Customer} button to begin the validation process.
 
+
+\newpage
+\subsubsection{Validation Progress}
+
+To provide a transparency on an asynchronous validation process, a page that displays the current progress of a validation process in real time might be beneficial. This page is intended for demonstration purposes, but can also be beneficial for security agents to keep track of the validation processes run by the FDS.
+
+\begin{figure}[!h]
+ \includegraphics[width=\textwidth]{diagrams/mockup_validation_progress.png}
+ \caption{Mock up of the validation progress page}
+\end{figure}
+
+The page displays the current progress of a certain validation in real time. It represents the \emph{events} attribute of a validation result in a timeline, displaying the events in a list ordered by its \emph{dateEnded} attribute. The page gives the user information regarding the evaluation result of each validation rule (either success or failure), the current fraud score and the names of validation rules that are skipped. If present, the messages of an event should also be displayed. 
