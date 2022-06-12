@@ -34,7 +34,7 @@ An additional \emph{priority} attribute is also provided to enable the possibili
 The \emph{condition} attribute plays an important role for a validation rule, as it defines how the response returned by the external endpoint should be to pass a rule evaluation. It is intended to design the condition attribute to be robust and configurable. The \emph{path} of a condition defines a JSONPath\autocite{Friesen2019} expression to access information available of the current validation scope, such as customer information or response returned by the external endpoint. The \emph{type} attribute of a condition determines the type of the attribute accessed by the \emph{path} attribute. The \emph{type} attribute determines which type of operators are available to use\footnote{For example: a condition with \emph{type} "string" cannot use the "incl" \emph{operator}, because the "incl" \emph{operator} is only available for "array" \emph{type}}. The \emph{operator} attribute refers to a name of operator to be used to evaluate the condition (for example: "eq", "incl"). The available operator names are predefined and restricted to the condition's type attribute. More information regarding operators will be discussed in \textbf{TODO: Add retry strategy implementation}. The \emph{failMessage} attribute of a condition refers to a message that is going to be appended to the validation result's \emph{messages} attribute after a validation is completed.
 
 \newpage
-\begin{lstlisting}[caption={Validation rule example (JSON)}]
+\begin{lstlisting}[caption={Validation rule example (JSON)}, language=json]
 {
   "name": "Example",
   "skip": false,
@@ -57,7 +57,7 @@ The \emph{condition} attribute plays an important role for a validation rule, as
 
 A validation rule might contain more than a single condition to pass an evaluation. In such cases, the user need to define whether how to determine whether an evaluation should pass: either pass an evaluation if \textbf{ALL} the conditions is true or pass an evaluation if \textbf{AT LEAST ONE (ANY)} of the conditions is true. This can be achieved by having the \emph{condition} attribute as an object with a single attribute, either \emph{all} or \emph{any} and an array of conditions as the attribute's value.
 
-\begin{lstlisting}[caption={Validation rule example with ALL conditions (JSON)}]
+\begin{lstlisting}[caption={Validation rule example with ALL conditions (JSON)}, language=json]
 {
   "name": "Example",
   "skip": false,
@@ -89,40 +89,37 @@ A validation rule might contain more than a single condition to pass an evaluati
 }
 \end{lstlisting}
 
-\begin{listing}
-\begin{minted}[frame=single, framesep=3mm]{js}
-{
-  "name": "Example",
-  "skip": false,
-  "priority": 2,
-  "endpoint": "http://localhost:8000/validate",
-  "method": "GET",
-  "failScore": 0.7,
-  "condition": {
-    "any": [
-      {
-        "path": "$.response.statusCode",
-        "type": "number",
-        "operator": "eq",
-        "value": 200,
-        "failMessage": "Status code doesn't equal to 200"
-      },
-      {
-        "path": "$.response.body.valid_address",
-        "type": "boolean",
-        "operator": "eq",
-        "value": false,
-        "failMessage": "Address is invalid"
-      }
-    ]
-  },
-  "requestUrlParameter": {},
-  "requestBody": {},
-  "requestHeader": {}
-}
-\end{minted}
-\caption{Validation rule example with ANY conditions (JSON)}
-\end{listing}
+\begin{lstlisting}[caption={Validation rule example with ANY conditions (JSON)}, language=json]
+  {
+    "name": "Example",
+    "skip": false,
+    "priority": 2,
+    "endpoint": "http://localhost:8000/validate",
+    "method": "GET",
+    "failScore": 0.7,
+    "condition": {
+      "any": [
+        {
+          "path": "$.response.statusCode",
+          "type": "number",
+          "operator": "eq",
+          "value": 200,
+          "failMessage": "Status code doesn't equal to 200"
+        },
+        {
+          "path": "$.response.body.valid_address",
+          "type": "boolean",
+          "operator": "eq",
+          "value": false,
+          "failMessage": "Address is invalid"
+        }
+      ]
+    },
+    "requestUrlParameter": {},
+    "requestBody": {},
+    "requestHeader": {}
+  }
+\end{lstlisting}
 
 \subsubsection{Validation Result}
 
@@ -153,7 +150,7 @@ To provide such information on a validation result, the \emph{events} attribute 
   \caption{UML diagram of the validation result model}
  \end{figure}
  
-\begin{lstlisting}[caption={Validation result example (JSON)}]
+\begin{lstlisting}[caption={Validation result example (JSON)}, language=json]
 {
   "validationId": "3112dc4a-45f5-41b8-883a-715dcbe9a490",
   "totalChecks": 3,
