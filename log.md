@@ -5,6 +5,8 @@
 - Created preview page and upload to gh-pages
 - Feedback: MVC? SW doesn't really comply to MVC, does it make sense to "categorize" it as MVC?
   - Ask supervisors
+- Reviewed conception, sent first draft to Tobi, moving on to implementation part
+- Add tech implementation on: UI and FDS. UI still need some docker file!
 
 ## 07.06.22
 - 80% is done. Moving on to the writing part

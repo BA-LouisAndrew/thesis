@@ -1,0 +1,148 @@
+\section{Technologies and Architecture}
+
+Before implementing a specific functionality of the system, each component of the system needs to be setup and configured, so that an iterative development process can be done correctly. The prerequisites that need to be met before setting up the projects are: 
+
+\begin{itemize}
+ \item Node.JS version 16 is installed
+ \item NPM is installed
+ \item Docker is installed
+ \item Git is installed
+\end{itemize}
+
+For certain components of the system, a live environment is configured, so that the system is accessible via a URL, without having to set it up on a local machine. 
+
+
+ \subsection{User Interface}
+ As mentioned in \autoref{concept_ui}, the UI is a web application, built using Vue3 and TypeScript.
+
+  \subsubsection{Setup}
+   Nowadays, most front end projects use some kind of build tool to help build, test, and develop web applications\footnote{For detailed information on the role of a build tool in front end development, please take a look at \autocite{Odell2014}}. The build tool \emph{Vite}\footnote{\emph{Vite} is an open source front end build tool. GitHub repository: \url{https://github.com/vitejs/vite}} is used to build, test and develop the UI. A new Vite project is created by running the following command in a shell terminal:
+  
+  \begin{lstlisting}[caption={Creating a new Vite project (Shell)}]
+ npm create vite@latest ui --template vue-ts
+  \end{lstlisting}
+
+  A version control to track and manage the progress done in this particular project is also used. The version control used in this project is git and a code hosting platform for version control is also used for the project (GitHub).
+
+  \subsubsection{Component Library}
+  A component library is used in this project to speed up the development. The component library used in this project is \emph{NaiveUI}\footnote{\emph{NaiveUI} is a Vue3 component library. GitHub repository: \url{https://github.com/TuSimple/naive-ui}}. NaiveUI is chosen because it contains several components that are suitable for the project (for example: \textsc{Timeline}, \textsc{Menu}) and it also supports TypeScript out of the box.
+
+  \subsubsection{Code Style}
+  To enforce a consistent code style and comply to the best practices of a TypeScript project, a code formatter (\emph{Prettier}) and linter (\emph{ESLint}) are used in this project. 
+
+  \subsubsection{Docker}
+  \textbf{TODO. Implementation not done}
+
+  \subsubsection{CI/CD}
+  A CI/CD process is configured within the project, to run certain actions on specific events that happen in the codebase. The tool used to enable this functionality is \emph{GitHub actions}\footnote{\emph{GitHub actions} is a CI/CD platform, created by GitHub and can be used in all repositories hosted on GitHub. Homepage: \url{https://github.com/features/actions}}. The configured CI/CD actions in this project are:
+
+   \begin{itemize}
+    \item Run test and build, when there's a new pull request (PR)\footnote{\emph{Pull request (PR)} is a request from a developer to merge certain changes on a dedicated branch to the main branch of a repository} to \emph{main} branch
+    \item Run release and bump version of the app, when there's a new commit to \emph{main} branch
+   \end{itemize}
+  
+  \subsubsection{Deployment}
+  A live environment is available for the UI. The live environment is made possible by using \emph{Netlify}\footnote{\emph{Netlify} is a hosting platform with a git-based workflow. Homepage: \url{https://www.netlify.com/}}. Every change made to the \emph{main} branch will be built and deployed on the Netlify platform automatically. 
+
+ \subsection{FDS}
+ As described in \autoref{concept_fds}, the FDS is a server side application, built with Node.JS and TypeScript. To build a REST API with ease, the Express.JS framework will also be used in this project. 
+
+  \subsubsection{Setup}
+  To set up a new Node.JS project, run the following command in a shell terminal:
+
+   \begin{lstlisting}[caption={Creating a new Node.JS program (Shell)}]
+ mkdir fds
+ cd ./fds
+ npm init -y
+   \end{lstlisting}
+   
+  To use the TypeScript language rather than plain JavaScript, the TypeScript compiler needs to be installed and used in this project. The TypeScript compiler can also be configured to be more suitable to the personal preferences of the developer as well as the requirements of third party libraries used by the project. To install TypeScript as a development dependency\footnote{In a Node.JS project, development dependency is a third party library used only for development purposes} and to initiate the configuration file of the TypeScript compiler, run the following commands in a shell terminal:
+  
+   \begin{lstlisting}[caption={Installing and configuring TypeScript compiler (Shell)}]
+ npm i -D typescript
+ tsc --init
+   \end{lstlisting}
+  
+  To install Express.JS in the current project, run the following command in a shell terminal:
+  
+   \begin{lstlisting}[caption={Installing Express.JS (Shell)}]
+ npm i express
+   \end{lstlisting}
+  
+  \subsubsection{Tsoa and Swagger}
+  Even though Express.JS provides a declarative and easy way to build a server side application, it's built with JavaScript in mind. Therefore, even though TypeScript can be used with Express.JS, it doesn't use all the potential functionalities that TypeScript provides. \emph{Tsoa}\footnote{\emph{Tsoa} GitHub repository: \url{https://github.com/lukeautry/tsoa}} is a framework with integrated openAPI compiler to build server side applications that can leverage TypeScript to its potential. \emph{Tsoa} helps an express application to have the following functionalities out of the box:
+
+   \begin{itemize}
+    \item Generate Swagger\footnote{\emph{Swagger} is a tool to document server side APIs. Homepage: \url{https://swagger.io/}} specification based on HTTP controller code
+    \item Generate Swagger schema based on TypeScript interfaces
+    \item Generate Swagger schema descriptions based on \emph{jsDoc}\footnote{\emph{jsDoc} is a tool to generate API documentation, similar to \emph{JavaDoc}. Homepage: \url{https://jsdoc.app/}} comments on the source code
+   \end{itemize}
+  
+  Other than that, \emph{tsoa} provides an alternative syntax to build an Express.JS application in a more object-oriented way. \emph{Tsoa} works by compiling the code, with the help of the TypeScript compiler into a regular Express.JS application, built with JavaScript. 
+
+  \subsubsection{Code Style}
+  Identical to the UI project, a code formatter (\emph{Prettier}) and linter (\emph{ESLint}) are also used in this project. The configuration for the code formatter and linter is slightly different in comparison to the UI project, as certain code style rules doesn't apply to a server side application\footnote{In the UI project, there are certain code style rules regarding HTML elements}.
+
+  \subsubsection{Docker}
+  The application will be built and run as a Docker container. To be able to run an application as a Docker container, a \emph{Dockerfile} is needed as a list commands needed to be run to assemble the particular image. The commands used to assemble a Docker container for the FDS are:
+
+   \begin{lstlisting}[caption={Dockerfile for FDS (Docker)}, language=docker]
+ FROM node:16-alpine
+
+ ARG ARG_1 # Arguments passed by --build-args flag
+ ENV ARG_1=$ARG_1 # Environment variable of the image
+
+ WORKDIR /app
+ COPY ["package.json", "package-lock.json*", "./"]
+
+ RUN npm ci # Install packages
+ COPY . .
+ # Additional steps to setup the application
+
+ RUN npm run build
+ ENV NODE_ENV=production
+
+ CMD [ "node", "./dist/src/main.js" ]
+   \end{lstlisting}
+  
+  \subsubsection{CI/CD}
+  A CI/CD process is also configured for this project using GitHub actions. The actions configured in this project are:
+
+   \begin{itemize}
+    \item Run test and build, when there's a new PR to the \emph{main} branch
+    \item Run release, bump version of the application and deploy it to the live environment, when there's a new commit to \emph{main} branch
+   \end{itemize}
+   
+  \subsubsection{Deployment}
+  A live environment is available for the FDS application. The FDS is deployed and run as a Docker container in \emph{Heroku}\footnote{\emph{Heroku} is a platform as a service (PaaS) that provides a platform for developer to build and run application in the cloud. Homepage: \url{https://heroku.com}}. The deployment process will be executed via the CI/CD action on every commit to the \emph{main} branch. 
+
+ \subsection{RabbitMQ}
+ A RabbitMQ instance is required as one of the integral parts of the system. Fortunately, RabbitMQ provided an official Docker image for it and running a RabbitMQ instance as a Docker container is as simple as running the following command in a shell terminal:
+
+ \begin{lstlisting}[caption={Running a RabbitMQ instance with Docker (Shell)}]
+ docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.10-management 
+ \end{lstlisting}
+
+ The command listed above will locally run the RabbitMQ instance on port \emph{5672} and the RabbitMQ management UI on port \emph{15672}. On the live environment, a service called \emph{CloudAMQP}\footnote{\emph{CloudAMQP} is a service provider (RabbitMQ as a Service) that offers RabbitMQ clusters setup and management} is used to help in setting up a RabbitMQ instance in the cloud, so that it can be accessed by other components via its public URI easily.
+
+ \subsection{Redis}
+ Redis is used in the system as a caching memory and a temporary data store. Redis also provided an official Docker image. To run a Redis instance as a Docker container, the following command should be run in a shell terminal:
+
+ \begin{lstlisting}[caption={Running a Redis instance with Docker (Shell)}]
+ docker run -d --name redis-stack-server -p 6379:6379 redis/redis-stack-server:latest
+ \end{lstlisting}
+
+ The command listed above will locally run the Redis instance in port \emph{6379}. Redis is not available on the live environment. On the live environment, no caching is available and an in memory data store (a basic JavaScript class) is used to replace Redis.
+
+ \subsection{MongoDB}
+ MongoDB is the database of choice for the system. MongoDB has an official Docker image and the following command should be run in a shell terminal to set up a MongoDB instance locally:
+
+ \begin{lstlisting}[caption={Running a MongoDB instance with Docker (Shell)}]
+ docker run --name mongodb -d -p 27017:27017 mongo 
+ \end{lstlisting}
+
+ By running the command listed above, a MongoDB instance will be run locally on port \emph{27017}. On the live environment, a service called \emph{MongoDB Atlas}\footnote{\emph{MongoDB Atlas} is a service that provides a cloud-hosted MongoDB instances. Homepage: \url{https://www.mongodb.com/atlas}} will be used to help host a MongoDB instance in the cloud, making it more accessible by other components of the system.
+
+ \subsection{Docker Compose}
+ \textbf{TODO. Implementation not done}
+
