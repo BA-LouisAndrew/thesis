@@ -1,5 +1,11 @@
 # DevLog
 
+## 08-12.06.22
+- Worked on conception, haven't been writing a lot of logs lately, gonna start again today!
+- Created preview page and upload to gh-pages
+- Feedback: MVC? SW doesn't really comply to MVC, does it make sense to "categorize" it as MVC?
+  - Ask supervisors
+
 ## 07.06.22
 - 80% is done. Moving on to the writing part
 
