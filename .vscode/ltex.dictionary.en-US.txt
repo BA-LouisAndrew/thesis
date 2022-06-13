@@ -1,5 +1,4 @@
 runnable
-runned
 Krasner
 Vite
 NaiveUI
@@ -9,3 +8,4 @@ jsDoc
 JavaDoc
 tsoa
 compariosn
+CloudAMQP

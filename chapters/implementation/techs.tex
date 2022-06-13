@@ -31,7 +31,7 @@ For certain components of the system, a live environment is configured, so that 
   To enforce a consistent code style and comply to the best practices of a TypeScript project, a code formatter (\emph{Prettier}) and linter (\emph{ESLint}) are used in this project. 
 
   \subsubsection{Docker}
-  TODO
+  \textbf{TODO. Implementation not done}
 
   \subsubsection{CI/CD}
   A CI/CD process is configured within the project, to run certain actions on specific events that happen in the codebase. The tool used to enable this functionality is \emph{GitHub actions}\footnote{\emph{GitHub actions} is a CI/CD platform, created by GitHub and can be used in all repositories hosted on GitHub. Homepage: \url{https://github.com/features/actions}}. The configured CI/CD actions in this project are:
@@ -84,7 +84,7 @@ For certain components of the system, a live environment is configured, so that 
   Identical to the UI project, a code formatter (\emph{Prettier}) and linter (\emph{ESLint}) are also used in this project. The configuration for the code formatter and linter is slightly different in comparison to the UI project, as certain code style rules doesn't apply to a server side application\footnote{In the UI project, there are certain code style rules regarding HTML elements}.
 
   \subsubsection{Docker}
-  The application will be built and runned as a Docker container. To be able to run an application as a Docker container, a \emph{Dockerfile} is needed as a list commands needed to be run to assemble the particular image. The commands used to assemble a Docker container for the FDS are:
+  The application will be built and run as a Docker container. To be able to run an application as a Docker container, a \emph{Dockerfile} is needed as a list commands needed to be run to assemble the particular image. The commands used to assemble a Docker container for the FDS are:
 
    \begin{lstlisting}[caption={Dockerfile for FDS (Docker)}, language=docker]
  FROM node:16-alpine
@@ -114,6 +114,35 @@ For certain components of the system, a live environment is configured, so that 
    \end{itemize}
    
   \subsubsection{Deployment}
-  A live environment is available for the FDS application. The FDS is deployed and runned as a Docker container in \emph{Heroku}\footnote{\emph{Heroku} is a platform as a service (PaaS) that provides a platform for developer to build and run application in the cloud. Homepage: \url{https://heroku.com}}. The deployment process will be executed via the CI/CD action on every commit to the \emph{main} branch. 
+  A live environment is available for the FDS application. The FDS is deployed and run as a Docker container in \emph{Heroku}\footnote{\emph{Heroku} is a platform as a service (PaaS) that provides a platform for developer to build and run application in the cloud. Homepage: \url{https://heroku.com}}. The deployment process will be executed via the CI/CD action on every commit to the \emph{main} branch. 
 
- 
+ \subsection{RabbitMQ}
+ A RabbitMQ instance is required as one of the integral parts of the system. Fortunately, RabbitMQ provided an official Docker image for it and running a RabbitMQ instance as a Docker container is as simple as running the following command in a shell terminal:
+
+ \begin{lstlisting}[caption={Running a RabbitMQ instance with Docker (Shell)}]
+ docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.10-management 
+ \end{lstlisting}
+
+ The command listed above will locally run the RabbitMQ instance on port \emph{5672} and the RabbitMQ management UI on port \emph{15672}. On the live environment, a service called \emph{CloudAMQP}\footnote{\emph{CloudAMQP} is a service provider (RabbitMQ as a Service) that offers RabbitMQ clusters setup and management} is used to help in setting up a RabbitMQ instance in the cloud, so that it can be accessed by other components via its public URI easily.
+
+ \subsection{Redis}
+ Redis is used in the system as a caching memory and a temporary data store. Redis also provided an official Docker image. To run a Redis instance as a Docker container, the following command should be run in a shell terminal:
+
+ \begin{lstlisting}[caption={Running a Redis instance with Docker (Shell)}]
+ docker run -d --name redis-stack-server -p 6379:6379 redis/redis-stack-server:latest
+ \end{lstlisting}
+
+ The command listed above will locally run the Redis instance in port \emph{6379}. Redis is not available on the live environment. On the live environment, no caching is available and an in memory data store (a basic JavaScript class) is used to replace Redis.
+
+ \subsection{MongoDB}
+ MongoDB is the database of choice for the system. MongoDB has an official Docker image and the following command should be run in a shell terminal to set up a MongoDB instance locally:
+
+ \begin{lstlisting}[caption={Running a MongoDB instance with Docker (Shell)}]
+ docker run --name mongodb -d -p 27017:27017 mongo 
+ \end{lstlisting}
+
+ By running the command listed above, a MongoDB instance will be run locally on port \emph{27017}. On the live environment, a service called \emph{MongoDB Atlas}\footnote{\emph{MongoDB Atlas} is a service that provides a cloud-hosted MongoDB instances. Homepage: \url{https://www.mongodb.com/atlas}} will be used to help host a MongoDB instance in the cloud, making it more accessible by other components of the system.
+
+ \subsection{Docker Compose}
+ \textbf{TODO. Implementation not done}
+
