@@ -17,13 +17,13 @@ jobs:
         with:
           root_file: template.tex
           latexmk_shell_escape: true
+      - name: Move PDF to preview
+        run: cp template.pdf ./preview
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v3
         with:
           name: pdf-result
           path: template.pdf
-      - name: Move PDF to preview
-        run: mv template.pdf ./preview
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
