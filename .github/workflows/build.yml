@@ -22,4 +22,12 @@ jobs:
         with:
           name: pdf-result
           path: template.pdf
+      - name: Move PDF to preview
+        run: mv template.pdf ./preview
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./preview
+
  
