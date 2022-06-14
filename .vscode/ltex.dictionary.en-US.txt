@@ -9,3 +9,4 @@ JavaDoc
 tsoa
 compariosn
 CloudAMQP
+Prisma

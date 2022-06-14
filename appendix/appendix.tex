@@ -13,6 +13,23 @@
   \end{figure}
 
  \section{Supplemental Source Codes}
+ 
+  \begin{lstlisting}[caption={\emph{Prisma} schema of a validation rule (Prisma)}, label={code:prisma}]
+ model ValidationRule {
+   id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+   name                String    @unique
+   skip                Boolean
+   priority            Int
+   endpoint            String
+   method              String
+   failScore           Float
+   condition           Json
+   retryStrategy       Json?
+   requestUrlParameter Json?
+   requestBody         Json?
+   requestHeader       Json?
+ }
+  \end{lstlisting}
 
 \section{Quell-Code}
 
