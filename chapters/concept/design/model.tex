@@ -1,42 +1,42 @@
 \subsection{Model}
   \label{subsection:model}
 
-As mentioned by Krasner and Pope \autocite{krasner-pope-88}, an application's model is a domain specific simulation or implementation of a structure. The model component of an MVC application contains business logic and manages the state of an application as well as its storage. 
-The essential models of the system can be defined by revisiting the sequences listed on \autoref{subsection:controller} and identifying the important structures needed to fulfill the requirements needed.
+  As mentioned by Krasner and Pope \autocite{krasner-pope-88}, an application's model is a domain specific simulation or implementation of a structure. The model component of an MVC application contains business logic and manages the state of an application as well as its storage. 
+  The essential models of the system can be defined by revisiting the sequences listed on \autoref{subsection:controller} and identifying the important structures needed to fulfill the requirements needed.
   
-\subsubsection{Validation Rule}
-  \label{subsub:rule}
+  \subsubsection{Validation Rule}
+    \label{subsub:rule}
 
-A validation rule is a structure of information used in a validation process by supplying the FDS the necessary information to make an HTTP request to an external endpoint and evaluating its response, affecting the overall fraud score of a validation process through its evaluation result. Through a detailed analysis of the sequence illustrated on \autoref{fig:notif-sequence}, it is essential that the \emph{validation rule} model contains the following attributes:
+    A validation rule is a structure of information used in a validation process by supplying the FDS the necessary information to make an HTTP request to an external endpoint and evaluating its response, affecting the overall fraud score of a validation process through its evaluation result. Through a detailed analysis of the sequence illustrated on \autoref{fig:notif-sequence}, it is essential that the \emph{validation rule} model contains the following attributes:
 
-\begin{itemize}
-  \item A URL pointing to an external endpoint
-  \item A list of conditions to evaluate the response returned by the external endpoint
-  \item A unique identifier
-  \item A fail score, which determine the severity of the rule if the evaluation failed
-\end{itemize}
+    \begin{itemize}
+      \item A URL pointing to an external endpoint
+      \item A list of conditions to evaluate the response returned by the external endpoint
+      \item A unique identifier
+      \item A fail score, which determine the severity of the rule if the evaluation failed
+    \end{itemize}
 
-It might also be necessary to have an identifier in the validation rule to skip its evaluation in certain cases. Other than that, as the FDS would make an HTTP request to an external endpoint based on the information listed on a validation rule, the following attributes are needed to provide a more robust configuration:
+    It might also be necessary to have an identifier in the validation rule to skip its evaluation in certain cases. Other than that, as the FDS would make an HTTP request to an external endpoint based on the information listed on a validation rule, the following attributes are needed to provide a more robust configuration:
 
-\begin{itemize}
-  \item HTTP method to be used to make the request
-  \item Request header\footnote{In \autocite[\enquote{5.3 Request Header Fields}]{http-rfc}: request header is defined as additional information passed by the client to the host server about the particular request or about the client.}
-  \item Request body
-\end{itemize}
+    \begin{itemize}
+      \item HTTP method to be used to make the request
+      \item Request header\footnote{In \autocite[\enquote{5.3 Request Header Fields}]{http-rfc}: request header is defined as additional information passed by the client to the host server about the particular request or about the client.}
+      \item Request body
+    \end{itemize}
 
-As the FDS interacts with external endpoints, there is no guarantee that the external endpoint will always be accessible. An additional attribute to specify and configure a retry strategy in such cases can be useful. However, a retry strategy can be really specific to its implementation and therefore will be discussed in \textbf{TODO: Add retry strategy implementation}.
+    As the FDS interacts with external endpoints, there is no guarantee that the external endpoint will always be accessible. An additional attribute to specify and configure a retry strategy in such cases can be useful. However, a retry strategy can be really specific to its implementation and therefore will be discussed in \textbf{TODO: Add retry strategy implementation}.
 
-An additional \emph{priority} attribute is also provided to enable the possibility to run rule validations according to its priority order.
+    An additional \emph{priority} attribute is also provided to enable the possibility to run rule validations according to its priority order.
 
-\begin{figure}[!ht]
-  \includegraphics[width=\textwidth]{diagrams/entity_validation_rule.jpeg}
-  \caption{UML diagram of the validation rule model}
-  \label{fig:uml_validation_rule}
-\end{figure}
- 
-The \emph{condition} attribute plays an important role for a validation rule, as it defines how the response returned by the external endpoint should be structure to pass a rule evaluation. It is intended to design the condition attribute to be robust and configurable. The \emph{path} of a condition defines a JSONPath\autocite{Friesen2019} expression to access information available of the current validation scope, such as customer information or response returned by the external endpoint. The \emph{type} attribute of a condition determines the type of the attribute accessed by the \emph{path} attribute. The \emph{type} attribute determines which type of operators are available to use\footnote{For example: a condition with \emph{type} "string" cannot use the "incl" \emph{operator}, because the "incl" \emph{operator} is only available for "array" \emph{type}.}. The \emph{operator} attribute refers to a name of operator to be used to evaluate the condition (for example: "eq", "incl"). The available operator names are predefined and restricted to the condition's type attribute. More information regarding operators will be discussed in \textbf{TODO: Add operator implementation}. The \emph{failMessage} attribute of a condition refers to a message that is going to be appended to the validation result's \emph{messages} attribute after a validation is completed.
+    \begin{figure}[!ht]
+      \includegraphics[width=\textwidth]{diagrams/entity_validation_rule.jpeg}
+      \caption{UML diagram of the validation rule model}
+      \label{fig:uml_validation_rule}
+    \end{figure}
+    
+    The \emph{condition} attribute plays an important role for a validation rule, as it defines how the response returned by the external endpoint should be structure to pass a rule evaluation. It is intended to design the condition attribute to be robust and configurable. The \emph{path} of a condition defines a JSONPath\autocite{Friesen2019} expression to access information available of the current validation scope, such as customer information or response returned by the external endpoint. The \emph{type} attribute of a condition determines the type of the attribute accessed by the \emph{path} attribute. The \emph{type} attribute determines which type of operators are available to use\footnote{For example: a condition with \emph{type} "string" cannot use the "incl" \emph{operator}, because the "incl" \emph{operator} is only available for "array" \emph{type}.}. The \emph{operator} attribute refers to a name of operator to be used to evaluate the condition (for example: "eq", "incl"). The available operator names are predefined and restricted to the condition's type attribute. More information regarding operators will be discussed in \textbf{TODO: Add operator implementation}. The \emph{failMessage} attribute of a condition refers to a message that is going to be appended to the validation result's \emph{messages} attribute after a validation is completed.
 
-\begin{lstlisting}[caption={Validation rule example (JSON)}, language=json]
+    \begin{lstlisting}[caption={Validation rule example (JSON)}, language=json]
   {
     "name": "Example",
     "skip": false,
@@ -55,11 +55,11 @@ The \emph{condition} attribute plays an important role for a validation rule, as
     "requestBody": {},
     "requestHeader": {}
   }
-\end{lstlisting}
+    \end{lstlisting}
 
-A validation rule might contain more than a single condition to pass an evaluation. In such cases, the user need to define whether how to determine whether an evaluation should pass: either pass an evaluation if \textbf{ALL} the conditions is true or pass an evaluation if \textbf{AT LEAST ONE (ANY)} of the conditions is true. This can be achieved by having the \emph{condition} attribute as an object with a single attribute, either \emph{all} or \emph{any} and an array of conditions as the attribute's value.
+    A validation rule might contain more than a single condition to pass an evaluation. In such cases, the user need to define whether how to determine whether an evaluation should pass: either pass an evaluation if \textbf{ALL} the conditions is true or pass an evaluation if \textbf{AT LEAST ONE (ANY)} of the conditions is true. This can be achieved by having the \emph{condition} attribute as an object with a single attribute, either \emph{all} or \emph{any} and an array of conditions as the attribute's value.
 
-\begin{lstlisting}[caption={Validation rule \textbf{condition} attribute example with ALL condition (JSON)}, language=json]
+    \begin{lstlisting}[caption={Validation rule \textbf{condition} attribute example with ALL condition (JSON)}, language=json]
   {
     "condition": {
       "all": [
@@ -80,9 +80,9 @@ A validation rule might contain more than a single condition to pass an evaluati
       ]
     }
   }
-\end{lstlisting}
+    \end{lstlisting}
 
-\begin{lstlisting}[caption={Validation rule \textbf{condition} attribute example with ANY condition (JSON)}, language=json]
+    \begin{lstlisting}[caption={Validation rule \textbf{condition} attribute example with ANY condition (JSON)}, language=json]
   {
     "condition": {
       "any": [
@@ -103,38 +103,39 @@ A validation rule might contain more than a single condition to pass an evaluati
       ]
     }
   }
-\end{lstlisting}
+    \end{lstlisting}
 
-\subsubsection{Validation Result}
+  \subsubsection{Validation Result}
 
-A validation result is the result of a validation process. A validation result contains a resulting fraud score, which is the probability of a certain customer being a fraud. The algorithm to calculate the fraud score will be discussed as part of the \textbf{TODO: Link implementation}.
-By evaluating the sequences listed on \autoref{fig:regis-sequence} and \autoref{fig:notif-sequence}, the following attributes are needed:
+    A validation result is the result of a validation process. A validation result contains a resulting fraud score, which is the probability of a certain customer being a fraud. The algorithm to calculate the fraud score will be discussed as part of the \textbf{TODO: Link implementation}.
+    By evaluating the sequences listed on \autoref{fig:regis-sequence} and \autoref{fig:notif-sequence}, the following attributes are needed:
 
-\begin{itemize}
-  \item A unique validation ID
-  \item A fraud score 
-\end{itemize}
+    \begin{itemize}
+      \item A unique validation ID
+      \item A fraud score 
+    \end{itemize}
 
-Furthermore, information regarding the total checks, runned checks, and additional information that contains the start and end date of the validation process as well as the customer information used for the validation are essential. The customer information is generic, and the system should be able to do a validation process regardless of its structure. The validation result should also return a list of validation rule names, whose evaluations are skipped due to its \emph{skip} attribute being set to \emph{true}.
+    Furthermore, information regarding the total checks, runned checks, and additional information that contains the start and end date of the validation process as well as the customer information used for the validation are essential. The customer information is generic, and the system should be able to do a validation process regardless of its structure. The validation result should also return a list of validation rule names, whose evaluations are skipped due to its \emph{skip} attribute being set to \emph{true}.
 
-Even though the resulting fraud score determines the probability of a customer being a fraud, it is also important to further analyze the actual evaluation result of each validation rule. For example, a certain action can be run if the evaluation of a specific rule failed or the information regarding the rule evaluations can also be used to display the current progress of a validation process (implementation of this specific functionality will be discussed more in \textbf{TODO: cite to implementation}). 
+    Even though the resulting fraud score determines the probability of a customer being a fraud, it is also important to further analyze the actual evaluation result of each validation rule. For example, a certain action can be run if the evaluation of a specific rule failed or the information regarding the rule evaluations can also be used to display the current progress of a validation process (implementation of this specific functionality will be discussed more in \textbf{TODO: cite to implementation}). 
 
-To provide such information on a validation result, the \emph{events} attribute will be introduced, which refers to rule evaluation events within a validation process. A rule evaluation event should contain the following attributes:
+    To provide such information on a validation result, the \emph{events} attribute will be introduced, which refers to rule evaluation events within a validation process. A rule evaluation event should contain the following attributes:
 
-\begin{itemize}
-  \item Unique identifier of the event (name of the rule being evaluated)
-  \item Status of the event (not started, failed, passed or running) 
-  \item If available, start date of a rule evaluation event 
-  \item If available, end date of a rule evaluation event 
-  \item A list of messages, containing error messages of an evaluation event
-\end{itemize}
+    \begin{itemize}
+      \item Unique identifier of the event (name of the rule being evaluated)
+      \item Status of the event (not started, failed, passed or running) 
+      \item If available, start date of a rule evaluation event 
+      \item If available, end date of a rule evaluation event 
+      \item A list of messages, containing error messages of an evaluation event
+    \end{itemize}
 
-\begin{figure}[!ht]
-  \includegraphics[width=\textwidth]{diagrams/entity_validation_result.jpeg}
-  \caption{UML diagram of the validation result model}
- \end{figure}
- 
-\begin{lstlisting}[caption={Validation result example (JSON)}, language=json]
+    \begin{figure}[!ht]
+      \includegraphics[width=\textwidth]{diagrams/entity_validation_result.jpeg}
+      \caption{UML diagram of the validation result model}
+      \label{fig:uml_validation_result}
+    \end{figure}
+    
+    \begin{lstlisting}[caption={Validation result example (JSON)}, language=json]
   {
     "validationId": "3112dc4a-45f5-41b8-883a-715dcbe9a490",
     "totalChecks": 3,
@@ -178,4 +179,4 @@ To provide such information on a validation result, the \emph{events} attribute 
     ],
     "fraudScore": 0.425  
   }
-\end{lstlisting}
+    \end{lstlisting}

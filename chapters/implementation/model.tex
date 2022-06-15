@@ -3,7 +3,7 @@
 In this chapter, the specific implementation of the models described in \autoref{subsection:model} will be discussed. 
 
   \subsection{Validation Rule}
-    To implement the model defined in \autoref{fig:uml_validation_rule}, a TypeScript interface is created to help in providing a clear structure during development phase. A \emph{Prisma} schema\footnote{The \emph{Prisma} database schema is listed on \autoref{code:prisma}} is also created to define the MongoDB database schema as well as to keep the structure of the data saved in the database in sync with the latest TypeScript interface. 
+    To implement the model defined in \autoref{fig:uml_validation_rule}, a TypeScript interface is created to help in providing a clear structure during development phase. A \emph{Prisma} schema\footnote{The \emph{Prisma} database schema is listed on \autoref{code:prisma}} is also created to sync the structure of the data saved in database with the latest TypeScript interface. 
 
     \begin{lstlisting}[style=es6, caption={TypeScript interface of a validation rule (TypeScript)}]
   // fds/src/types/rule.d.ts
@@ -150,4 +150,35 @@ In this chapter, the specific implementation of the models described in \autoref
   \end{lstlisting}  
 
     \subsubsection{Model Validation}
-      \textcolor{royalblue}{TODO: Add model validation. \url{https://github.com/orgs/BA-LouisAndrew/projects/1/views/2}}
+      \textcolor{royalblue}{TODO: Add model validation. \url{https://github.com/BA-LouisAndrew/fds/issues/70}}
+
+  \subsection{Validation Result}
+  
+    A TypeScript interface is created as the implementation of validation result structure listed on \autoref{fig:uml_validation_result}. The FDS is not responsible in storing validation results in a database. Therefore, a Prisma schema won't be created for validation results. 
+
+    \begin{lstlisting}[style=es6, caption={TypeScript interface of a validation result (TypeScript)}]
+  export interface Validation<T> {
+    validationId: string
+    fraudScore: number
+    totalChecks: number
+    runnedChecks: number
+    skippedChecks: string[]
+    additionalInfo: ValidationAdditionalInfo<T>
+    events: ValidationEvent[]
+  }
+
+  export type ValidationEventStatus = "NOT_STARTED" | "FAILED" | "PASSED" | "RUNNING"
+  export type ValidationEvent = {
+    name: string
+    status: ValidationEventStatus
+    dateStarted: string | null
+    dateEnded: string | null
+    messages?: string[]
+  }
+
+  export type ValidationAdditionalInfo<T> = {
+    startDate: string
+    endDate?: string
+    customerInformation?: T
+  }
+    \end{lstlisting}
