@@ -60,13 +60,11 @@
 \definecolor{darkgray}{rgb}{.4,.4,.4}
 \definecolor{purple}{rgb}{0.65, 0.12, 0.82}
 
-\definecolor{eclipseStrings}{RGB}{42,0.0,255}
-\definecolor{eclipseKeywords}{RGB}{127,0,85}
 \colorlet{numb}{magenta!60!black}
 
 \lstdefinelanguage{json}{
-    commentstyle=\color{eclipseStrings}, % style of comment
-    stringstyle=\color{eclipseKeywords}, % style of strings
+    commentstyle=\color{mediumgray}\upshape,
+    stringstyle=\color{royalblue},
     numbers=left,
     numberstyle=\scriptsize,
     stepnumber=1,
@@ -164,12 +162,12 @@
 
 \lstdefinelanguage{docker}{
   keywords={FROM, RUN, COPY, ADD, ENTRYPOINT, CMD,  ENV, ARG, WORKDIR, EXPOSE, LABEL, USER, VOLUME, STOPSIGNAL, ONBUILD, MAINTAINER},
-  keywordstyle=\color{blue}\bfseries,
+  keywordstyle=\color{mediumblue},
   identifierstyle=\color{black},
   sensitive=false,
   comment=[l]{\#},
-  commentstyle=\color{purple}\ttfamily,
-  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{mediumgray}\upshape,
+  stringstyle=\color{forestgreen},
   morestring=[b]',
   morestring=[b]"
 }

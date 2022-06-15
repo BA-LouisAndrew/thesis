@@ -2,10 +2,10 @@
 
 In this chapter, the specific implementation of the models described in \autoref{subsection:model} will be discussed. 
 
- \subsection{Validation Rule}
-  To implement the model defined in \autoref{fig:uml_validation_rule}, a TypeScript interface is created to help in providing a clear structure during development phase. A \emph{Prisma} schema\footnote{The \emph{Prisma} database schema is listed on \autoref{code:prisma}} is also created to define the MongoDB database schema as well as to keep the structure of the data saved in the database in sync with the latest TypeScript interface. 
+  \subsection{Validation Rule}
+    To implement the model defined in \autoref{fig:uml_validation_rule}, a TypeScript interface is created to help in providing a clear structure during development phase. A \emph{Prisma} schema\footnote{The \emph{Prisma} database schema is listed on \autoref{code:prisma}} is also created to define the MongoDB database schema as well as to keep the structure of the data saved in the database in sync with the latest TypeScript interface. 
 
-  \begin{lstlisting}[style=es6, caption={TypeScript interface of a validation rule (TypeScript)}]
+    \begin{lstlisting}[style=es6, caption={TypeScript interface of a validation rule (TypeScript)}]
   // fds/src/types/rule.d.ts
   
   export interface ValidationRule {
@@ -41,14 +41,14 @@ In this chapter, the specific implementation of the models described in \autoref
     limit: number
     statusCodes: number[] 
   }
-  \end{lstlisting}
+    \end{lstlisting}
  
- \subsubsection{Retry Strategy}
+    \subsubsection{Retry Strategy}
   The \verb;retryStrategy; attribute of the validation rule model is very specific to the implementation of the FDS. The FDS is using a library called \emph{Got}\footnote{\emph{Got} is a Node.JS library to make HTTP requests. GitHub repository: \url{https://github.com/sindresorhus/got}.} to make HTTP requests to the external endpoints. Got provides the functionality to retry a failed HTTP request out of the box\footnote{For more information on Got's retry options, please refer to \url{https://github.com/sindresorhus/got/blob/main/documentation/7-retry.md}.}.
 
   The \verb;retryStrategy; attribute of a validation rule is a subset of the retry options provided by Got's retry API, and will be passed to the Got instance when the HTTP request is made for the corresponding rule evaluation. 
 
- \subsubsection{Accessing Validation Rules Using ORM (Prisma)} 
+    \subsubsection{Accessing Validation Rules Using ORM (Prisma)} 
   After the schema is created and the Prisma client API is updated by running\newline\verb;npx prisma generate;, the validation rule entries in the database are now accessible via the Prisma client. To get all entries of existing validation rules in a database, the following code snippet can be used:
 
   \begin{lstlisting}[style=es6, caption={Getting all existing validation rules in the database (TypeScript)}]
@@ -70,7 +70,9 @@ In this chapter, the specific implementation of the models described in \autoref
 
   const prisma = new PrismaClient()
 
-  const getValidationRule = async (ruleName: string): Promise<ValidationRule | null> => {
+  const getValidationRule = async (
+    ruleName: string
+  ): Promise<ValidationRule | null> => {
     await prisma.$connect() // Connect to client
     const validationRule = await prisma.validationRule.findFirst({
       where: {
@@ -82,7 +84,7 @@ In this chapter, the specific implementation of the models described in \autoref
   }
   \end{lstlisting}  
 
- \subsubsection{Modifying and Creating Validation Rules Using ORM (Prisma)}
+    \subsubsection{Modifying and Creating Validation Rules Using ORM (Prisma)}
   The Prisma ORM gives the possibility to not only read entries of validation rules in the database, but also to modify, delete, and create an entry. The following code snippet describes how to modify and create a validation rule entry in the database. 
 
   \begin{lstlisting}[style=es6, caption={Creating a new validation rule and deleting an existing entry based on its name (TypeScript)}]
@@ -147,4 +149,5 @@ In this chapter, the specific implementation of the models described in \autoref
   }
   \end{lstlisting}  
 
- \subsubsection{Model Validation}
+    \subsubsection{Model Validation}
+      \textcolor{royalblue}{TODO: Add model validation. \url{https://github.com/orgs/BA-LouisAndrew/projects/1/views/2}}
