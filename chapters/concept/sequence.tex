@@ -73,11 +73,11 @@ The following sequence will be executed by the system as a detailed flow for a v
  \item A user (e.g. Developer) can access the management UI and go to the page that displays a list of available validation rules
  \item The FDS retrieves a list of validation rules from the database
  \item User can click on a single rule and edit the rule
- \item The management UI makes an HTTP PUT\footnote{In \autocite[\enquote{9.6 PUT}]{http-rfc}, HTTP PUT method is described as a method to store or modify an entity, defined by the Request-URI} request to the database to edit an existing rule
+ \item The management UI makes an HTTP PUT\footnote{In \autocite[\enquote{9.6 PUT}]{http-rfc}, HTTP PUT method is described as a method to store or modify an entity, defined by the Request-URI.} request to the database to edit an existing rule
  \item The FDS receives the HTTP request, modify the rule on the database and returns the edited rule as a response
  \item The management UI displays a success message and redirects user back to the list of rules page
  \item User can click on a single rule and delete the rule
- \item The management UI makes an HTTP DELETE\footnote{In \autocite[\enquote{9.7 DELETE}]{http-rfc}, HTTP DELETE method is described as a method to delete a resource on the host server, pointed by the Request-URI} request to the database to delete an existing rule
- \item The FDS receives the HTTP request and delete the rule on the database, returning a 204\footnote{In \autocite[\enquote{10.2.5 204 No Content}]{http-rfc}, the 204 status code should be used if the server fulfilled the request, but no data should be returned by the HTTP response} status code as an identifier of a successful operation
+ \item The management UI makes an HTTP DELETE\footnote{In \autocite[\enquote{9.7 DELETE}]{http-rfc}, HTTP DELETE method is described as a method to delete a resource on the host server, pointed by the Request-URI.} request to the database to delete an existing rule
+ \item The FDS receives the HTTP request and delete the rule on the database, returning a 204\footnote{In \autocite[\enquote{10.2.5 204 No Content}]{http-rfc}, the 204 status code should be used if the server fulfilled the request, but no data should be returned by the HTTP response.} status code as an identifier of a successful operation
  \item The management UI displays a success message and redirects user back to the list of rules page
 \end{itemize} 
