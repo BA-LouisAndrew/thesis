@@ -6,41 +6,41 @@ In this chapter, the specific implementation of the models described in \autoref
   To implement the model defined in \autoref{fig:uml_validation_rule}, a TypeScript interface is created to help in providing a clear structure during development phase. A \emph{Prisma} schema\footnote{The \emph{Prisma} database schema is listed on \autoref{code:prisma}} is also created to define the MongoDB database schema as well as to keep the structure of the data saved in the database in sync with the latest TypeScript interface. 
 
   \begin{lstlisting}[caption={TypeScript interface of a validation rule (TypeScript)}, language=js]
- // fds/src/types/rule.d.ts
- 
- export interface ValidationRule {
-   retryStrategy?: RetryStrategy | null
-   requestUrlParameter?: GenericObject
-   requestHeader?: GenericObject
-   skip: boolean
-   requestBody?: GenericObject
-   condition: Condition | BooleanCondition
-   method: "GET" | "PUT" | "POST" 
-   failScore: number
-   endpoint: string
-   priority: number
-   name: string
- }
- 
- type GenericObject = { [key: string]: any } // Dictionary
- type Condition = {
-   path: string
-   operator: OperatorType
-   type: ConditionType
-   value: any
-   failMessage: string
- }
+  // fds/src/types/rule.d.ts
+  
+  export interface ValidationRule {
+    retryStrategy?: RetryStrategy | null
+    requestUrlParameter?: GenericObject
+    requestHeader?: GenericObject
+    skip: boolean
+    requestBody?: GenericObject
+    condition: Condition | BooleanCondition
+    method: "GET" | "PUT" | "POST" 
+    failScore: number
+    endpoint: string
+    priority: number
+    name: string
+  }
+  
+  type GenericObject = { [key: string]: any } // Dictionary
+  type Condition = {
+    path: string
+    operator: OperatorType
+    type: ConditionType
+    value: any
+    failMessage: string
+  }
 
- type BooleanCondition = {
-   all: Condition[]
- } | {
-   any: Condition[]
- }
+  type BooleanCondition = {
+    all: Condition[]
+  } | {
+    any: Condition[]
+  }
 
- type RetryStrategy = {
-   limit: number
-   statusCodes: number[] 
- }
+  type RetryStrategy = {
+    limit: number
+    statusCodes: number[] 
+  }
   \end{lstlisting}
  
  \subsubsection{Retry Strategy}
@@ -49,6 +49,39 @@ In this chapter, the specific implementation of the models described in \autoref
   The \verb;retryStrategy; attribute of a validation rule is a subset of the retry options provided by Got's retry API, and will be passed to the Got instance when the HTTP request is made for the corresponding rule evaluation. 
 
  \subsubsection{Accessing Validation Rules Using ORM (Prisma)} 
+  After the schema is created and the Prisma client API is updated by running \verb;npx prisma generate;, the validation rule entries in the database are now accessible via the Prisma client. To get all entries of existing validation rules in a database, the following code snippet can be used:
+
+  \begin{lstlisting}[caption={Getting all existing validation rules in the database (TypeScript)}, language=js]
+  import { PrismaClient } from '@prisma/client'
+
+  const prisma = new PrismaClient()
+
+  const getAllValidatonRules = async (): ValidationRule[] => {
+    await prisma.$connect() // Connect to client
+    const allValidationRules = await prisma.validationRule.findMany()
+    return allValidationRules
+  }
+  \end{lstlisting}
+  
+  A validation rule's name is the unique identifier for each rule. To get a specific rule, its name is needed to identify the specific entry in the database. The following code snippet shows how to query a specific validation rule based on its name:
+
+  \begin{lstlisting}[caption={Getting an existing validation rule based on its name in the database (TypeScript)}, language=js]
+  import { PrismaClient } from '@prisma/client'
+
+  const prisma = new PrismaClient()
+
+  const getValidationRule = async (ruleName: string): ValidationRule | null => {
+    await prisma.$connect() // Connect to client
+    const validationRule = await prisma.validationRule.findFirst({
+      where: {
+        name: ruleName
+      }
+    })
+    
+    return validationRule
+  }
+  \end{lstlisting}  
+
 
  \subsubsection{Modifying Validation Rules Using ORM (Prisma)}
 

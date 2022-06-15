@@ -73,7 +73,8 @@ For certain components of the system, a live environment is configured, so that 
    To set up a database connection with Prisma (the ORM library of choice for FDS), the Prisma package should be installed in the current project by running the following command in a shell terminal
 
    \begin{lstlisting}[caption={Installing Prisma (Shell)}]
- npm i prisma
+ npm i -D prisma 
+ npm i @prisma/client
    \end{lstlisting}
 
    After installing the Prisma package, set up the current project to work with Prisma ORM by running the following command in a shell terminal:
@@ -92,6 +93,12 @@ For certain components of the system, a live environment is configured, so that 
    \end{lstlisting}
 
    In this particular example, the database system for the current project is set to MongoDB, and the database URL will be set by the \verb;DB_URL; environment variable.
+
+   As the configuration is done and the database schema is created, the Prisma client API needs to be updated to include the interfaces generated from the schema. To update the Prisma client API, run the following command in a shell terminal:
+   
+   \begin{lstlisting}[caption={Update Prisma client API to include generated interfaces from the schema (Shell)}]
+  npx prisma generate 
+   \end{lstlisting}
    
   \subsubsection{Tsoa and Swagger}
   Even though Express.JS provides a declarative and easy way to build a server side application, it's built with JavaScript in mind. Therefore, even though TypeScript can be used with Express.JS, it doesn't use all the potential functionalities that TypeScript provides. \emph{Tsoa}\footnote{\emph{Tsoa} GitHub repository: \url{https://github.com/lukeautry/tsoa}.} is a framework with integrated openAPI compiler to build server side applications that can leverage TypeScript to its potential. \emph{Tsoa} helps an express application to have the following functionalities out of the box:
