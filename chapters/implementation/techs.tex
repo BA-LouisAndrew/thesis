@@ -25,7 +25,7 @@ For certain components of the system, a live environment is configured, so that 
   A version control to track and manage the progress done in this particular project is also used. The version control used in this project is git and a code hosting platform for version control is also used for the project (GitHub).
 
   \subsubsection{Component Library}
-  A component library is used in this project to speed up the development. The component library used in this project is \emph{NaiveUI}\footnote{\emph{NaiveUI} is a Vue3 component library. GitHub repository: \url{https://github.com/TuSimple/naive-ui}.}. NaiveUI is chosen because it contains several components that are suitable for the project (for example: \textsc{Timeline}, \textsc{Menu}) and it also supports TypeScript out of the box.
+  A component library is used in this project to speed up the development. The component library used in this project is \emph{NaiveUI}\footnote{\emph{NaiveUI} is a Vue3 component library. GitHub repository: \url{https://github.com/TuSimple/naive-ui}.}. NaiveUI is chosen because it contains several components that are suitable for the project (for example: \verb}Timeline}, \verb}Menu}) and it also supports TypeScript out of the box.
 
   \subsubsection{Code Style}
   To enforce a consistent code style and comply to the best practices of a TypeScript project, a code formatter (\emph{Prettier}) and linter (\emph{ESLint}) are used in this project. 
@@ -37,12 +37,12 @@ For certain components of the system, a live environment is configured, so that 
   A CI/CD process is configured within the project, to run certain actions on specific events that happen in the codebase. The tool used to enable this functionality is \emph{GitHub actions}\footnote{\emph{GitHub actions} is a CI/CD platform, created by GitHub and can be used in all repositories hosted on GitHub. Homepage: \url{https://github.com/features/actions}.}. The configured CI/CD actions in this project are:
 
    \begin{itemize}
-    \item Run test and build, when there's a new pull request (PR)\footnote{\emph{Pull request (PR)} is a request from a developer to merge certain changes on a dedicated branch to the main branch of a repository.} to \emph{main} branch
-    \item Run release and bump version of the app, when there's a new commit to \emph{main} branch
+    \item Run test and build, when there's a new pull request (PR)\footnote{\emph{Pull request (PR)} is a request from a developer to merge certain changes on a dedicated branch to the main branch of a repository.} to \verb;main; branch
+    \item Run release and bump version of the app, when there's a new commit to \verb;main; branch
    \end{itemize}
   
   \subsubsection{Deployment}
-  A live environment is available for the UI. The live environment is made possible by using \emph{Netlify}\footnote{\emph{Netlify} is a hosting platform with a git-based workflow. Homepage: \url{https://www.netlify.com/}.}. Every change made to the \emph{main} branch will be built and deployed on the Netlify platform automatically. 
+  A live environment is available for the UI. The live environment is made possible by using \emph{Netlify}\footnote{\emph{Netlify} is a hosting platform with a git-based workflow. Homepage: \url{https://www.netlify.com/}.}. Every change made to the \verb;main; branch will be built and deployed on the Netlify platform automatically. 
 
  \subsection{FDS}
  As described in \autoref{concept_fds}, the FDS is a server side application, built with Node.JS and TypeScript. To build a REST API with ease, the Express.JS framework will also be used in this project. 
@@ -70,8 +70,29 @@ For certain components of the system, a live environment is configured, so that 
    \end{lstlisting}
   
   \subsubsection{Database Connection with ORM (Prisma)}
-  \textbf{TODO}
-  
+   To set up a database connection with Prisma (the ORM library of choice for FDS), the Prisma package should be installed in the current project by running the following command in a shell terminal
+
+   \begin{lstlisting}[caption={Installing Prisma (Shell)}]
+ npm i prisma
+   \end{lstlisting}
+
+   After installing the Prisma package, set up the current project to work with Prisma ORM by running the following command in a shell terminal:
+
+   \begin{lstlisting}[caption={Set up project with Prisma}]
+ npx prisma init
+   \end{lstlisting}
+   
+   After the project is set up, a \verb;prisma.schema; file will be created. The \verb;prisma.schema; file is used as a configuration file for the Prisma client and to define the database schema. The database type as well as its URL should be configured in this \verb;prisma.schema; file. 
+
+   \begin{lstlisting}[caption={Configuring database type and URL (Prisma)}]
+ datasource db {
+   provider = "mongodb"
+   url      = env("DB_URL")
+ }  
+   \end{lstlisting}
+
+   In this particular example, the database system for the current project is set to MongoDB, and the database URL will be set by the \verb;DB_URL; environment variable.
+   
   \subsubsection{Tsoa and Swagger}
   Even though Express.JS provides a declarative and easy way to build a server side application, it's built with JavaScript in mind. Therefore, even though TypeScript can be used with Express.JS, it doesn't use all the potential functionalities that TypeScript provides. \emph{Tsoa}\footnote{\emph{Tsoa} GitHub repository: \url{https://github.com/lukeautry/tsoa}.} is a framework with integrated openAPI compiler to build server side applications that can leverage TypeScript to its potential. \emph{Tsoa} helps an express application to have the following functionalities out of the box:
 
@@ -87,7 +108,7 @@ For certain components of the system, a live environment is configured, so that 
   Identical to the UI project, a code formatter (\emph{Prettier}) and linter (\emph{ESLint}) are also used in this project. The configuration for the code formatter and linter is slightly different in comparison to the UI project, as certain code style rules doesn't apply to a server side application\footnote{In the UI project, there are certain code style rules regarding HTML elements.}.
 
   \subsubsection{Docker}
-  The application will be built and run as a Docker container. To be able to run an application as a Docker container, a \emph{Dockerfile} is needed as a list commands needed to be run to assemble the particular image. The commands used to assemble a Docker container for the FDS are:
+  The application will be built and run as a Docker container. To be able to run an application as a Docker container, a \verb;Dockerfile; is needed to provide a list of commands needed to be run to assemble the particular image. The commands used to assemble a Docker container for the FDS are:
 
    \begin{lstlisting}[caption={Dockerfile for FDS (Docker)}, language=docker]
  FROM node:16-alpine
@@ -112,8 +133,8 @@ For certain components of the system, a live environment is configured, so that 
   A CI/CD process is also configured for this project using GitHub actions. The actions configured in this project are:
 
    \begin{itemize}
-    \item Run test and build, when there's a new PR to the \emph{main} branch
-    \item Run release, bump version of the application and deploy it to the live environment, when there's a new commit to \emph{main} branch
+    \item Run test and build, when there's a new PR to the \verb;main; branch
+    \item Run release, bump version of the application and deploy it to the live environment, when there's a new commit to \verb;main; branch
    \end{itemize}
    
   \subsubsection{Deployment}
