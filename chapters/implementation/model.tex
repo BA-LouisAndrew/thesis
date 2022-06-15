@@ -5,7 +5,7 @@ In this chapter, the specific implementation of the models described in \autoref
  \subsection{Validation Rule}
   To implement the model defined in \autoref{fig:uml_validation_rule}, a TypeScript interface is created to help in providing a clear structure during development phase. A \emph{Prisma} schema\footnote{The \emph{Prisma} database schema is listed on \autoref{code:prisma}} is also created to define the MongoDB database schema as well as to keep the structure of the data saved in the database in sync with the latest TypeScript interface. 
 
-  \begin{lstlisting}[caption={TypeScript interface of a validation rule (TypeScript)}, language=js]
+  \begin{lstlisting}[style=es6, caption={TypeScript interface of a validation rule (TypeScript)}]
   // fds/src/types/rule.d.ts
   
   export interface ValidationRule {
@@ -49,14 +49,14 @@ In this chapter, the specific implementation of the models described in \autoref
   The \verb;retryStrategy; attribute of a validation rule is a subset of the retry options provided by Got's retry API, and will be passed to the Got instance when the HTTP request is made for the corresponding rule evaluation. 
 
  \subsubsection{Accessing Validation Rules Using ORM (Prisma)} 
-  After the schema is created and the Prisma client API is updated by running \verb;npx prisma generate;, the validation rule entries in the database are now accessible via the Prisma client. To get all entries of existing validation rules in a database, the following code snippet can be used:
+  After the schema is created and the Prisma client API is updated by running\newline\verb;npx prisma generate;, the validation rule entries in the database are now accessible via the Prisma client. To get all entries of existing validation rules in a database, the following code snippet can be used:
 
-  \begin{lstlisting}[caption={Getting all existing validation rules in the database (TypeScript)}, language=js]
+  \begin{lstlisting}[style=es6, caption={Getting all existing validation rules in the database (TypeScript)}]
   import { PrismaClient } from '@prisma/client'
 
   const prisma = new PrismaClient()
 
-  const getAllValidatonRules = async (): ValidationRule[] => {
+  const getAllValidatonRules = async (): Promise<ValidationRule[]> => {
     await prisma.$connect() // Connect to client
     const allValidationRules = await prisma.validationRule.findMany()
     return allValidationRules
@@ -65,12 +65,12 @@ In this chapter, the specific implementation of the models described in \autoref
   
   A validation rule's name is the unique identifier for each rule. To get a specific rule, its name is needed to identify the specific entry in the database. The following code snippet shows how to query a specific validation rule based on its name:
 
-  \begin{lstlisting}[caption={Getting an existing validation rule based on its name in the database (TypeScript)}, language=js]
+  \begin{lstlisting}[style=es6, caption={Getting an existing validation rule based on its name in the database (TypeScript)}]
   import { PrismaClient } from '@prisma/client'
 
   const prisma = new PrismaClient()
 
-  const getValidationRule = async (ruleName: string): ValidationRule | null => {
+  const getValidationRule = async (ruleName: string): Promise<ValidationRule | null> => {
     await prisma.$connect() // Connect to client
     const validationRule = await prisma.validationRule.findFirst({
       where: {
@@ -82,7 +82,69 @@ In this chapter, the specific implementation of the models described in \autoref
   }
   \end{lstlisting}  
 
+ \subsubsection{Modifying and Creating Validation Rules Using ORM (Prisma)}
+  The Prisma ORM gives the possibility to not only read entries of validation rules in the database, but also to modify, delete, and create an entry. The following code snippet describes how to modify and create a validation rule entry in the database. 
 
- \subsubsection{Modifying Validation Rules Using ORM (Prisma)}
+  \begin{lstlisting}[style=es6, caption={Creating a new validation rule and deleting an existing entry based on its name (TypeScript)}]
+  import { PrismaClient } from '@prisma/client'
+
+  const prisma = new PrismaClient()
+
+  const deleteValidationRule = async (ruleName: string): Promise<boolean> => {
+    await prisma.$connect()
+    try {
+      await prisma.validationRule.delete({
+        where: {
+          name: ruleName
+        }
+      })
+
+      return true
+    } catch {
+      return false
+    }
+  }
+  
+  const createValidationRule = async (
+    validationRule: ValidationRule
+  ): Promise<ValidationRule | null> => {
+    await prisma.$connect()
+    try {
+      const newRule = await prisma.validationRule.create({
+        data: validationRule,
+      })
+  
+      return newRule
+    } catch {
+      return null
+    }
+  }
+  \end{lstlisting}  
+
+  As a validation rule's name is a unique identifier of the entries, updating a validation rule's name should not be allowed. Therefore, the function to update a validation rule entry should actively prevent an update on validation rule \verb;name; attribute. 
+
+  \begin{lstlisting}[style=es6, caption={Getting an existing validation rule based on its name in the database (TypeScript)}]
+  import { PrismaClient } from '@prisma/client'
+
+  // Omits `name` attribute from a validation rule
+  type (*@\textcolor{royalblue}{ValidationRuleUpdateType}@*) = Omit<ValidationRule, "name"> 
+
+  const prisma = new PrismaClient()
+  
+  const updateValidationRule = async (
+    validationRule: (*@\textcolor{royalblue}{ValidationRuleUpdateType}@*)
+  ): Promise<ValidationRule | null> => {
+    await prisma.$connect()
+    try {
+      const newRule = await prisma.validationRule.create({
+        data: validationRule,
+      })
+  
+      return newRule
+    } catch {
+      return null
+    }
+  }
+  \end{lstlisting}  
 
  \subsubsection{Model Validation}

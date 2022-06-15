@@ -17,3 +17,4 @@ texput.log
 *.pdf
 template.pdf
 _minted-template
+node_modules

@@ -65,7 +65,6 @@
 \colorlet{numb}{magenta!60!black}
 
 \lstdefinelanguage{json}{
-    basicstyle=\normalfont\ttfamily,
     commentstyle=\color{eclipseStrings}, % style of comment
     stringstyle=\color{eclipseKeywords}, % style of strings
     numbers=left,
@@ -74,8 +73,6 @@
     numbersep=8pt,
     showstringspaces=false,
     breaklines=true,
-    frame=lines,
-    backgroundcolor=\color{lightgray}, %only if you like
     string=[s]{"}{"},
     comment=[l]{:\ "},
     morecomment=[l]{:"},
@@ -93,18 +90,76 @@
 }
 
 \lstdefinelanguage{js}{
-  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, const, if, in, while, do, else, case, break, await},
-  keywordstyle=\color{blue}\bfseries,
-  ndkeywords={class, export, boolean, throw, implements, import, this, type, interface, async},
-  ndkeywordstyle=\color{darkgray}\bfseries,
-  identifierstyle=\color{black},
-  sensitive=false,
-  comment=[l]{//},
+  morekeywords=[1]{break, continue, delete, else, for, function, if, in,
+    new, return, this, typeof, var, void, while, with},
+  % Literals, primitive types, and reference types.
+  morekeywords=[2]{false, null, true, boolean, number, undefined,
+    Array, Boolean, Date, Math, Number, String, Object, string},
+  % Built-ins.
+  morekeywords=[3]{eval, parseInt, parseFloat, escape, unescape, GenericObject, Condition, BooleanCondition, RetryStrategy, ValidationRule}, % Custom types
+  sensitive,
   morecomment=[s]{/*}{*/},
-  commentstyle=\color{purple}\ttfamily,
-  stringstyle=\color{red}\ttfamily,
+  morecomment=[l]//,
+  morecomment=[s]{/**}{*/}, % JavaDoc style comments
   morestring=[b]',
   morestring=[b]"
+}[keywords, comments, strings]
+
+\lstalias[]{ES6}[ECMAScript2015]{js}
+
+\lstdefinelanguage[ECMAScript2015]{js}[]{js}{
+  morekeywords=[1]{await, async, case, catch, class, const, default, do,
+    enum, export, extends, finally, from, implements, import, instanceof,
+    let, static, super, switch, throw, try, type, interface},
+  morestring=[b]` % Interpolation strings.
+}
+
+\definecolor{mediumgray}{rgb}{0.3, 0.4, 0.4}
+\definecolor{mediumblue}{rgb}{0.0, 0.0, 0.8}
+\definecolor{forestgreen}{rgb}{0.13, 0.55, 0.13}
+\definecolor{darkviolet}{rgb}{0.58, 0.0, 0.83}
+\definecolor{royalblue}{rgb}{0.25, 0.41, 0.88}
+\definecolor{crimson}{rgb}{0.86, 0.8, 0.24}
+
+\lstdefinestyle{JSES6Base}{
+  backgroundcolor=\color{white},
+  basicstyle=\footnotesize\ttfamily,
+  breakatwhitespace=false,
+  breaklines=false,
+  captionpos=b,
+  columns=fullflexible,
+  commentstyle=\color{mediumgray}\upshape,
+  emph={},
+  emphstyle=\color{crimson},
+  extendedchars=true,  % requires inputenc
+  fontadjust=true,
+  frame=single,
+  identifierstyle=\color{black},
+  keepspaces=true,
+  keywordstyle=\color{mediumblue},
+  keywordstyle={[2]\color{darkviolet}},
+  keywordstyle={[3]\color{royalblue}},
+  numbers=left,
+  numbersep=5pt,
+  numberstyle=\tiny\color{black},
+  rulecolor=\color{black},
+  showlines=true,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  stringstyle=\color{forestgreen},
+  tabsize=2,
+  title=\lstname,
+  upquote=true  % requires textcomp
+}
+
+\lstdefinestyle{js}{
+  language=js,
+  style=JSES6Base
+}
+\lstdefinestyle{ES6}{
+  language=ES6,
+  style=JSES6Base
 }
 
 \lstdefinelanguage{docker}{
@@ -121,12 +176,13 @@
 
 \lstset{
    language=js,
-   backgroundcolor=\color{lightgray},
+   backgroundcolor=\color{white},
    extendedchars=true,
-   basicstyle=\normalfont\ttfamily,
+   basicstyle=\footnotesize\ttfamily,
    showstringspaces=false,
    showspaces=false,
    numbers=left,
+   frame=single,
    numberstyle=\footnotesize,
    numbersep=9pt,
    tabsize=2,
@@ -136,6 +192,8 @@
    xleftmargin=0.5cm,
    aboveskip=0.5cm
 }
+
+\lstset{escapeinside={(*@}{@*)}}
 
 \begin{document}
 
