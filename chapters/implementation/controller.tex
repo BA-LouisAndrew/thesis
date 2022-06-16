@@ -1,1 +1,88 @@
 \section{Controller}
+
+  This chapter describes the implementation of the features elicited on the previous chapters in details, specifically within the FDS component. All the HTTP routes of the FDS will be prefixed with \verb;/api/v1;.
+
+  \subsection{Customer Validation on a Registration Event}
+
+    An HTTP endpoint will be implemented to provide the possibility to schedule a validation process as soon as a new customer is registered. The endpoint should accept the customer information on the request body and return validation ID and additional information of the validation process as a response. Listed below is the code snippet of the HTTP controller of the endpoint to schedule a validation process:
+
+    \begin{lstlisting}[style=es6, caption={HTTP controller of an endpoint to schedule a validation process (TypeScript)}]
+// fds/src/routes/validation/validationController.ts
+
+// Picks the `validationId` and `additionalInfo` attributes from `Validation` 
+type ValidationSchedule = Pick<Validation, "validationId" | "additionalInfo"> 
+     
+@Route("validate")
+@Tags("Validation")
+export class ValidationController extends Controller {
+  @SuccessResponse(201, "Validation started")
+  @Response<ValidationErrorJSON>(422, "Validation Failed")
+  @Response<WentWrong>(400, "Bad Request")
+  @Post()
+  public async validateCustomer(
+   @Body() requestBody: Customer
+  ): Promise<ValidationSchedule | WentWrong> {
+    const result = await ValidationService.scheduleRulesetValidation(requestBody)
+    const { data, error } = result
+
+    if (error) {
+      this.setStatus(400)
+      return {
+        message: error.message,
+        details: error.details || "",
+      }
+    }
+
+    return data
+  }
+} 
+    \end{lstlisting}
+    
+    The HTTP controller is intentionally kept as simple as possible. The logic behind the process to schedule a validation is done by the \verb;ValidationService; and \verb;ValidationEngine; (discussed in \autoref{sub:process}). The \verb;ValidationService; is responsible in this particular case to get the lists of existing validation rules and runtime secrets (discussed in \autoref{sub:secrets}), then creating a new instance of \verb;ValidationEngine; as well as scheduling a new validation process. 
+
+    \begin{lstlisting}[style=es6, caption={ValidationService schedule validation implementation (TypeScript)}]
+// fds/src/routes/validation/validationService.ts
+
+export class ValidationService {
+  static async scheduleRulesetValidation(
+    customer: Customer
+  ): Promise<ApiResponse<ValidationSchedule>> {
+    const { data: ruleset, error } = await RulesService.listRules()
+    const secrets = await SecretsService.listSecrets()
+    if (error) {
+      return {
+        data: null,
+        error,
+      }
+    }
+
+    const { validationId, additionalInfo } = await new ValidationEngine<Customer>()
+      .setRuleset(ruleset)
+      .setSecrets(secrets)
+      .scheduleRulesetValidation(customer)
+
+    return {
+      data: {
+        validationId,
+        additionalInfo,
+      },
+      error: null,
+    }
+  }
+}
+    \end{lstlisting}
+
+  \subsection{Validation Process}
+    \label{sub:process}
+
+  \subsection{Notification on Suspicious Cases}
+
+  \subsection{Validation Rules Management}
+
+  \subsection{Validation Real Time Progress}
+
+  \subsection{Runtime Secrets}
+    \label{sub:secrets} 
+
+  \subsection{Error Handling}
+
