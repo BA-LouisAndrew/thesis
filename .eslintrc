@@ -3,7 +3,7 @@
   "parser": "@typescript-eslint/parser",
   "extends": ["plugin:@typescript-eslint/recommended", "eslint:recommended"],
   "parserOptions": { "ecmaVersion": 2018, "sourceType": "module" },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
     "quotes": ["error", "double"],
     "semi": ["error", "never"],
@@ -19,7 +19,16 @@
     ],
     "@typescript-eslint/no-empty-function": "off",
     "object-curly-spacing": ["error", "always"],
-    "max-len": ["error", { "code": 70 }]
+    "max-len": ["error", { "code": 85 }],
+    "object-curly-newline": [
+      "error",
+      {
+        "ObjectExpression": "always",
+        "ObjectPattern": { "multiline": true },
+        "ImportDeclaration": "never",
+        "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+      }
+    ]
   },
   "env": {
     "node": true
