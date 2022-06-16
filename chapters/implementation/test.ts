@@ -71,3 +71,6 @@ export class ValidationEngine<T> {
     })
   }
 }
+const validateFunction = (value) =>
+  typeof value === "number" &&
+  !isNaN(parseFloat(`${value}`))

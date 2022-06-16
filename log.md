@@ -1,5 +1,9 @@
 # DevLog
 
+## 16.06.22
+- Motivation is getting low
+- Am I putting too much code on the doc?
+
 ## 08-12.06.22
 - Worked on conception, haven't been writing a lot of logs lately, gonna start again today!
 - Created preview page and upload to gh-pages

@@ -94,7 +94,7 @@
   morekeywords=[2]{false, null, true, boolean, number, undefined,
     Array, Boolean, Date, Math, Number, String, Object, string},
   % Built-ins.
-  morekeywords=[3]{eval, parseInt, parseFloat, escape, unescape, GenericObject, Condition, BooleanCondition, RetryStrategy, ValidationRule,  ValidationAdditionalInfo, ValidationEvent, ValidationEventStatus, Validation, ValidationSchedule, WentWrong, ValidationErrorJSON, Customer, ApiResponse}, % Custom types
+  morekeywords=[3]{eval, parseInt, parseFloat, escape, unescape, GenericObject, Condition, BooleanCondition, RetryStrategy, ValidationRule,  ValidationAdditionalInfo, ValidationEvent, ValidationEventStatus, Validation, ValidationSchedule, WentWrong, ValidationErrorJSON, Customer, ApiResponse, OperateFunction, Record}, % Custom types
   sensitive,
   morecomment=[s]{/*}{*/},
   morecomment=[l]//,
@@ -108,7 +108,8 @@
 \lstdefinelanguage[ECMAScript2015]{js}[]{js}{
   morekeywords=[1]{await, async, case, catch, class, const, default, do,
     enum, export, extends, finally, from, implements, import, instanceof,
-    let, static, super, switch, throw, try, type, interface, private, get},
+    let, static, super, switch, throw, try, type, interface, private, get, 
+    protected, readonly},
   morestring=[b]` % Interpolation strings.
 }
 

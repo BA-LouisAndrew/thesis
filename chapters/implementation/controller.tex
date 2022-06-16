@@ -237,8 +237,101 @@ export class ValidationEngine<T> {
   }
 }
       \end{lstlisting}
+      
+    \subsubsection{Operators}
+      - [ ] What
+      - [ ] Flyweight
+      - [ ] Example (number)?
+
+      \verb;Operators; are special classes that define the operation of a certain condition during a validation process. Each \verb;Operator; is grouped by its type and has two main properties \verb;identifier;, and \verb;operateFunction;
+      
+      The \verb;identifier; property of an operator refers to the operator's name, unique on its group of type. The \verb;identifier; attribute of an operator will be passed into the \verb;operator; attribute of a condition to describe the specific operator to be used in evaluating the particular condition. The \verb;operateFunction; attribute of an operator is a function that accepts two arguments, and returns a boolean value that indicates whether the operation is successful. An additional validation process is also implemented using the \verb;validateFunction; property to make sure that the value being passed into the \verb;operate; function of an operator is valid.
+      
+      \begin{lstlisting}[style=es6, caption={The Operator class (TypeScript)}]
+// fds/src/engine/operators/operator.ts
+type OperateFunction<T, V = T> = (value: T, receivedValue: V) => boolean
+export class Operator<T = any, V = T> {
+  private identifier: string
+  private operateFunction: OperateFunction<T, V>
+  protected validateFunction: (value: any) => boolean
+
+  constructor(identifier: IdentifierType, operateFunction: OperateFunction<T, V>) {
+    this.identifier = identifier
+    this.operateFunction = operateFunction
+  }
+
+  validate(value: any): boolean {
+    return this.validateFunction(value)
+  }
+
+  setValidateFunction(validateFunction: (value: any) => boolean) {
+    this.validateFunction = validateFunction
+    return this // Method chaining
+  }
+
+  operate(value: T, receivedValue: V): boolean {
+    const isValid = this.validate(value)
+    if (!isValid) {
+      return this.handleInvalidValue(value)
+    }
+
+    return this.operateFunction(value, receivedValue)
+  }
+}
+      \end{lstlisting}
+      
+      \begin{lstlisting}[style=es6, caption={NumberOperator Example (TypeScript)}]
+// fds/src/engine/operators/numberOperators
+export class NumberOperator extends Operator<number, NumberOperatorIds> {
+  const validateFunction = (value) =>
+    typeof value === "number" &&
+    !isNaN(parseFloat(`${value}`))
+}
+
+export const numberOperators: Record<NumberOperatorIds, NumberOperator> = {
+  eq: new NumberOperator("eq", (a, b) => b === a),
+  gt: new NumberOperator("gt", (a, b) => b > a),
+  gte: new NumberOperator("gte", (a, b) => b >= a),
+  lt: new NumberOperator("lt", (a, b) => b < a),
+  lte: new NumberOperator("lte", (a, b) => b <= a),
+} 
+      \end{lstlisting}
+
+      The \emph{Flyweight} design pattern mentioned in \autocite[pp. 195-206]{gamma-1995} is used here, by instantiating all the available operators beforehand, and using the instantiated object during a condition evaluation. For an even easier access to the operators, a \emph{flyweight factory} is also created. The \verb;OperatorFactory; will return the appropriate operator to be used based on the type and identifier passed. If the combination of type and identifier of an operator doesn't point into a specific operator, a \verb;NullishOperator; will be returned, which always return \verb;false; as its operation result. 
+      
+      \begin{lstlisting}[style=es6, caption={Operator factory (TypeScript)}]
+// fds/src/engine/operators/operatorFactory.ts
+export class OperatorFactory {
+  static readonly nullishOperator = new Operator("null", () => false)
+  private static readonly operatorMap = {
+    (*@\textcolor{black}{string}@*): stringOperators,
+    (*@\textcolor{black}{number}@*): numberOperators,
+    array: arrayOperators,
+    (*@\textcolor{black}{boolean}@*): booleanOperators,
+  }
+
+  static getOperator(type: ConditionType, operatorId: OperatorType): Operator {
+    const operatorGroup = this.operatorMap[type]
+    if (!operatorGroup) {
+      return this.nullishOperator
+    }
+
+    const operator = operatorGroup[operatorId]
+    if (!operator) {
+      return this.nullishOperator
+    }
+
+    return operator as Operator
+  }
+}
+      \end{lstlisting}
 
     \subsubsection{Evaluating a Rule} 
+      - [ ] Evalutator
+      - [ ] EvaluatorFactory, Abstract Factory pattern
+      - [ ] Evaluating a rule in VDEngine
+      
+      To evaluate a certain validation rule, the \verb;Evaluator; class is created. 
 
       \begin{lstlisting}[style=es6, caption={Rule evaluation in ValidationEngine (TypeScript)}]
 // fds/src/engine/validationEngine.ts
@@ -288,8 +381,6 @@ export class ValidationEngine<T> {
   }
 }
       \end{lstlisting}
-      
-      
 
   \subsection{Notification on Suspicious Cases}
 
