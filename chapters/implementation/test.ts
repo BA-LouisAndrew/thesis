@@ -74,3 +74,8 @@ export class ValidationEngine<T> {
 const validateFunction = (value) =>
   typeof value === "number" &&
   !isNaN(parseFloat(`${value}`))
+
+const operator = OperatorFactory.getOperator(
+  validationRule.type,
+  validationRule.operator,
+)

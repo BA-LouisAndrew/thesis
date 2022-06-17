@@ -239,49 +239,12 @@ export class ValidationEngine<T> {
       \end{lstlisting}
       
     \subsubsection{Operators}
-      - [ ] What
-      - [ ] Flyweight
-      - [ ] Example (number)?
 
       \verb;Operators; are special classes that define the operation of a certain condition during a validation process. Each \verb;Operator; is grouped by its type and has two main properties \verb;identifier;, and \verb;operateFunction;
       
-      The \verb;identifier; property of an operator refers to the operator's name, unique on its group of type. The \verb;identifier; attribute of an operator will be passed into the \verb;operator; attribute of a condition to describe the specific operator to be used in evaluating the particular condition. The \verb;operateFunction; attribute of an operator is a function that accepts two arguments, and returns a boolean value that indicates whether the operation is successful. An additional validation process is also implemented using the \verb;validateFunction; property to make sure that the value being passed into the \verb;operate; function of an operator is valid.
+      The \verb;identifier; property of an operator refers to the operator's name, unique on its group of type. The \verb;identifier; attribute of an operator will be passed into the \verb;operator; attribute of a condition to describe the specific operator to be used in evaluating the particular condition. The \verb;operateFunction; attribute of an operator is a function that accepts two arguments, and returns a boolean value that indicates whether the operation is successful. An additional validation process is also implemented using the \verb;validateFunction; property to make sure that the value being passed into the \verb;operate; function of an operator is valid. The \verb;identifier; and \verb;operateFunction; attributes of an operator are passed into the object constructor during its initialization, while the \verb;validateFunction; attribute of an operator is defined by each subclass of the operator, grouped by its type.  
       
-      \begin{lstlisting}[style=es6, caption={The Operator class (TypeScript)}]
-// fds/src/engine/operators/operator.ts
-type OperateFunction<T, V = T> = (value: T, receivedValue: V) => boolean
-export class Operator<T = any, V = T> {
-  private identifier: string
-  private operateFunction: OperateFunction<T, V>
-  protected validateFunction: (value: any) => boolean
-
-  constructor(identifier: IdentifierType, operateFunction: OperateFunction<T, V>) {
-    this.identifier = identifier
-    this.operateFunction = operateFunction
-  }
-
-  validate(value: any): boolean {
-    return this.validateFunction(value)
-  }
-
-  setValidateFunction(validateFunction: (value: any) => boolean) {
-    this.validateFunction = validateFunction
-    return this // Method chaining
-  }
-
-  operate(value: T, receivedValue: V): boolean {
-    const isValid = this.validate(value)
-    if (!isValid) {
-      return this.handleInvalidValue(value)
-    }
-
-    return this.operateFunction(value, receivedValue)
-  }
-}
-      \end{lstlisting}
-      
-      \begin{lstlisting}[style=es6, caption={NumberOperator Example (TypeScript)}]
-// fds/src/engine/operators/numberOperators
+      \begin{lstlisting}[style=es6, caption={NumberOperator example (TypeScript)}]
 export class NumberOperator extends Operator<number, NumberOperatorIds> {
   const validateFunction = (value) =>
     typeof value === "number" &&
@@ -298,89 +261,40 @@ export const numberOperators: Record<NumberOperatorIds, NumberOperator> = {
       \end{lstlisting}
 
       The \emph{Flyweight} design pattern mentioned in \autocite[pp. 195-206]{gamma-1995} is used here, by instantiating all the available operators beforehand, and using the instantiated object during a condition evaluation. For an even easier access to the operators, a \emph{flyweight factory} is also created. The \verb;OperatorFactory; will return the appropriate operator to be used based on the type and identifier passed. If the combination of type and identifier of an operator doesn't point into a specific operator, a \verb;NullishOperator; will be returned, which always return \verb;false; as its operation result. 
-      
-      \begin{lstlisting}[style=es6, caption={Operator factory (TypeScript)}]
-// fds/src/engine/operators/operatorFactory.ts
-export class OperatorFactory {
-  static readonly nullishOperator = new Operator("null", () => false)
-  private static readonly operatorMap = {
-    (*@\textcolor{black}{string}@*): stringOperators,
-    (*@\textcolor{black}{number}@*): numberOperators,
-    array: arrayOperators,
-    (*@\textcolor{black}{boolean}@*): booleanOperators,
-  }
-
-  static getOperator(type: ConditionType, operatorId: OperatorType): Operator {
-    const operatorGroup = this.operatorMap[type]
-    if (!operatorGroup) {
-      return this.nullishOperator
-    }
-
-    const operator = operatorGroup[operatorId]
-    if (!operator) {
-      return this.nullishOperator
-    }
-
-    return operator as Operator
-  }
-}
-      \end{lstlisting}
 
     \subsubsection{Evaluating a Rule} 
-      - [ ] Evalutator
-      - [ ] EvaluatorFactory, Abstract Factory pattern
-      - [ ] Evaluating a rule in VDEngine
       
-      To evaluate a certain validation rule, the \verb;Evaluator; class is created. 
+      To evaluate a certain validation rule, the \verb;Evaluator; class is created. The \verb;Evaluator; class is responsible in running an evaluation regarding a certain condition. An evaluator works together with the \verb;Operator; class in evaluating the conditions given. The specific operator to evaluate a condition is accessed via the \verb;OperatorFactory;. The \verb;Evaluator; class encapsulates the internal logic of evaluating a condition and running the operations defined by the particular condition. The \verb;Evaluator; class is also responsible in accessing the required data described by a JSONPath expression from the runtime information of a validation process. 
 
-      \begin{lstlisting}[style=es6, caption={Rule evaluation in ValidationEngine (TypeScript)}]
-// fds/src/engine/validationEngine.ts
-export class ValidationEngine<T> {
-  private async evaluateRule(
-    rule: ValidationRule,
-    data: T,
-  ): Promise<EvaluationResult> {
-    const { endpoint, retryStrategy, condition, name } = rule
-
-    const validationEvent = this.validation.events.find(
-      (event) => event.name === name,
-    )
-    
-    if (validationEvent) {
-      validationEvent.dateStarted = new Date().toISOString()
-      validationEvent.status = "RUNNING"
-      await this.pushToDatastore()
-    }
-
-    const { error, data: responseData } =
-      await Agent.fireRequest(rule, {
-        customer: data,
-        secrets: this.secrets,
-      })
-
-    if (error) {
-      return {
-        messages: [
-          `${(*@\textcolor{black}{endpoint}@*)} is not accessible.${
-            (*@\textcolor{black}{retryStrategy}@*)
-              ? ` (*@\textcolor{forestgreen}{Retries done:}@*) ${retryStrategy.limit}`
-              : ""
-          }`,
-          error.message,
-        ],
-        pass: false,
-      }
-    }
-
-    const evaluator = EvaluatorFactory.getEvaluator(condition)
-    return evaluator.evaluate({
-      response: responseData,
-      customer: data,
-      secrets: this.secrets,
-    })
-  }
-}
+      \begin{lstlisting}[style=es6, caption={The usage of OperatorFactory class in the Evaluator class (TypeScript)}]
+// Evaluate JSONPath expressions.
+const dataFromPath = this.accessDataFromPath(runtimeData, validationRule.path)
+const valueFromPath = this.accessDataFromPath(runtimeData, validationRule.value)
+        
+const operator = OperatorFactory.getOperator(
+  validationRule.type,
+  validationRule.operator,
+)
+const isEvaluationPassed = operator.operate(valueFromPath, dataFromPath)
       \end{lstlisting}
+      
+      As mentioned before, a condition can either be a single condition, or multiple conditions, wrapped inside an \verb;any; or \verb;all; attribute. The evaluation of a single condition is different from the evaluation of multiple conditions. To facilitate the different logic of evaluating conditions, two subclasses of the \verb;Evaluator; class is created. \verb;ConditionEvaluator; is responsible in evaluating a single condition, while the \verb;BooleanConditionEvaluator; is in charge in evaluating multiple conditions and handling the logic behind evaluating the \verb;any; and \verb;all; modifier. To simplify the instantiation of the suitable \verb;Evaluator; subclass, the \verb;EvaluatorFactory; class is created, following the \emph{Factory Method} design pattern described in \autocite[pp. 107-116]{gamma-1995}. 
+
+      \begin{lstlisting}[style=es6, caption={EvaluatorFactory usage in ValidationEngine class (TypeScript)}]
+const response = await Agent.fireRequest(rule, {
+  customer: customerData,
+  secrets: this.secrets
+})
+
+const evaluator = EvaluatorFactory.getEvaluator(condition)
+const evaluationResult = evaluator.evaluate({
+  response: response.responseData,
+  customer: customerData,
+  secrets: this.secrets
+})
+      \end{lstlisting}
+
+      As the evaluation result, an \verb;Evaluator; instance will return an object with the \verb;pass; attribute to determine whether the evaluation passed and an additional \verb;messages; attribute, which contains essential information regarding the evaluation (including the value of \verb;failMessage; attribute of a condition, if the evaluation fails). 
 
   \subsection{Notification on Suspicious Cases}
 
