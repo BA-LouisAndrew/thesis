@@ -1,6 +1,6 @@
 \section{View}
 
-  This chapter discusses the implementation of the features on the user interface described in \autoref{sub:design_view}. 
+  This chapter discusses the implementation of the features on the user interface described in \autoref{sub:design_view}.
 
   \subsection{Navigation}
   
@@ -20,14 +20,39 @@
 
     \begin{figure}[!ht]
      \includegraphics[width=\textwidth]{images/ss_navigation.jpeg}
-     \caption{Header to navigate the UI}
+     \caption{Screenshot of the header to navigate the UI}
     \end{figure}
 
   \subsection{Rule Management Form}
+  
+    The rule management form is a reusable form, can be used to both create a new and edit an existing validation rule. The rule management form displays all the attributes of a \verb;ValidationRule; model as a form field. 
+
+    \begin{figure}[!ht]
+      \includegraphics[width=\textwidth]{images/ss_sample_filled.jpeg}
+      \caption{Screenshot of the rule management form}
+    \end{figure}
 
     \subsubsection{Conditions Section}
 
+      The \textsc{Conditions} section is a component, used to add one more condition to a validation rule. The \textsc{Conditions} section renders the list of conditions provided in a card, containing form fields for each attribute of the particular condition. Each card represents a single form, which also contains validation on its fields. 
+      
+      As mentioned before, the available values for the \verb;operator; attribute of a condition depends on its \verb;type; attribute. To prevent an invalid condition being sent to the FDS, the \textsc{Operator} field is a select field, and its options are defined by the current value inputted on the \textsc{Type} field. The intention of the restriction is to make sure that the \verb;operator; chosen is always valid to the corresponding \verb;type; of the condition.
+
+      \begin{figure}[!ht]
+        \centering
+        \includegraphics[width=0.8\textwidth]{images/ss_condition_op.jpeg}
+        \caption{Screenshot of the "Operator" select field options, based on the current "Type" value}
+      \end{figure}
+      
+      If more than one condition is provided, a radio field is also rendered, so that the user can choose one of the provided modifier for the list of conditions (either \textbf{\emph{ALL}} or \textbf{\emph{ANY}}). 
+
+      A form validation is also implemented in the \textsc{Conditions} section. The validation not only make sure that all the required fields are filled, but also the value of the fields itself. For example, the validation will display an error message if the \textsc{Type} field is set to "Number", but the input value of the \textsc{Value} field is not a valid number. 
+
     \subsubsection{Dynamic Input}
+
+      
+
+    \subsubsection{Autocomplete Input}
 
   \subsection{Validation Form}
 
