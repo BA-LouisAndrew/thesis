@@ -38,6 +38,39 @@
       
       As mentioned before, the available values for the \verb;operator; attribute of a condition depends on its \verb;type; attribute. To prevent an invalid condition being sent to the FDS, the \textsc{Operator} field is a select field, and its options are defined by the current value inputted on the \textsc{Type} field. The intention of the restriction is to make sure that the \verb;operator; chosen is always valid to the corresponding \verb;type; of the condition.
 
+      \begin{lstlisting}[style=es6, caption={Function to get list of available operators based on type (TypeScript)}]
+const getAvailableOperators = (type: ConditionType) => {
+  switch (type) {
+    case "string":
+      return [
+        { label: "Equals", value: "eq" },
+        { label: "Starts with", value: "starts" },
+        { label: "Includes", value: "incl" },
+        { label: "Ends with", value: "ends" },
+      ]
+    case "number":
+      return [
+        { label: "Greater than", value: "gt" },
+        { label: "Greater than equals", value: "gte" },
+        { label: "Lesser than", value: "lt" },
+        { label: "Leser than equals", value: "lte" },
+        { label: "Equals", value: "eq" },
+      ]
+    case "array":
+      return [
+        { label: "Includes", value: "incl" },
+        { label: "Excludes", value: "excl" },
+        { label: "Number of items equals", value: "len" },
+        { label: "Is empty", value: "empty" },
+      ]
+    case "boolean":
+      return [{ label: "Equals", value: "eq" }]
+    default:
+      return []
+  }
+}
+      \end{lstlisting}
+
       \begin{figure}[!ht]
         \centering
         \includegraphics[width=0.8\textwidth]{images/ss_condition_op.jpeg}
@@ -48,11 +81,23 @@
 
       A form validation is also implemented in the \textsc{Conditions} section. The validation not only make sure that all the required fields are filled, but also the value of the fields itself. For example, the validation will display an error message if the \textsc{Type} field is set to "Number", but the input value of the \textsc{Value} field is not a valid number. 
 
-    \subsubsection{Dynamic Input}
-
-      
-
     \subsubsection{Autocomplete Input}
+
+    A JSONPath expression is a valid value for some attributes of a \verb;ValidationRule;, and it also might be needed to access the current runtime information during a validation process, such as the HTTP response from the external endpoint, runtime secrets and customer information. Unfortunately, it might be difficult to memorize the expressions needed to access certain values, and it might also confuse the user. 
+
+    \begin{figure}[!ht]
+      \centering
+      \includegraphics[width=0.5\textwidth]{images/ss_autocomplete.jpeg}
+      \caption{Screenshot of the autocomplete input usage}
+    \end{figure}
+
+    To solve this problem, an autocomplete input field is provided in certain fields where a JSONPath expression is used. User can then display a list of possible JSONPath expressions by prefixing an input field with "\$", and choosing one of the expressions listed. User can also extend the expression chosen. The autocomplete input is used in the following form fields:
+
+    \begin{itemize}
+      \item \textsc{Path} field on \textsc{Conditions} section
+      \item \textsc{Value} field on \textsc{Conditions} section
+      \item Value field of a dynamic input\footnote{Autocompletion on \emph{\$.response} is not available here.}
+    \end{itemize}
 
   \subsection{Validation Form}
 
