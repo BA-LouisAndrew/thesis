@@ -147,97 +147,54 @@ export class ValidationEngine<T> {
 }
       \end{lstlisting}
 
+    \subsubsection{Accessing Data by Evaluating JSONPath Expressions}
+      
+      To be able to access essential information stored in the current runtime scope a validation process, a JSONPath expression can be used in certain attributes of a validation rule. The provided runtime information of a validation process includes the customer information, runtime secrets and during a condition evaluation, the HTTP response from the external endpoint of the particular rule. 
+
+      The ability to access certain information from the runtime scope is needed when an HTTP request is made and during the evaluation of a condition. To evaluate a JSONPath expression, the \verb;jsonpath; library is used. 
+
+      \begin{lstlisting}[style=es6, caption={Accessing runtime information using JSONPath expression (TypeScript)}]
+import jp from "jsonpath"
+
+const accessDataFromPath = (runtimeData: any, expression: any) => {
+  if (typeof expression !== "string") {
+    return expression // A valid JSONPath expression is a string
+  }
+  
+  try {
+    const [dataFromPath] = jp.query(runtimeData, expression)
+    if (!dataFromPath) {
+      // Expression is valid, but the path doesn't point to a specific value
+      return expression 
+    }
+
+    return dataFromPath
+  } catch {
+    return expression // The expression is either not a valid JSONPath expression
+  }
+}
+      \end{lstlisting}
+
     \subsubsection{Making an HTTP Request to External Endpoints}
 
       A dedicated class (\verb;Agent;) is created to make an HTTP request to the external endpoint. The class will provide a layer of abstraction on top of the Got library that is being used to actually make the HTTP requests. 
       
-      The class will also help in setting the request body, request header as well as to change the variables on the \verb;endpoint; attribute with its corresponding values. The class follows the \emph{Singleton} design pattern described in \autocite[pp. 127-134]{gamma-1995}, as there might only one instance needed for the whole application. The class is also implemented using the dependency injection in mind, for an easier access to the underlying library during the testing phase. 
+      The class will also help in setting the request body, request header as well as to change the variables on the \verb;endpoint; attribute with its corresponding values. The class follows the \emph{Singleton} design pattern described in \autocite[pp. 127-134]{gamma-1995}, as there might only one instance needed for the whole application. The class is also implemented using the dependency injection in mind, for an easier access to the underlying library during the testing phase. The dependency injection is implemented by providing a \verb;context; object to the \verb;Agent; class beforehand. During runtime, the \verb;context; object contains a Got instance, used to make HTTP requests. In testing environment, the \verb;context; object contains a mocked Got instance.
 
-      \begin{lstlisting}[style=es6, caption={Agent class, to make HTTP requests to the external endpoints (TypeScript)}]
-// src/fds/engine/request/agent.ts
+      \begin{lstlisting}[style=es6, caption={Usage of the singleton pattern and dependency injection in Agent class (TypeScript)}]
 export class Agent {
   private static context: Context // Dependency injection
 
   private static get client() {
-    return Agent.context.client
+    return Agent.context.client // `client` object is a Got instance
   }
 
   static setClient(context: Context) {
     this.context = context
   }
-
-  static async fireRequest<DataType, ResponseType = string>(
-    rule: ValidationRule,
-    data: DataType,
-  ): Promise<FireRequestReturnType> {
-    const { method, retryStrategy } = rule
-
-    try {
-      const response = await this.client<ResponseType>(this.getUrl(rule, data), {
-        method: method as Method,
-        retry: retryStrategy || {},
-        headers: this.getHeader(rule, data),
-        json: this.getJSONBody(rule, data),
-      })
-
-      const { statusCode, statusMessage, body, rawBody, retryCount } = response
-
-      return {
-        error: null,
-        data: {
-          statusCode,
-          statusMessage,
-          rawBody,
-          retryCount,
-          body: this.parseResponseBody(body),
-        },
-      }
-    } catch (e) {
-      return {
-        error: {
-          message: e,
-        },
-        data: null,
-      }
-    }
-  }
 }
       \end{lstlisting}
 
-      The attributes returned by the request agent is specifically chosen, as returning the whole response object might not be beneficial. 
-      
-      As there might be dynamic values listed on the \verb;requestBody, requestHeader; or \verb;requestUrlParameter; attributes of a validation rule\footnote{A dynamic value is marked by providing a JSONPath expression as the value in the key-value pairs of the corresponding attribute.}, a helper function to query the associated attribute by evaluating the JSONPath expression provided is implemented within the \verb;Agent; class. 
-
-      \begin{lstlisting}[style=es6, caption={Accessing data on runtime (TypeScript)}]
-// fds/src/engine/request/agent.ts
-import jp from "jsonpath"
-
-export class ValidationEngine<T> {
-  private static accessDataFromPath([key, value]: [string, any], data: any) {
-    if (typeof value !== "string") {
-      return {
-        [key]: value,
-      }
-    }
-
-    const SEPARATOR = " "
-    const splitted = value.split(SEPARATOR)
-    return {
-      [key]: splitted
-        .map((chunk) => {
-          try {
-            const dataFromPath = jp.query(data, chunk)[0]
-            return dataFromPath ?? chunk
-          } catch {
-            return chunk
-          }
-        })
-        .join(SEPARATOR),
-    }
-  }
-}
-      \end{lstlisting}
-      
     \subsubsection{Operators}
 
       \verb;Operators; are special classes that define the operation of a certain condition during a validation process. Each \verb;Operator; is grouped by its type and has two main properties \verb;identifier;, and \verb;operateFunction;
@@ -297,6 +254,8 @@ const evaluationResult = evaluator.evaluate({
       As the evaluation result, an \verb;Evaluator; instance will return an object with the \verb;pass; attribute to determine whether the evaluation passed and an additional \verb;messages; attribute, which contains essential information regarding the evaluation (including the value of \verb;failMessage; attribute of a condition, if the evaluation fails). 
 
   \subsection{Notification on Suspicious Cases}
+      
+    To enable the possibility to notify the concerned parties during certain events, the FDS publishes 
 
   \subsection{Validation Rules Management}
 
