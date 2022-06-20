@@ -13,3 +13,4 @@ Prisma
 Subramoni
 AMQP
 fanout
+WebSocket

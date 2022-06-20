@@ -337,6 +337,52 @@ export class Database {
     Caching can also be enabled in the \verb;Database; class, by providing a \verb;DataStore; instance to the static \verb;setCache; method. By enabling caching, the values retrieved and updated can be cached to provide a faster response time. 
 
   \subsection{Validation Real Time Progress}
+  
+    The \emph{Observer} \autocite[pp. 293-303]{gamma-1995} will also be implemented here to provide the functionality of a real time progress update of a certain validation process. An \verb;EventEmitter; is used here to subscribe and publish certain events during a validation process. The FDS publishes a \verb;validation_event:update; event whenever a rule evaluation is done, containing the validation ID on the name of the event and sending the current validation result on the payload. When the particular validation process is done, the FDS also publishes a \verb;validation_done; event, containing the validation ID on the name of the event, as an indicator that the validation process is completed and no further events with the attached validation ID will be sent. 
+
+    \begin{lstlisting}[style=es6, caption={Publishing events to the EventEmitter on certain validation events (TypeScript)}]
+// Published when a rule evaluation is completed
+EventBus.emit(
+  `${EventBus.EVENTS.VALIDATION_EVENT_UPDATE}--${validationId}`,
+  this.validationResult,
+)
+// Published when a validation process is completed
+EventBus.emit(`${EventBus.EVENTS.VALIDATION_DONE}--${this.validation.validationId}`)
+    \end{lstlisting}
+    
+    To continually provide a client with the latest progress of a validation event without having to provide a dedicated instance of a WebSocket server, the Server-Sent Events (SSE)\autocite{rfc8895} technology is used. The SSE enables the possibility to send new data to the client multiple times by only opening a single HTTP connection. 
+    
+    The difference between SSE and the WebSocket protocol, is that SSE only enables a one-way communication from server to client, meaning the client cannot continually send any new messages to the server. SSE is enough for the use case of the project, as the client doesn't need to send new data to the client to display real time progress of a validation process.
+
+    The SSE is implemented by setting the \verb;Content-Type; header of the HTTP response to \verb;text/event-stream; and setting the \verb;Connection; header to \verb;keep-alive;. The \verb;Connection: keep-alive; header is useful to keep the connection between client and server open, while the \verb;Content-Type: text/event-stream; header specifies the type of message sent to the client. A message written to the event stream is prefixed with a \verb;"data: "; prefix. 
+
+    After the header of the response is set, the FDS will push a new message to the stream whenever there's a new event emitted on the \verb;EventEmitter; with the corresponding validation ID. 
+
+    \begin{lstlisting}[style=es6, caption={Writing to SSE stream when certain events are published (TypeScript)}]
+static async subscribeToValidationProgress (
+  validationId: string,
+  responseObject: Response,
+) {
+  const updateEvent = `${EventBus.EVENTS.VALIDATION_EVENT_UPDATE}--${validationId}`
+  const closeEvent = `${EventBus.EVENTS.VALIDATION_DONE}--${validationId}`
+
+  EventBus.once(closeEvent, () => {
+    closeConnection()
+  })
+
+  EventBus.on(
+    updateEvent,
+    (validationResult: Validation) => {
+      writeToStream(validationResult)
+    },
+  )
+
+  const writeToStream = (data: any) =>
+    responseObject.write(
+      `data: ${JSON.stringify(data)}\n\n`,
+    )
+}
+    \end{lstlisting}
 
   \subsection{Runtime Secrets}
     \label{sub:secrets} 

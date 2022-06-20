@@ -80,6 +80,39 @@ const operator = OperatorFactory.getOperator(
   validationRule.operator,
 )
 
-await channel.assertExchange(Notification.EXCHANGE, "fanout", {
-  durable: false 
-}) 
+await channel.assertExchange(
+  Notification.EXCHANGE,
+  "fanout",
+  {
+    durable: false,
+  },
+)
+
+EventBus.emit(
+  `${EventBus.EVENTS.VALIDATION_EVENT_UPDATE}--${validationId}`,
+  this.validationResult,
+)
+
+const subscribeToValidationProgress = (
+  validationId: string,
+  responseObject: Response,
+) => {
+  const updateEvent = `${EventBus.EVENTS.VALIDATION_EVENT_UPDATE}--${validationId}`
+  const closeEvent = `${EventBus.EVENTS.VALIDATION_DONE}--${validationId}`
+
+  EventBus.once(closeEvent, () => {
+    closeConnection()
+  })
+
+  EventBus.on(
+    updateEvent,
+    (validationResult: Validation) => {
+      writeToStream(validationResult)
+    },
+  )
+
+  const writeToStream = (data: any) =>
+    responseObject.write(
+      `data: ${JSON.stringify(data)}\n\n`,
+    )
+}
