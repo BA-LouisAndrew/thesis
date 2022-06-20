@@ -245,7 +245,7 @@ const response = await Agent.fireRequest(rule, {
 
 const evaluator = EvaluatorFactory.getEvaluator(condition)
 const evaluationResult = evaluator.evaluate({
-  response: response.responseData,
+  response: response.data,
   customer: customerData,
   secrets: this.secrets
 })
@@ -255,7 +255,62 @@ const evaluationResult = evaluator.evaluate({
 
   \subsection{Notification on Suspicious Cases}
       
-    To enable the possibility to notify the concerned parties during certain events, the FDS publishes 
+    In \autocite{amqp}, Subramoni et al. describes an exchange as a routing mediator that copies and send the message sent by a message publisher to zero or more message queues. The FDS acts as the message publisher of the system and publishes a message to a pre-defined exchange on every completion of a validation process. 
+    An interface to access and publish a message to the exchange is implemented using the \emph{Singleton} \autocite[pp. 127-134]{gamma-1995} design pattern, to only have a single connection to the RabbitMQ, since an AMQP connection are designed to be long-lived and opening a new connection to a RabbitMQ instance is an expensive operation. The type of exchange used in the system is the \emph{fanout} exchange. When a message is published to a fanout exchange, the message will be routed to all the queues bound to the exchange, which is ideal for the use case of the current notification system. 
+
+    \begin{lstlisting}[style=es6, caption={Openning a connection to RabbitMQ instance (TypeScript)}]
+import { Channel, connect } from "amqplib"
+export class Notification {
+  private static channel: Channel | null = null
+
+  async init(url: string) {
+    try {
+      const connection = await connect(url)
+      const channel = await connection.createChannel() // Create a new channel
+      // Assert whether the exchange exists, create new if it doesn't exist
+      await channel.assertExchange("FDS", "fanout", {
+        durable: true 
+      }) 
+
+      Notification.channel = channel
+    } catch (err) {
+      console.error(err)
+    }
+  }
+}
+    \end{lstlisting}
+    
+    The \verb;Notification; class also provides the \verb;publish; static method, which can be used to publish a new message to the exchange if the connection is opened successfully. The \verb;ValidationEngine; class calls the \verb;publish; method every time a validation process is completed, publishing the validation result of the particular validation process to the exchange.
+
+    \begin{lstlisting}[style=es6, caption={Publishing a validation result to the RabbitMQ exchange (TypeScript)}]
+Notification.publish(JSON.stringify(this.validationResult))
+    \end{lstlisting}
+    
+    There can be many consumers consuming the messages published to the exchange, and run certain actions regarding the internal logic of the system itself. The message consumer can, for example email the concerned parties if the fraud score exceeds a certain threshold or even automatically block a customer if a specific rule evaluation failed. To consume a message published to the exchange, a connection to the RabbitMQ instance needs to be opened, and a dedicated message queue (ideally created only for internal usage of the consumer itself) is needed. 
+
+    \begin{lstlisting}[style=es6, caption={Consuming a message published to the RabbitMQ exchange (TypeScript)}]
+  import { connect } from "amqplib"
+export const start = async (url: string) => {
+  try {
+    const connection = await connect(url)
+    const channel = await connection.createChannel()
+    await channel.assertExchange("FDS", "fanout", { durable: true })
+    // Create an exclusive queue (created only for internal usage)
+    const { queue } = await channel.assertQueue("", { exclusive: true })
+
+    // Bind the exclusive queue to the exchange
+    channel.bindQueue(queue, "FDS", "") 
+
+    await channel.consume(queue, async (message: string) => {
+      // Do actions
+    }, {
+      noAck: true
+    })
+  } catch (err) {
+    console.error(err)
+  }
+}
+    \end{lstlisting}
 
   \subsection{Validation Rules Management}
 

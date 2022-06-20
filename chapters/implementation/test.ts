@@ -79,3 +79,7 @@ const operator = OperatorFactory.getOperator(
   validationRule.type,
   validationRule.operator,
 )
+
+await channel.assertExchange(Notification.EXCHANGE, "fanout", {
+  durable: false 
+}) 

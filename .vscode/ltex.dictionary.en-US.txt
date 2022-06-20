@@ -10,3 +10,6 @@ tsoa
 compariosn
 CloudAMQP
 Prisma
+Subramoni
+AMQP
+fanout
