@@ -38,7 +38,7 @@
       
       As mentioned before, the available values for the \verb;operator; attribute of a condition depends on its \verb;type; attribute. To prevent an invalid condition being sent to the FDS, the \textsc{Operator} field is a select field, and its options are defined by the current value inputted on the \textsc{Type} field. The intention of the restriction is to make sure that the \verb;operator; chosen is always valid to the corresponding \verb;type; of the condition.
 
-      \begin{lstlisting}[style=es6, caption={Function to get list of available operators based on type (TypeScript)}]
+      \begin{lstlisting}[style=es6, caption={Function to get list of available operators based on a condition's type attribute (TypeScript)}]
 const getAvailableOperators = (type: ConditionType) => {
   switch (type) {
     case "string":
@@ -100,6 +100,30 @@ const getAvailableOperators = (type: ConditionType) => {
     \end{itemize}
 
   \subsection{Validation Form}
+
+    The validation form is a simple form similar to a customer registration form, specifically to mimic a new customer registration and to run a validation process directly after a new registration. Form validation is also implemented in the validation form to make sure that the customer information sent to the FDS is complete. A set of sample customers with specific characteristic is created to provide the functionality of pre-filling the validation form. 
+
+    \begin{figure}[!ht]
+      \includegraphics[width=\textwidth]{images/ss_validation_form.jpeg}
+      \caption{Screenshot of the validation form}
+    \end{figure}
+
+    \begin{lstlisting}[style=es6, caption={Prefilling form values with a sample customer data (TypeScript)}]
+const applySampleCustomer = (sampleCustomer: Customer) => {
+  Object.assign(formValues, {
+    ...sampleCustomer,
+  })
+}
+    \end{lstlisting}
+
+    When the user filled the fields properly and clicked the \textsc{Validate customer} button, the UI sends an HTTP POST request to the FDS with the customer data as the payload to schedule a new validation process. As the FDS returns an ID of the validation process, the UI will then redirect the user to the validation progress page, showing the validation progress in real time. 
+
+    \begin{lstlisting}[style=es6, caption={ (TypeScript)}]
+const { data } = await createNewValidation(customer)
+if (data.validationId) {
+  router.push(`/validations/${data.validationId}`)
+}
+    \end{lstlisting}
 
   \subsection{Validation Progress}
   
