@@ -1,0 +1,7 @@
+{"rule":"EN_A_VS_AN","sentence":"^\\QDuring evaluation of this specific condition, the \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q operator will be used by an \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q class\\E$"}
+{"rule":"EN_A_VS_AN","sentence":"^\\QDuring the validation process, an \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q instance with the \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
+{"rule":"EN_A_VS_AN","sentence":"^\\QDuring evaluation of this specific condition, the \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q operator will be used by an \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q class, and\\E$"}
+{"rule":"EN_A_VS_AN","sentence":"^\\QAs mentioned before, a condition can either be a single condition, or multiple conditions, wrapped inside an \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q or \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q attribute.\\E$"}
+{"rule":"EN_A_VS_AN","sentence":"^\\QAs the evaluation result, an \\E(?:Dummy|Ina|Jimmy-)[0-9]+$"}
+{"rule":"EN_A_VS_AN","sentence":"^\\QAs the evaluation result, an \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q instance will\\E$"}
+{"rule":"EN_A_VS_AN","sentence":"^\\QAn \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q is used here to subscribe and publish certain events during a validation process.\\E$"}

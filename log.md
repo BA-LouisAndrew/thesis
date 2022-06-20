@@ -1,5 +1,13 @@
 # DevLog
 
+## 17.06.22
+- Alright, it's definitely too much.. Going to review and shorten the code listings after the implementation section is done
+- Add content (minimal code snippets) on `Evaluator` and `Operator`
+
+## 16.06.22
+- Motivation is getting low
+- Am I putting too much code on the doc?
+
 ## 08-12.06.22
 - Worked on conception, haven't been writing a lot of logs lately, gonna start again today!
 - Created preview page and upload to gh-pages
