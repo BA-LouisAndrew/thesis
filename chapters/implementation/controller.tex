@@ -4,73 +4,9 @@
 
   \subsection{Customer Validation on a Registration Event}
 
-    An HTTP endpoint will be implemented to provide the possibility to schedule a validation process as soon as a new customer is registered. The endpoint should accept the customer information on the request body and return validation ID and additional information of the validation process as a response. Listed below is the code snippet of the HTTP controller of the endpoint to schedule a validation process:
-
-    \begin{lstlisting}[style=es6, caption={HTTP controller of an endpoint to schedule a validation process (TypeScript)}]
-// fds/src/routes/validation/validationController.ts
-
-// Picks the `validationId` and `additionalInfo` attributes from `Validation` 
-type ValidationSchedule = Pick<Validation, "validationId" | "additionalInfo"> 
-     
-@Route("validate")
-@Tags("Validation")
-export class ValidationController extends Controller {
-  @SuccessResponse(201, "Validation started")
-  @Response<ValidationErrorJSON>(422, "Validation Failed")
-  @Response<WentWrong>(400, "Bad Request")
-  @Post()
-  public async validateCustomer(
-   @Body() requestBody: Customer
-  ): Promise<ValidationSchedule | WentWrong> {
-    const result = await ValidationService.scheduleRulesetValidation(requestBody)
-    const { data, error } = result
-
-    if (error) {
-      this.setStatus(400)
-      return {
-        message: error.message,
-        details: error.details || "",
-      }
-    }
-
-    return data
-  }
-} 
-    \end{lstlisting}
+    An HTTP endpoint will be implemented to provide the possibility to schedule a validation process as soon as a new customer is registered. The endpoint should accept the customer information on the request body and return validation ID and additional information of the validation process as a response. 
     
-    The HTTP controller is intentionally kept as simple as possible. The logic behind the process to schedule a validation is done by the \verb;ValidationService; and \verb;ValidationEngine; (discussed in \autoref{sub:process}). The \verb;ValidationService; is responsible in this particular case to get the lists of existing validation rules and runtime secrets (discussed in \autoref{sub:secrets}), then creating a new instance of \verb;ValidationEngine; as well as scheduling a new validation process. 
-
-    \begin{lstlisting}[style=es6, caption={ValidationService schedule validation implementation (TypeScript)}]
-// fds/src/routes/validation/validationService.ts
-
-export class ValidationService {
-  static async scheduleRulesetValidation(
-    customer: Customer
-  ): Promise<ApiResponse<ValidationSchedule>> {
-    const { data: ruleset, error } = await RulesService.listRules()
-    const secrets = await SecretsService.listSecrets()
-    if (error) {
-      return {
-        data: null,
-        error,
-      }
-    }
-
-    const { validationId, additionalInfo } = await new ValidationEngine<Customer>()
-      .setRuleset(ruleset)
-      .setSecrets(secrets)
-      .scheduleRulesetValidation(customer)
-
-    return {
-      data: {
-        validationId,
-        additionalInfo,
-      },
-      error: null,
-    }
-  }
-}
-    \end{lstlisting}
+    The HTTP controller is intentionally kept as simple as possible. The logic behind the process to schedule a validation is done by the \verb;ValidationService; and \verb;ValidationEngine; (discussed in \autoref{sub:process}). The \verb;ValidationService; is responsible in this particular case to get the lists of existing validation rules and runtime secrets, then creating a new instance of \verb;ValidationEngine; as well as scheduling a new validation process. 
 
   \subsection{Validation Process}
     \label{sub:process}
@@ -87,8 +23,6 @@ export class ValidationService {
         \item At the end of the iteration, the list size should equal to the amount of available\footnote{\emph{Not skipped.}} validation rules
         \item The resulting fraud score is the sum of the scores in the list, divided by the number of available validation rules
       \end{itemize}
-      
-      In summary, the flow of a validation process will be represented by the flow diagram below:
 
       \begin{figure}[!ht]
         \centering
@@ -97,10 +31,9 @@ export class ValidationService {
         \label{fig:flow_validation}
       \end{figure}
       
-      The flow listed above will be executed by creating a \verb;ValidationEngine; instance and calling a public \verb;secheduleRulesetValidation; method. Before running a validation process, the list of validation rules as well as runtime secrets should be provided to the engine. The \verb;ValidationEngine; class uses method chaining\footnote{\emph{Method chaining} is a method to provide the possibility of invoking multiple method calls of an object without having to store an intermediary result in an additional variable.} as well as the \emph{Builder} design pattern discussed in \autocite[pp. 97-106]{gamma-1995} for its construction, to make the public API of a validation engine as simple as possible.
+      The flow listed above will be executed by creating a \verb;ValidationEngine; instance and calling a public \verb;secheduleRulesetValidation; method. Before running a validation process, the list of validation rules as well as runtime secrets\footnote{Runtime secrets are used to store confidential information such as API keys.} should be provided to the engine. The \verb;ValidationEngine; class uses method chaining\footnote{\emph{Method chaining} is a way to provide the possibility of invoking multiple method calls of an object without having to store an intermediary result in an additional variable.} as well as the \emph{Builder} design pattern discussed in \autocite[pp. 97-106]{gamma-1995} for its construction, to make the public API of a validation engine as simple as possible.
 
-      \begin{lstlisting}[style=es6, caption={ValidationEngine class and the scheduleRulesetValidation method (TypeScript)}]
-// fds/src/engine/valdiationEngine.ts
+      \begin{lstlisting}[style=es6, caption={ValidationEngine class builder pattern using method chaining (TypeScript)}]
 export class ValidationEngine<T> {
   private secrets: GenericObject = {}
   private ruleset: ValidationRule[] = []
@@ -113,36 +46,6 @@ export class ValidationEngine<T> {
   setRuleset(ruleset: ValidationRule[]) {
     this.ruleset = [...ruleset.sort((a, b) => b.priority - a.priority)]
     return this
-  }
-
-  async scheduleRulesetValidation(data: T): Promise<Validation<T>> {
-    if (this.ruleset.length === 0) {
-      throw new Error("Ruleset is not set")
-    }
-
-    await this.constructValidationObject(data) // Construct a validation result
-    this.validateRuleset(data)
-
-    return this.validationResult
-  }
-
-  async validateRuleset(data: T): Promise<Validation<T>> {
-    if (this.ruleset.length === 0) {
-      throw new Error("Ruleset is not set")
-    }
-
-    if (!this.validation) {
-      await this.constructValidationObject(data)
-    }
-
-    for await (const rule of this.ruleset.filter(({ skip }) => !skip)) {
-      const evaluationResult = await this.evaluateRule(rule, data)
-      await this.reviewEvaluationResult(evaluationResult, rule)
-    }
-
-    await this.afterValidation()
-
-    return this.validationResult
   }
 }
       \end{lstlisting}
@@ -288,6 +191,7 @@ Notification.publish(JSON.stringify(this.validationResult))
     
     There can be many consumers consuming the messages published to the exchange, and run certain actions regarding the internal logic of the system itself. The message consumer can, for example email the concerned parties if the fraud score exceeds a certain threshold or even automatically block a customer if a specific rule evaluation failed. To consume a message published to the exchange, a connection to the RabbitMQ instance needs to be opened, and a dedicated message queue (ideally created only for internal usage of the consumer itself) is needed. 
 
+    \newpage
     \begin{lstlisting}[style=es6, caption={Consuming a message published to the RabbitMQ exchange (TypeScript)}]
 import { connect } from "amqplib"
 export const start = async (url: string) => {
@@ -312,29 +216,11 @@ export const start = async (url: string) => {
 }
     \end{lstlisting}
 
-  \subsection{Validation Rules Management}
+  \subsection{Database Connection}
   
-    The management of validation rules are done via the ORM (Prisma). To be able to use the ORM, a connection to the database needs to be created beforehand. The \emph{Singleton} \autocite[pp. 127-134]{gamma-1995} design pattern is also used here to make sure, that only a single connection to the database is created. \emph{Dependency injection} is also used here to be able to provide a mocked Prisma instance during testing. 
+    To manage the validation rules and runtime secrets, a database connection to modify the database entries via the ORM (Prisma) is required. The \emph{Singleton} \autocite[pp. 127-134]{gamma-1995} design pattern is also used here to make sure, that only a single connection to the database is created. \emph{Dependency injection} is also used here to be able to provide a mocked Prisma instance during testing. 
 
-    \begin{lstlisting}[style=es6, caption={ (TypeScript)}]
-export class Database {
-  private static context: Context
-
-  private static get prisma(): PrismaClient {
-    return this.context.prisma
-  }
-
-  constructor(context: Context) {
-    Database.context = context
-  }
-
-  async init() {
-    await Database.prisma.$connect()
-  }
-}
-    \end{lstlisting}
-
-    Caching can also be enabled in the \verb;Database; class, by providing a \verb;DataStore; instance to the static \verb;setCache; method. By enabling caching, the values retrieved and updated can be cached to provide a faster response time. 
+    Caching can also be enabled in the \verb;Database; class, by providing a \verb;DataStore; instance to the static \verb;setCache; method. By enabling caching, the values retrieved and updated can be cached to provide a faster response time\footnote{Runtime secrets are not cached.}. 
 
   \subsection{Validation Real Time Progress}
   
@@ -383,9 +269,4 @@ static async subscribeToValidationProgress (
     )
 }
     \end{lstlisting}
-
-  \subsection{Runtime Secrets}
-    \label{sub:secrets} 
-
-  \subsection{Error Handling}
 
