@@ -289,7 +289,7 @@ Notification.publish(JSON.stringify(this.validationResult))
     There can be many consumers consuming the messages published to the exchange, and run certain actions regarding the internal logic of the system itself. The message consumer can, for example email the concerned parties if the fraud score exceeds a certain threshold or even automatically block a customer if a specific rule evaluation failed. To consume a message published to the exchange, a connection to the RabbitMQ instance needs to be opened, and a dedicated message queue (ideally created only for internal usage of the consumer itself) is needed. 
 
     \begin{lstlisting}[style=es6, caption={Consuming a message published to the RabbitMQ exchange (TypeScript)}]
-  import { connect } from "amqplib"
+import { connect } from "amqplib"
 export const start = async (url: string) => {
   try {
     const connection = await connect(url)
@@ -313,6 +313,28 @@ export const start = async (url: string) => {
     \end{lstlisting}
 
   \subsection{Validation Rules Management}
+  
+    The management of validation rules are done via the ORM (Prisma). To be able to use the ORM, a connection to the database needs to be created beforehand. The \emph{Singleton} \autocite[pp. 127-134]{gamma-1995} design pattern is also used here to make sure, that only a single connection to the database is created. \emph{Dependency injection} is also used here to be able to provide a mocked Prisma instance during testing. 
+
+    \begin{lstlisting}[style=es6, caption={ (TypeScript)}]
+export class Database {
+  private static context: Context
+
+  private static get prisma(): PrismaClient {
+    return this.context.prisma
+  }
+
+  constructor(context: Context) {
+    Database.context = context
+  }
+
+  async init() {
+    await Database.prisma.$connect()
+  }
+}
+    \end{lstlisting}
+
+    Caching can also be enabled in the \verb;Database; class, by providing a \verb;DataStore; instance to the static \verb;setCache; method. By enabling caching, the values retrieved and updated can be cached to provide a faster response time. 
 
   \subsection{Validation Real Time Progress}
 
