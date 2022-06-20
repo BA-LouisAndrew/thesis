@@ -1,1 +1,36 @@
 \section{View}
+
+  This chapter discusses the implementation of the features on the user interface described in \autoref{sub:design_view}. 
+
+  \subsection{Navigation}
+  
+    The user interface contains functionalities for several use cases, merged into a single web application. In a web application, routing plays a key role in determining what to show the user based on the URL address entered on the browser. Specifically in this case, routing can help in categorizing the current context of the application that consists of several views for different use cases. The following routes are implemented in the UI:
+
+    \begin{itemize}
+     \item Home page (path: \verb;/;)
+     \item Create a new rule (path: \verb;/rules/new;)
+     \item Edit a rule (path: \verb;/rules/<ruleName>;)\footnote{\emph{<ruleName>} refers to a dynamic value of a rule's name. Please take a look into \url{https://router.vuejs.org/guide/essentials/dynamic-matching.html} for more information.}
+     \item List of rules (path: \verb;/rules;)
+     \item Create a new validation (path: \verb;/validations/create;)
+     \item See validation progress for specific validation ID (path: \verb;/validations/:validationId;)
+     \item List of validations (path: \verb;/validations;)
+    \end{itemize}
+    
+    To help the user in navigating the UI, a header is created and displayed on every page of the application. The header includes three buttons (\textsc{Home, Rules} and \textsc{Validations}), that links the user to the corresponding view of the application. 
+
+    \begin{figure}[!ht]
+     \includegraphics[width=\textwidth]{images/ss_navigation.jpeg}
+     \caption{Header to navigate the UI}
+    \end{figure}
+
+  \subsection{Rule Management Form}
+
+    \subsubsection{Conditions Section}
+
+    \subsubsection{Dynamic Input}
+
+  \subsection{Validation Form}
+
+  \subsection{Validation Progress}
+  
+  \subsection{Rule List and Validation List}
