@@ -26,7 +26,16 @@
 \newtheorem{algorithmus}{Algorithmus} 
 \newenvironment{beweis}{\begin{proof}[Beweis]}{\end{proof}}
 \usepackage[hyphens]{url}
+
 \usepackage{hyperref}
+
+% Autoref redefinitions, validate!
+\addto\extrasenglish{
+  \renewcommand{\chapterautorefname}{main chapter}
+  \renewcommand{\sectionautorefname}{chapter}
+  \renewcommand{\subsectionautorefname}{subchapter}
+  \renewcommand{\subsubsectionautorefname}{section}
+}
 
 \usepackage[backend=bibtex, style=numeric]{biblatex}
 \addbibresource{template.bib}

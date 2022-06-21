@@ -1,8 +1,10 @@
 \section{Model}
+  \label{impl_model}
 
 In this chapter, the specific implementation of the models described in \autoref{subsection:model} will be discussed. 
 
   \subsection{Validation Rule}
+    \label{impl_model:rule}
 
     The subsection describes the implementation of the \verb;ValidationRule; model as a TypeScript interface and its usage with the ORM library used in the FDS project. 
 
@@ -46,6 +48,8 @@ type RetryStrategy = {
       \end{lstlisting}
  
     \subsubsection{Retry Strategy}
+      \label{impl_model:rule__retry}
+
       The \verb;retryStrategy; attribute of the validation rule model is very specific to the implementation of the FDS. The FDS is using a library called \emph{Got}\footnote{\emph{Got} is a Node.JS library to make HTTP requests. GitHub repository: \url{https://github.com/sindresorhus/got}.} to make HTTP requests to the external endpoints. Got provides the functionality to retry a failed HTTP request out of the box\footnote{For more information on Got's retry options, please refer to \url{https://github.com/sindresorhus/got/blob/main/documentation/7-retry.md}.}.
 
       The \verb;retryStrategy; attribute of a validation rule is a subset of the retry options provided by Got's retry API, and will be passed to the Got instance when the HTTP request is made for the corresponding rule evaluation. 

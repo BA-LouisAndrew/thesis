@@ -24,7 +24,7 @@
       \item Request body
     \end{itemize}
 
-    As the FDS interacts with external endpoints, there is no guarantee that the external endpoint will always be accessible. An additional attribute to specify and configure a retry strategy in such cases can be useful. However, a retry strategy can be really specific to its implementation and therefore will be discussed in \textbf{TODO: Add retry strategy implementation}.
+    As the FDS interacts with external endpoints, there is no guarantee that the external endpoint will always be accessible. An additional attribute to specify and configure a retry strategy in such cases can be useful. However, a retry strategy can be really specific to its implementation and therefore will be discussed in \autoref{impl_model:rule__retry}.
 
     An additional \emph{priority} attribute is also provided to enable the possibility to run rule validations according to its priority order.
 
@@ -34,7 +34,7 @@
       \label{fig:uml_validation_rule}
     \end{figure}
     
-    The \emph{condition} attribute plays an important role for a validation rule, as it defines how the response returned by the external endpoint should be structure to pass a rule evaluation. It is intended to design the condition attribute to be robust and configurable. The \emph{path} of a condition defines a JSONPath\autocite{Friesen2019} expression to access information available of the current validation scope, such as customer information or response returned by the external endpoint. The \emph{type} attribute of a condition determines the type of the attribute accessed by the \emph{path} attribute. The \emph{type} attribute determines which type of operators are available to use\footnote{For example: a condition with \emph{type} "string" cannot use the "incl" \emph{operator}, because the "incl" \emph{operator} is only available for "array" \emph{type}.}. The \emph{operator} attribute refers to a name of operator to be used to evaluate the condition (for example: "eq", "incl"). The available operator names are predefined and restricted to the condition's type attribute. More information regarding operators will be discussed in \textbf{TODO: Add operator implementation}. The \emph{failMessage} attribute of a condition refers to a message that is going to be appended to the validation result's \emph{messages} attribute after a validation is completed.
+    The \emph{condition} attribute plays an important role for a validation rule, as it defines how the response returned by the external endpoint should be structure to pass a rule evaluation. It is intended to design the condition attribute to be robust and configurable. The \emph{path} of a condition defines a JSONPath\autocite{Friesen2019} expression to access information available of the current validation scope, such as customer information or response returned by the external endpoint. The \emph{type} attribute of a condition determines the type of the attribute accessed by the \emph{path} attribute. The \emph{type} attribute determines which type of operators are available to use\footnote{For example: a condition with \emph{type} "string" cannot use the "incl" \emph{operator}, because the "incl" \emph{operator} is only available for "array" \emph{type}.}. The \emph{operator} attribute refers to a name of operator to be used to evaluate the condition (for example: "eq", "incl"). The available operator names are predefined and restricted to the condition's type attribute. More information regarding operators will be discussed in \autoref{impl_cl:op}. The \emph{failMessage} attribute of a condition refers to a message that is going to be appended to the validation result's \emph{messages} attribute after a validation is completed.
 
     \begin{lstlisting}[caption={Validation rule example (JSON)}, language=json]
 {
@@ -107,7 +107,7 @@
 
   \subsubsection{Validation Result}
 
-    A validation result is the result of a validation process. A validation result contains a resulting fraud score, which is the probability of a certain customer being a fraud. The algorithm to calculate the fraud score will be discussed as part of the \textbf{TODO: Link implementation}.
+    A validation result is the result of a validation process. A validation result contains a resulting fraud score, which is the probability of a certain customer being a fraud. The algorithm to calculate the fraud score will be discussed as part of the \autoref{impl_cl:flow}.
     By evaluating the sequences listed on \autoref{fig:regis-sequence} and \autoref{fig:notif-sequence}, the following attributes are needed:
 
     \begin{itemize}
@@ -115,9 +115,9 @@
       \item A fraud score 
     \end{itemize}
 
-    Furthermore, information regarding the total checks, runned checks, and additional information that contains the start and end date of the validation process as well as the customer information used for the validation are essential. The customer information is generic, and the system should be able to do a validation process regardless of its structure. The validation result should also return a list of validation rule names, whose evaluations are skipped due to its \emph{skip} attribute being set to \emph{true}.
+    Furthermore, information regarding the total checks, run checks, and additional information that contains the start and end date of the validation process as well as the customer information used for the validation are essential. The customer information is generic, and the system should be able to do a validation process regardless of its structure. The validation result should also return a list of validation rule names, whose evaluations are skipped due to its \emph{skip} attribute being set to \emph{true}.
 
-    Even though the resulting fraud score determines the probability of a customer being a fraud, it is also important to further analyze the actual evaluation result of each validation rule. For example, a certain action can be run if the evaluation of a specific rule failed or the information regarding the rule evaluations can also be used to display the current progress of a validation process (implementation of this specific functionality will be discussed more in \textbf{TODO: cite to implementation}). 
+    Even though the resulting fraud score determines the probability of a customer being a fraud, it is also important to further analyze the actual evaluation result of each validation rule. For example, a certain action can be run if the evaluation of a specific rule failed or the information regarding the rule evaluations can also be used to display the current progress of a validation process (implementation of this specific functionality will be discussed more in \autoref{impl_sse}). 
 
     To provide such information on a validation result, the \emph{events} attribute will be introduced, which refers to rule evaluation events within a validation process. A rule evaluation event should contain the following attributes:
 

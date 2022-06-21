@@ -14,6 +14,7 @@
     The subsection gives a detailed explanation on how a validation process is structured, and the important components of the engine that runs a validation process. 
 
     \subsubsection{Validation Process Flow}
+      \label{impl_cl:flow}
     
       A validation process is started by iterating through a list of validation rules, making an HTTP request to the external endpoint listed on each rule and evaluating its response in comparison to the conditions attached on the rule. If the HTTP response from the external matches the conditions of the rule, the rule evaluation will be considered as a passed evaluation, otherwise it is a failed evaluation. The result of each rule evaluation determines the value of the resulting fraud score. The resulting fraud score will be calculated as follows: 
 
@@ -94,6 +95,7 @@ export class Agent {
       \end{lstlisting}
 
     \subsubsection{Operators}
+      \label{impl_cl:op}
 
       \verb;Operators; are special classes that define the operation of a certain condition during a validation process. Each \verb;Operator; is grouped by its type and has two main properties \verb;identifier;, and \verb;operateFunction;
       
