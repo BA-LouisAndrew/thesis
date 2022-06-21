@@ -127,6 +127,30 @@ if (data.validationId) {
 
   \subsection{Validation Progress}
   
-    
+    To receive the real time event stream sent by the FDS as described in \autoref{impl_sse}, the \verb;EventSource; API can be used on the client side. With the \verb;EventSource; API, a persistent connection to the FDS will be opened, and the messages sent will be received by the client in real time. Because the FDS sends the messages as a string in an event stream, the UI has to parse the message content into a valid JSON object before processing it. 
+
+    \begin{lstlisting}[style=es6, caption={Using the EventSource API in the browser (TypeScript)}]
+const source = new EventSource(url)
+
+source.onmessage = messageEvent => {
+  try {
+    const data = JSON.parse(messageEvent.data)
+    // Do data processing
+  } catch {
+    // Handle error, if the message data is not a valid JSON object
+  }
+}
+    \end{lstlisting}
+
+    It is also important to close the connection to the event stream when it's no longer needed. The logic of closing the open connection when user leaves the current page is also implemented on the UI. 
+
+    As the content of the message is parsed and identified as a valid \verb;ValidationResult; object, it is saved into the current state of the \verb;Validation; component, which renders the events of a validation process into a timeline component to give the user a better graphical overview of the current process. Vue3 uses the \emph{Proxy}\autocite[pp. 207-217]{gamma-1995} design pattern under the hood to provide a reactivity system on the UI, providing the possibility to update the timeline component every time a new validation result is published by the FDS. 
+
+    \begin{figure}[!ht]
+      \includegraphics[width=\textwidth]{images/ss_validation_progress.jpeg}
+      \caption{Screenshot of the validation progress in real time}
+    \end{figure}
+
+    The ID of the validation as well as the current fraud score of a validation process are always displayed, to give detailed information to the user regarding the current validation process. Additionally, the customer data is also displayed as a JSON object, to give the user with technical knowledge a better overview on the data being sent to the FDS. 
   
-  \subsection{Rule List and Validation List}
+  \subsection{Runtime Secrets}
