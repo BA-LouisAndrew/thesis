@@ -154,3 +154,11 @@ source.onmessage = messageEvent => {
     The ID of the validation as well as the current fraud score of a validation process are always displayed, to give detailed information to the user regarding the current validation process. Additionally, the customer data is also displayed as a JSON object, to give the user with technical knowledge a better overview on the data being sent to the FDS. 
   
   \subsection{Runtime Secrets}
+
+    A component to display a list of the available runtime secrets in a dialog is also created. For security purposes, only the key of the secrets are displayed within the component. The component also provides a possibility to create a new runtime secret and to delete an existing secret. User can create a new secret by clicking on the \textsc{Create a new secret} button, and adding the essential information on the form fields displayed. To delete an existing secret, a \textsc{Delete} button is displayed next to each secret's key name. The list of available runtime secret keys are also accessible on the autocomplete options, making it easier for the user to access the appropriate secret key without having to memorize the key name.
+    
+    \begin{figure}[!ht]
+      \includegraphics[width=0.6\textwidth]{images/ss_secrets.jpeg}
+      \caption{Screenshot of a component to list available runtime secrets}
+    \end{figure}
+    
