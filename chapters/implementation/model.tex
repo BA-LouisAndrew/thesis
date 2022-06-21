@@ -6,41 +6,39 @@ In this chapter, the specific implementation of the models described in \autoref
     To implement the model defined in \autoref{fig:uml_validation_rule}, a TypeScript interface is created to help in providing a clear structure during development phase. A \emph{Prisma} schema\footnote{The \emph{Prisma} database schema is listed on \autoref{code:prisma}} is also created to sync the structure of the data saved in database with the latest TypeScript interface. 
 
     \begin{lstlisting}[style=es6, caption={TypeScript interface of a validation rule (TypeScript)}]
-  // fds/src/types/rule.d.ts
-  
-  export interface ValidationRule {
-    retryStrategy?: RetryStrategy | null
-    requestUrlParameter?: GenericObject
-    requestHeader?: GenericObject
-    skip: boolean
-    requestBody?: GenericObject
-    condition: Condition | BooleanCondition
-    method: "GET" | "PUT" | "POST" 
-    failScore: number
-    endpoint: string
-    priority: number
-    name: string
-  }
-  
-  type GenericObject = { [key: string]: any } // Dictionary
-  type Condition = {
-    path: string
-    operator: OperatorType
-    type: ConditionType
-    value: any
-    failMessage: string
-  }
+export interface ValidationRule {
+  retryStrategy?: RetryStrategy | null
+  requestUrlParameter?: GenericObject
+  requestHeader?: GenericObject
+  skip: boolean
+  requestBody?: GenericObject
+  condition: Condition | BooleanCondition
+  method: "GET" | "PUT" | "POST" 
+  failScore: number
+  endpoint: string
+  priority: number
+  name: string
+}
 
-  type BooleanCondition = {
-    all: Condition[]
-  } | {
-    any: Condition[]
-  }
+type GenericObject = { [key: string]: any } // Dictionary
+type Condition = {
+  path: string
+  operator: OperatorType
+  type: ConditionType
+  value: any
+  failMessage: string
+}
 
-  type RetryStrategy = {
-    limit: number
-    statusCodes: number[] 
-  }
+type BooleanCondition = {
+  all: Condition[]
+} | {
+  any: Condition[]
+}
+
+type RetryStrategy = {
+  limit: number
+  statusCodes: number[] 
+}
     \end{lstlisting}
  
     \subsubsection{Retry Strategy}
@@ -79,28 +77,28 @@ await prisma.validationRule.delete({
     A TypeScript interface is created as the implementation of validation result structure listed on \autoref{fig:uml_validation_result}. The FDS is not responsible in storing validation results in a database. Therefore, a Prisma schema won't be created for validation results. 
 
     \begin{lstlisting}[style=es6, caption={TypeScript interface of a validation result (TypeScript)}]
-  export interface Validation<T> {
-    validationId: string
-    fraudScore: number
-    totalChecks: number
-    runnedChecks: number
-    skippedChecks: string[]
-    additionalInfo: ValidationAdditionalInfo<T>
-    events: ValidationEvent[]
-  }
+export interface Validation<T> {
+  validationId: string
+  fraudScore: number
+  totalChecks: number
+  runnedChecks: number
+  skippedChecks: string[]
+  additionalInfo: ValidationAdditionalInfo<T>
+  events: ValidationEvent[]
+}
 
-  export type ValidationEventStatus = "NOT_STARTED" | "FAILED" | "PASSED" | "RUNNING"
-  export type ValidationEvent = {
-    name: string
-    status: ValidationEventStatus
-    dateStarted: string | null
-    dateEnded: string | null
-    messages?: string[]
-  }
+export type ValidationEventStatus = "NOT_STARTED" | "FAILED" | "PASSED" | "RUNNING"
+export type ValidationEvent = {
+  name: string
+  status: ValidationEventStatus
+  dateStarted: string | null
+  dateEnded: string | null
+  messages?: string[]
+}
 
-  export type ValidationAdditionalInfo<T> = {
-    startDate: string
-    endDate?: string
-    customerInformation?: T
-  }
+export type ValidationAdditionalInfo<T> = {
+  startDate: string
+  endDate?: string
+  customerInformation?: T
+}
     \end{lstlisting}

@@ -223,6 +223,7 @@ export const start = async (url: string) => {
     Caching can also be enabled in the \verb;Database; class, by providing a \verb;DataStore; instance to the static \verb;setCache; method. By enabling caching, the values retrieved and updated can be cached to provide a faster response time\footnote{Runtime secrets are not cached.}. 
 
   \subsection{Validation Real Time Progress}
+    \label{impl_sse}
   
     The \emph{Observer} \autocite[pp. 293-303]{gamma-1995} will also be implemented here to provide the functionality of a real time progress update of a certain validation process. An \verb;EventEmitter; is used here to subscribe and publish certain events during a validation process. The FDS publishes a \verb;validation_event:update; event whenever a rule evaluation is done, containing the validation ID on the name of the event and sending the current validation result on the payload. When the particular validation process is done, the FDS also publishes a \verb;validation_done; event, containing the validation ID on the name of the event, as an indicator that the validation process is completed and no further events with the attached validation ID will be sent. 
 
