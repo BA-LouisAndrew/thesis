@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-06-16T13:44:39.972Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.115 Safari/537.36" etag="q9qI1B0hS30CJLG03_X3" version="20.0.1" type="github" pages="8">
+<mxfile host="app.diagrams.net" modified="2022-06-27T11:29:01.790Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36" etag="72UQTC_VCUtQ_dkM09Mo" version="20.0.1" type="github" pages="8">
   <diagram id="kgpKYQtTHZ0yAKxKKP6v" name="Sequence">
-    <mxGraphModel dx="2037" dy="1144" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1426" dy="801" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1999,7 +1999,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="GnHWzhQOkynNVnpfTazm" name="Use-Case Final">
-    <mxGraphModel dx="1059" dy="857" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="851" dy="942" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -2019,7 +2019,7 @@
           <mxGeometry x="25" y="120" width="100" height="65" as="geometry" />
         </mxCell>
         <mxCell id="MXkjBYOXNnGp5gEWoyYG-6" value="validate customer data" style="ellipse;whiteSpace=wrap;html=1;" parent="MXkjBYOXNnGp5gEWoyYG-2" vertex="1">
-          <mxGeometry x="211" y="90" width="100" height="65" as="geometry" />
+          <mxGeometry x="202.5" y="162.5" width="100" height="65" as="geometry" />
         </mxCell>
         <mxCell id="MXkjBYOXNnGp5gEWoyYG-7" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="endArrow=open;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.003;entryY=0.444;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;endFill=0;" parent="MXkjBYOXNnGp5gEWoyYG-2" source="MXkjBYOXNnGp5gEWoyYG-4" target="MXkjBYOXNnGp5gEWoyYG-6" edge="1">
           <mxGeometry x="-0.1091" y="4" width="50" height="50" relative="1" as="geometry">
@@ -2040,7 +2040,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="MXkjBYOXNnGp5gEWoyYG-10" value="send notification" style="ellipse;whiteSpace=wrap;html=1;" parent="MXkjBYOXNnGp5gEWoyYG-2" vertex="1">
-          <mxGeometry x="375" y="45" width="100" height="65" as="geometry" />
+          <mxGeometry x="375" y="115" width="100" height="65" as="geometry" />
         </mxCell>
         <mxCell id="MXkjBYOXNnGp5gEWoyYG-11" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="endArrow=none;html=1;rounded=0;exitX=1.003;exitY=0.451;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;endFill=0;exitPerimeter=0;startArrow=open;startFill=0;" parent="MXkjBYOXNnGp5gEWoyYG-2" source="MXkjBYOXNnGp5gEWoyYG-6" target="MXkjBYOXNnGp5gEWoyYG-10" edge="1">
           <mxGeometry x="-0.1091" y="4" width="50" height="50" relative="1" as="geometry">
@@ -2050,11 +2050,14 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="vtlZ-iq3tRwEf-ab8WGH-4" value="Create rule" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="MXkjBYOXNnGp5gEWoyYG-2">
+          <mxGeometry x="375" y="30" width="100" height="65" as="geometry" />
+        </mxCell>
         <mxCell id="MXkjBYOXNnGp5gEWoyYG-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;" parent="1" source="MXkjBYOXNnGp5gEWoyYG-13" target="MXkjBYOXNnGp5gEWoyYG-6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="MXkjBYOXNnGp5gEWoyYG-13" value="Company&amp;nbsp;&lt;br&gt;Employee" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
-          <mxGeometry x="1590" y="497.5" width="30" height="60" as="geometry" />
+          <mxGeometry x="1610" y="570" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="MXkjBYOXNnGp5gEWoyYG-14" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="MXkjBYOXNnGp5gEWoyYG-1" target="MXkjBYOXNnGp5gEWoyYG-4" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -2067,6 +2070,18 @@
             <mxPoint x="1140" y="550" as="sourcePoint" />
             <mxPoint x="1190" y="500" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="vtlZ-iq3tRwEf-ab8WGH-2" value="" style="endArrow=open;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endFill=0;" edge="1" parent="1" source="MXkjBYOXNnGp5gEWoyYG-10" target="MXkjBYOXNnGp5gEWoyYG-13">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1500" y="479.99999999999994" as="sourcePoint" />
+            <mxPoint x="1590" y="530" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vtlZ-iq3tRwEf-ab8WGH-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="vtlZ-iq3tRwEf-ab8WGH-3" target="vtlZ-iq3tRwEf-ab8WGH-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vtlZ-iq3tRwEf-ab8WGH-3" value="Team Member" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="1610" y="437.5" width="30" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
