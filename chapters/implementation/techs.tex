@@ -172,7 +172,12 @@ Before implementing a specific functionality of the system, each component of th
  \end{lstlisting}
 
  By running the command listed above, a MongoDB instance will be run locally on port \verb;27017;. On the live environment, a service called \emph{MongoDB Atlas}\footnote{\emph{MongoDB Atlas} is a service that provides a cloud-hosted MongoDB instances. Homepage: \url{https://www.mongodb.com/atlas}.} will be used to help host a MongoDB instance in the cloud, making it more accessible by other components of the system.
+ 
+  % Add info on creating user, connecting to shell, creating database
+  % docker exec -it mongodb mongosh
+  % use fds;
+  % use admin; db.createUser({ user: "admin", pwd: "admin", roles: [{role: "dbAdmin" , db:"fds"}] }a)
 
- \subsection{Docker Compose}
- \textbf{TODO. Implementation not done}
+%  \subsection{Docker Compose}
+%  \textbf{TODO. Implementation not done}
 
