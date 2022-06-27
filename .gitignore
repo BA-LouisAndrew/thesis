@@ -11,7 +11,7 @@ texput.log
 *.lot
 *.out
 *.run.xml
-*.synctex.gz
+*.synctex*
 *.toc
 *.pdf
 *.pdf
