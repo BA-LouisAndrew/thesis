@@ -81,7 +81,6 @@ const getAvailableOperators = (type: ConditionType) => {
 
       An additional validation is implemented in the \textsc{Conditions} section. The validation not only make sure that all the required fields are filled, but also the value of the fields itself. For example, the validation will throw an error if the \textsc{Type} field is set to "Number", but the input value of the \textsc{Value} field is not a valid numerical value. 
 
-    \newpage
     \subsubsection{Autocomplete Input}
 
       A JSONPath expression might be used as a value of some attributes within a \verb;ValidationRule; to access the runtime information during a validation process, such as the HTTP response from the external endpoint, runtime secrets and customer information. Unfortunately, it might be difficult to memorize the expressions needed to access certain values, and it might also confuse the user. 
@@ -109,6 +108,7 @@ const getAvailableOperators = (type: ConditionType) => {
       \caption{Screenshot of the validation form}
     \end{figure}
 
+    \newpage
     \begin{lstlisting}[style=es6, caption={Prefilling form values with a sample customer data (TypeScript)}]
 const applySampleCustomer = (sampleCustomer: Customer) => {
   Object.assign(formValues, {
