@@ -19,3 +19,5 @@ Installability
 Replaceability
 vitest
 Vitest
+supertest
+Supertest

@@ -149,3 +149,17 @@ describe("Key-Value input", () => {
     )
   })
 })
+
+it("GET /rules/:ruleName should return a single rule", async () => {
+  mockContext.prisma.validationRule.findFirst.mockResolvedValueOnce(
+    prismaValidationRule,
+  )
+
+  const response = await agent.get(
+    "/api/v1/rules/" + prismaValidationRule.name,
+  )
+  expect(response.statusCode).toEqual(200)
+  expect(response.body).toEqual({
+    id: "", ...sampleRule 
+  })
+})
