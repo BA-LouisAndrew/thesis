@@ -116,3 +116,36 @@ const subscribeToValidationProgress = (
       `data: ${JSON.stringify(data)}\n\n`,
     )
 }
+
+describe("Key-Value input", () => {
+  const renderComponent = (options: RenderOptions = {
+  }) =>
+    render(KeyValueInput, options)
+
+  it("renders a new key-value input fiels when the `Add` button is clicked", async () => {
+    const { getByRole, queryAllByTestId } =
+      renderComponent()
+
+    expect(queryAllByTestId("key-value-field").length).toBe(
+      0,
+    )
+    await fireEvent.click(
+      getByRole("button", {
+        name: "Add",
+      }),
+    )
+
+    expect(queryAllByTestId("key-value-field").length).toBe(
+      1,
+    )
+    await fireEvent.click(
+      getByRole("button", {
+        name: "Add",
+      }),
+    )
+
+    expect(queryAllByTestId("key-value-field").length).toBe(
+      2,
+    )
+  })
+})
