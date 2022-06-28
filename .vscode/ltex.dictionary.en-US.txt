@@ -17,3 +17,5 @@ WebSocket
 Analysability
 Installability
 Replaceability
+vitest
+Vitest
