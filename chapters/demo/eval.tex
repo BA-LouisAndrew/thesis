@@ -1,1 +1,80 @@
 \section{Evaluation}
+
+  The completion of the goals and criteria described in \hyperref[analysis]{requirement analysis} should be evaluated as a measure to determine whether the system and its functionalities have accomplished its main objective according to the goal of the research project. 
+
+  To evaluate whether the system has accomplished the goal of the research project properly, the implementation of each user stories described in \autoref{user_stories} will be listed in the table below: 
+  
+  \begin{tabularx}{\linewidth}{p{0.4\textwidth} p{0.6\textwidth}}
+   \caption{Systems and Software Quality Standard Based on ISO 25010 and its Importance} \\
+    \toprule
+    User Story & Implementation \\
+    \midrule
+    As a stakeholder, I want to verify users, so that the company can have more confidence that the existing user base is trustworthy & Providing an HTTP endpoint to trigger a validation process based on its request body and returning a validation result that contains a numerical value to determine the probability of the customer being a fraud \\
+
+    \hline
+
+    As an employee, I want to be notified when a user seems suspicious, so that I can do necessary actions accordingly & Providing an AMQP message broker and publishing the message to an AMQP exchange whenever a validation process is completed. An additional AMQP message consumer can be implemented to send the necessary notification \\
+
+    \hline 
+
+    As an employee, I want to manage my own rule to validate users, so that I can use my expertise to find suspicious customers as efficiently as possible without the communication overhead with other teams & Providing endpoints to create, read, delete and update validation rules. Additionally, endpoints to create and delete runtime secrets to store confidential information (such as API keys) are also implemented \\
+    \bottomrule
+  \end{tabularx}
+
+  Furthermore, a further evaluation on the criteria listed in \autoref{criteria} should also be done, to further evaluate the quality of the system created as the result of this research project. 
+  
+  \begin{tabularx}{\linewidth}{p{0.3\textwidth} p{0.2\textwidth} p{0.5\textwidth}}
+   \caption{Systems and Software Quality Standard Based on ISO 25010 and its Importance} \\
+    \toprule
+    & Importance & Completion \\
+    \midrule
+
+    \multicolumn{3}{@{}l}{\textbf{Functional stability}}\\
+    Completeness & Very important & Features listed on the user stories defined in \autoref{user_stories} are implemented \\
+    Correctness & Very important & Thorough tests on the \verb;ValidationEngine; class and its components \\
+    Appropriateness & Important & Provided an overview of a validation process, and the \verb;ValidationResult; model can be further extended to contain additional information \\
+
+    \multicolumn{3}{@{}l}{\textbf{Reliability}}\\
+    Maturity & Important & The system handles exception well and doesn't break when any error occurs \\
+    Availability & Very important & The system is runnable via a single command, and a live environment is also available \\
+    Fault tolerance & Important & The system can still run without the RabbitMQ instance and Redis by providing fallback options (e.g. \verb;InMemoryStore; as a data store if Redis is not available) \\
+    Recoverability & Very important & Only if Redis is available, otherwise not complete \\
+
+    \multicolumn{3}{@{}l}{\textbf{Performance efficiency}}\\
+    Time behavior & Important & Running a validation process as an asynchronous operation to prevent long response time \\
+    Resource Utilization & Not important & Not complete \\
+    Capacity & Not important & Not complete \\
+
+    \multicolumn{3}{@{}l}{\textbf{Usability}}\\
+    Appropriateness Recognizability & Not important & Not complete \\
+    Learnability & Not important & Not complete \\
+    Operability & Very important & Provided a UI as an interface to interact with the FDS and \verb;ValidationEngine; \\
+    User Error Protection & Somewhat important & Provided autocomplete input on the UI to prevent invalid JSONPath expression \\
+    User Interface Aesthetics & Very important & Provided a simple UI and a consistent design across all views \\
+    Accessibility & Not important & Not complete \\
+
+    \multicolumn{3}{@{}l}{\textbf{Security}}\\
+    Confidentiality & Somewhat important & Not complete \\
+    Integrity & Somewhat important & Not complete \\
+    Non-repudiation & Somewhat important & Not complete \\
+    Accountability & Not important & Not complete \\
+    Authenticity & Not important & Not complete \\
+
+    \multicolumn{3}{@{}l}{\textbf{Compatibility}}\\
+    Co-existence & Somewhat important & All components of the system works well with docker compose \\
+    Interoperability & Very important & The FDS shares data to the remaining components of the system (UI displays data provided by the FDS and RabbitMQ forwards the message published by the FDS) \\
+
+    \multicolumn{3}{@{}l}{\textbf{Maintainability}}\\
+    Modularity & Important & Thorough testing on the public interface of a component and not its implementation \\
+    Reusability & Not important & Created several utility functions to be used in different components \\ 
+    Analysability & Somewhat important & Not complete \\
+    Modifiability & Very important & Thorough integration test to make sure any modification won't break the specification of the system as a whole \\
+    Testability & Very important & Write unit tests before implementing the feature and automatically run the tests on every new merge request \\
+
+    \multicolumn{3}{@{}l}{\textbf{Portability}}\\
+    Adaptability &  Not important & Used Docker, so that the application can be run on every operating system \\
+    Installability & Important & Implemented necessary steps in the Dockerfile for an easier build and install step \\
+    Replaceability & Not important & Not complete \\
+
+    \bottomrule
+  \end{tabularx}
