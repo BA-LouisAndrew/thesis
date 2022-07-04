@@ -33,7 +33,24 @@ Before implementing a specific functionality of the system, each component of th
   To enforce a consistent code style and comply to the best practices of a TypeScript project, a code formatter (\emph{Prettier}) and linter (\emph{ESLint}) are used in this project. 
 
   \subsubsection{Docker}
-  \textbf{TODO. Implementation not done}
+  The UI can also run as a Docker container. Below is the \verb;Dockerfile; implementation for the UI project. 
+
+  \begin{lstlisting}[caption={Dockerfile for FDS (Docker)}, language=docker]
+FROM node:16-alpine
+
+RUN npm install -g http-server
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+CMD [ "http-server", "dist", "-p 3000"]
+      \end{lstlisting}
 
   \subsubsection{CI/CD}
   A CI/CD process is configured within the project, to run certain actions on specific events that happen in the codebase. The tool used as a CI/CD platform is \emph{GitHub actions}\footnote{\emph{GitHub actions} is a CI/CD platform, created by GitHub and can be used in all repositories hosted on GitHub. Homepage: \url{https://github.com/features/actions}.}. The configured CI/CD actions in this project are:

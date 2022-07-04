@@ -119,7 +119,7 @@ const applySampleCustomer = (sampleCustomer: Customer) => {
 
     When the user filled the fields properly and clicked the \textsc{Validate customer} button, the UI sends an HTTP POST request to the FDS with the customer data as the payload to schedule a new validation process. As the FDS returns an ID of the validation process, the UI will then redirect the user to the validation progress page, showing the progress of the particular validation process in real time. 
 
-    \begin{lstlisting}[style=es6, caption={ (TypeScript)}]
+    \begin{lstlisting}[style=es6, caption={Redirecting to the progress page when a validation process is scheduled successfully (TypeScript)}]
 const { data } = await createNewValidation(customer)
 if (data.validationId) {
   router.push(`/validations/${data.validationId}`)
