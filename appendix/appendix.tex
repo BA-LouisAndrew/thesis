@@ -3,22 +3,6 @@
 
 \chapter{Appendix}
 
-
- \section{Supplemental Figures}
-
-  \begin{figure}[!ht]
-   \includegraphics[width=\textwidth]{diagrams/entity_customer.jpeg}
-   \caption{UML diagram of the customer model}
-   \label{fig:customer_uml}
-  \end{figure}
-  
-  \begin{figure}[!ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{diagrams/flow_validation_process.jpeg}
-    \caption{Flow diagram of a validation process}
-    \label{fig:flow_validation}
-  \end{figure}
-
  \section{Supplemental Source Codes}
  
   \begin{lstlisting}[caption={\emph{Prisma} schema of a validation rule (Prisma)}, label={code:prisma}]
@@ -37,6 +21,32 @@
    requestHeader       Json?
  }
   \end{lstlisting}
+  
+  \begin{lstlisting}[caption={Dockerfile to run MongoDB as a replication set locally. Taken from Prisma GitHub repository (Docker)}, label={code:mongo}, language=docker]
+FROM mongo:4
+
+ENTRYPOINT mongod --port $MONGO_REPLICA_PORT --replSet rs0 --bind_ip 0.0.0.0 & MONGOD_PID=$!; \
+INIT_REPL_CMD="rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: '$MONGO_REPLICA_HOST:$MONGO_REPLICA_PORT' }] })"; \
+INIT_USER_CMD="db.createUser({ user: '$MONGO_INITDB_ROOT_USERNAME', pwd: '$MONGO_INITDB_ROOT_PASSWORD', roles: [ 'root' ] })"; \
+until (mongo admin --port $MONGO_REPLICA_PORT --eval "$INIT_REPL_CMD && $INIT_USER_CMD"); do sleep 1; done; \
+echo "REPLICA SET ONLINE"; wait $MONGOD_PID;
+  \end{lstlisting}
+
+  \newpage
+  \section{Supplemental Figures}
+
+  \begin{figure}[!ht]
+   \includegraphics[width=\textwidth]{diagrams/entity_customer.jpeg}
+   \caption{UML diagram of the customer model}
+   \label{fig:customer_uml}
+  \end{figure}
+  
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/flow_validation_process.jpeg}
+    \caption{Flow diagram of a validation process}
+    \label{fig:flow_validation}
+  \end{figure}
   
 \newpage
 % Letzte Seite
