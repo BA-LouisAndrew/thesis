@@ -21,7 +21,7 @@
    requestHeader       Json?
  }
   \end{lstlisting}
-  
+
   \begin{lstlisting}[caption={Dockerfile to run MongoDB as a replication set locally. Taken from Prisma GitHub repository (Docker)}, label={code:mongo}, language=docker]
 FROM mongo:4
 
@@ -30,6 +30,69 @@ INIT_REPL_CMD="rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: '$MONGO_REPLI
 INIT_USER_CMD="db.createUser({ user: '$MONGO_INITDB_ROOT_USERNAME', pwd: '$MONGO_INITDB_ROOT_PASSWORD', roles: [ 'root' ] })"; \
 until (mongo admin --port $MONGO_REPLICA_PORT --eval "$INIT_REPL_CMD && $INIT_USER_CMD"); do sleep 1; done; \
 echo "REPLICA SET ONLINE"; wait $MONGOD_PID;
+  \end{lstlisting}
+  
+  \begin{lstlisting}[caption={Docker Compose usage (YAML)}, label={code:compose}, language=yaml]
+version: "3.9"
+services:
+  fds:
+    build: ./fds
+    ports:
+      - "8000:8000"
+    environment:
+      - ENABLE_CACHE: true
+      - DATA_STORE: "redis"
+      - DATABASE_URL: "mongodb://root:prisma@mongo:27018/tests?authSource=admin/"
+      - REDIS: "redis://redis:6379/"
+      - RABBITMQ_URL: "amqp://rabbit:5672"
+      - RABBITMQ_MANAGEMENT_UI: "http://rabbit:15672"
+    restart: on-failure
+    depends_on:
+      - redis
+      - mongo
+    #   - rabbit
+    networks:
+      - app-network
+  ui:
+    build: ./ui
+    ports: 
+      - "3000:3000"
+    depends_on: 
+      - fds
+    networks:
+      - app-network  
+  mongo:
+    build: ./mongodb_replica
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: prisma
+      MONGO_REPLICA_HOST: host.docker.internal
+      MONGO_REPLICA_PORT: 27018
+    ports:
+      - '27018:27018'
+    networks:
+      - app-network
+    volumes:
+      - data-volume:/data/db
+  redis:
+    image: redis/redis-stack
+    ports:
+      - "6379:6379"
+    networks: 
+      - app-network
+  rabbit:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app-network
+volumes:
+  data-volume:
+    driver: local
+networks:
+  app-network:
+      driver: bridge
   \end{lstlisting}
 
   \newpage
