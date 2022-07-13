@@ -1,26 +1,44 @@
 \chapter{Fundamentals}
 
-\textbf{TODO!} 
-[Beschreibung des Kontextes der Arbeit mit allen durch die Problemstellung tangierten Bereichen, Methoden, Theorien, Erkenntnissen, Technologien, ... ] 
+  This chapter describes the context of the research project and acts as a bridge to provide the reader a better understanding on necessary aspects before moving forward to the requirement analysis. 
 
+  \section{Fraud Detection System}
 
-\section{Kontext}
+    Fraudulent activities have always been a problem for businesses and can even be traced back to the year 300 B.C., when the earliest attempt of a fraud activity is recorded. 
 
+    By learning from previous mistakes and with the help of the rapid progress of technologies, fraud detection techniques are developed to prevent further damage done by this malicious attempt. 
+    
+    A fraud detection system is a system that incorporates one or more fraud detection technique to detect any fraudulent entity. A fraud detection system works by accepting an input data and returning a sort of identifier that determines whether the entity is fraudulent. Usually, the output is a numerical value that represents the probability of the entity being a fraud rather than a plain true or false value. 
 
-\subsection{Domain} 
+    \subsection{Statistical Fraud Detection Methods}
+    
+      Nowadays, statistical fraud detection methods are widely used to detect fraudulent entities. There are two types of statistical fraud detection; \emph{supervised} and \emph{unsupervised}. According to \autocite{statistical-fds}, a supervised fraud detection method works by training a model to make a clear distinction between a fraudulent and non-fraudulent entity. In comparison, an unsupervised fraud detection method identifies a fraudulent entity by specifying an unusual behavior or attribute of the certain entity.
 
+    \subsection{Rule-based Approach}
 
+      Rule-based approach fraud detection technique is an unsupervised fraud detection method that evaluates a certain entity against a pre-defined list of rules. Bolton and David mentioned in \autocite{statistical-fds}, that an unsupervised method is useful to collect data of how a fraudulent entity might be when there's not much prior knowledge.
 
-\subsection{Technologien}
+      Unfortunately, Kou et al. argued in \autocite{1297040}, that rule-based approach can be difficult to manage, as the rules require a time-consuming configuration for each fraud possibility as well as the adaptation of the rules itself. 
 
+  \section{Hypertext Transfer Protocol (HTTP)}
+  
+    According to the official specification, HTTP is an \emph{"an application-level protocol for distributed, collaborative, hypermedia information systems"} \autocite{http-rfc}. HTTP is often used to transfer multimedia data between a client and a server in a client-server architecture. 
+    
+    \subsection{HTTP Request}
 
-\subsection{Methoden und Konzepte}
+      An HTTP request is a request message, sent by a client to the server, containing information such as the HTTP method to be applied, identifier of the resource as well as the HTTP version to be used \autocite[\enquote{5 Request}]{http-rfc}. The main purpose of an HTTP request is to apply a particular method\footnote{The HTTP methods available for an HTTP request can be found in \autocite[\enquote{5.1.1 Method}]{http-rfc}.} on the resource located on the server. 
+      
+      An HTTP request usually contains an absolute request-URI, which specifies the URI of the resource, on which the request should be applied.  
 
+    \subsection{HTTP Response}
 
-\section{...}
+      An HTTP response is the response from the server as the interpretation result of a particular HTTP request \autocite[6 Response]{http-rfc}. An HTTP response contains a status-line, which includes a status code and status phrase as an identifier on how the server interprets the HTTP request\footnote{The complete definition on each status-code and its meaning can be found in \autocite[\enquote{10 Status Code Definitions}]{http-rfc}.}. 
 
+    \subsection{Header Fields}
 
-\subsection{...}
+      Header fields are additional information passed in an HTTP message \autocite[\enquote{4.2 Message Headers}]{http-rfc}. In an HTTP request message, request headers are additional information sent by the client to the server and acts as a request modifier \autocite[\enquote{5.3 Request Header Fields}]{http-rfc}. In an HTTP response message, response headers are additional information from the client to the server, containing information regarding the response out of the corresponding status line \autocite[\enquote{6.2 Response Header Fields}]{http-rfc}.
 
+    \subsection{Body}
+    
+      A message body is used to transfer an entity body of an HTTP message, and it contains the data transferred by the client (HTTP request message body) or by the server (HTTP response message body) \autocite[\enquote{Message Body}]{http-rfc}. The message body is optional, it can only be used if the method specification of the particular request allows it. 
 
-\subsection{...}

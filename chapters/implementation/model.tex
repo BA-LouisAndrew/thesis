@@ -1,1 +1,112 @@
 \section{Model}
+  \label{impl_model}
+
+In this chapter, the specific implementation of the models described in \autoref{subsection:model} will be discussed. 
+
+  \subsection{Validation Rule}
+    \label{impl_model:rule}
+
+    The subsection describes the implementation of the \verb;ValidationRule; model as a TypeScript interface and its usage with the ORM library used in the FDS project. 
+
+    \subsubsection{TypeScript interface}
+      As the implementation of the model defined in \autoref{fig:uml_validation_rule}, a TypeScript interface is created to provide a clear structure of a validation rule.
+
+      \begin{lstlisting}[style=es6, caption={TypeScript interface of a validation rule (TypeScript)}]
+export interface ValidationRule {
+  retryStrategy?: RetryStrategy | null
+  requestUrlParameter?: GenericObject
+  requestHeader?: GenericObject
+  skip: boolean
+  requestBody?: GenericObject
+  condition: Condition | BooleanCondition
+  method: "GET" | "PUT" | "POST" 
+  failScore: number
+  endpoint: string
+  priority: number
+  name: string
+}
+
+type GenericObject = { [key: string]: any } // Dictionary
+type Condition = {
+  path: string
+  operator: OperatorType
+  type: ConditionType
+  value: any
+  failMessage: string
+}
+
+type BooleanCondition = {
+  all: Condition[]
+} | {
+  any: Condition[]
+}
+
+type RetryStrategy = {
+  limit: number
+  statusCodes: number[] 
+}
+      \end{lstlisting}
+ 
+    \subsubsection{Retry Strategy}
+      \label{impl_model:rule__retry}
+
+      The \verb;retryStrategy; attribute of the validation rule model is very specific to the implementation of the FDS. The FDS is using a library called \emph{Got}\footnote{\emph{Got} is a Node.JS library to make HTTP requests. GitHub repository: \url{https://github.com/sindresorhus/got}.} to make HTTP requests to the external endpoints. Got provides the functionality to retry a failed HTTP request out of the box\footnote{For more information on Got's retry options, please refer to \url{https://github.com/sindresorhus/got/blob/main/documentation/7-retry.md}.}.
+
+      The \verb;retryStrategy; attribute of a validation rule is a subset of the retry options provided by Got's retry API, and will be passed to the Got instance when the HTTP request is made for the corresponding rule evaluation. 
+
+    \subsubsection{Validation Rules Management Using ORM (Prisma)} 
+      The management of validation rules entries in the database are handled by the ORM library of choice (Prisma). This includes creating, reading, updating and deleting validation rule entries in the database. A Prisma schema\footnote{The \emph{Prisma} database schema is listed on \autoref{code:prisma}} is created to specify the shape of the data saved in the database. The schema must be created beforehand to generate the required types to be used by the client. After the schema is created, the Prisma Client API should be updated by running \verb;npx prisma generate;. 
+
+      \begin{lstlisting}[style=es6, caption={Establishing database connection with Prisma (TypeScript)}]
+import { PrismaClient } from '@prisma/client'
+
+const main = async () => {
+  const prisma = new PrismaClient() // Create new prisma instance
+  await prisma.$connect() // Establish connection to database
+}
+      \end{lstlisting}  
+
+      The ORM simplifies the access to the database entries by providing type-safe interfaces and a layer of abstraction on top of the database system. 
+
+      \begin{lstlisting}[style=es6, caption={Example usage of Prisma (TypeScript)}]
+await prisma.validationRule.findMany()
+await prisma.validationRule.delete({
+  where: {
+    name: validationRule.name
+  }
+})
+      \end{lstlisting}
+
+    % \subsubsection{Model Validation}
+    %   \textcolor{royalblue}{TODO: Add model validation. \url{https://github.com/BA-LouisAndrew/fds/issues/70}}
+
+  \subsection{Validation Result}
+  
+    A TypeScript interface is created as the implementation of the validation result structure listed on \autoref{fig:uml_validation_result}. The FDS is not responsible in storing validation results in a database. Therefore, a Prisma schema won't be created for validation results. 
+
+    \begin{lstlisting}[style=es6, caption={TypeScript interface of a validation result (TypeScript)}]
+export interface Validation<T> {
+  validationId: string
+  fraudScore: number
+  totalChecks: number
+  runnedChecks: number
+  skippedChecks: string[]
+  additionalInfo: ValidationAdditionalInfo<T>
+  events: ValidationEvent[]
+}
+
+export type ValidationEventStatus = "NOT_STARTED" | "FAILED" | "PASSED" | "RUNNING"
+export type ValidationEvent = {
+  name: string
+  status: ValidationEventStatus
+  dateStarted: string | null
+  dateEnded: string | null
+  messages?: string[]
+}
+
+export type ValidationAdditionalInfo<T> = {
+  startDate: string
+  endDate?: string
+  customerInformation?: T
+}
+    \end{lstlisting}

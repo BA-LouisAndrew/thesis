@@ -5,6 +5,7 @@ A use case diagram is created to better visualize the flow and possible use case
 ### User Stories
 - As a stakeholder, I want to verify users, so that the company can have more confidence that the existing user base is trustworthy ★ <- `Emphasis of FDS`
 - As an employee, I want to be notified when a user seems suspicious, so that I can do necessary actions accordingly **?** <- `Emphasis on the message queue and notification system`
+- As an employee, I want to manage my own rule to validate users, so that I can use my expertise to find suspicious customers as efficiently as possible without the communication overhead with other teams.
 
 # Sequence diagram -> TODO: Move to conception
 Sequence diagrams for specific use cases are created. The specific use cases are represented in a sequence diagram each, to visualize it better and to help in converting the use case into its corresponding user stories.

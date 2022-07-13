@@ -1,0 +1,76 @@
+\section{Integration Test}
+
+  Integration testing is used to make sure that individual components of the system can be integrated well and functions properly in unity. 
+
+  \subsection{FDS}
+
+    The integration testing on the FDS is done by making a mocked HTTP request to the HTTP endpoints provided and evaluating its result. The library \emph{supertest}\footnote{\emph{Supertest} is a library to test Node.JS HTTP servers. GitHub repository: \url{https://github.com/visionmedia/supertest}.} is used to mock the HTTP request during the integration tests. Before running an integration test, the whole application has to be set up in a testing environment, to make sure that all the components of the system are ready.
+
+    \begin{lstlisting}[style=es6, caption={Setting up a testing server environment for integration test (TypeScript)}]
+export const initTestingServer = async () => {
+  const mockContext = createMockContext()
+  const store = initStore("in-memory")
+  const database = new Database(mockContext)
+
+  await store.init()
+  await database.init()
+
+  return { app, mockContext, store }
+}
+    \end{lstlisting}
+
+    The database connection is mocked during integration testing, to prevent unintentional mutation of the data stored in the database and to prevent any outgoing network requests during the automated testing process. The integration tests are written to make sure that all the components, from the HTTP controller to the underlying services that retrieve the data work correctly as a whole.
+
+    \begin{lstlisting}[style=es6, caption={Integration testing on the FDS (TypeScript)}]
+describe("Rules CRUD endpoint", () => {
+  let agent: SuperTest<Test>
+  let mockContext: MockContext
+
+  beforeAll(async () => {
+    const { app, mockContext: ctx } = await initTestingServer()
+    agent = request(app)
+    mockContext = ctx
+  })
+
+  it("GET /rules/:ruleName should return a single rule", async () => {
+    mockContext.prisma.validationRule.findFirst.mockResolvedValueOnce(
+      prismaValidationRule,
+    )
+
+    const response = await agent.get(
+      "/api/v1/rules/" + prismaValidationRule.name,
+    )
+    expect(response.statusCode).toEqual(200)
+    expect(response.body).toEqual({
+      id: "", ...sampleRule 
+    })
+  })
+})
+    \end{lstlisting}
+
+  \subsection{UI}
+
+    Integration test on the UI is written to make sure that each UI components work collectively in a correct way. Integration tests for a client-side web application is particularly useful in making sure that the interaction between each component works well and behaves exactly as it should. The code snippet listed below represents an integration test that verifies the \verb;ConditionList; component is working properly in combination with the \verb;RuleForm; component. 
+    
+    \begin{lstlisting}[style=es6, caption={Integration test on the UI (TypeScript)}]
+describe("Rule form component", () => {
+  const renderComponent = (
+    options: RenderOptions = {
+      props: {
+        rule,
+      },
+    }
+  ) => render(RuleForm, options)
+
+  it("emits the correct event when the rule is updated", async () => {
+    const { getByPlaceholderText, getByRole, emitted } = renderComponent()
+
+    await fireEvent.update(getByPlaceholderText("Path"), "XX")
+
+    await fireEvent.click(getByRole("button", { name: "Save changes" }))
+    await waitFor(() => expect(emitted()["update"]).toBeTruthy())
+    const newRule = (emitted()["update"][0] as ValidationRule[])[0]
+    expect(newRule.condition.path).toEqual("XX")
+  })
+})
+    \end{lstlisting}

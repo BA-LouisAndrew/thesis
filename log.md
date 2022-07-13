@@ -1,5 +1,32 @@
 # DevLog
 
+## 17.06.22
+- Alright, it's definitely too much.. Going to review and shorten the code listings after the implementation section is done
+- Add content (minimal code snippets) on `Evaluator` and `Operator`
+
+## 16.06.22
+- Motivation is getting low
+- Am I putting too much code on the doc?
+
+## 08-12.06.22
+- Worked on conception, haven't been writing a lot of logs lately, gonna start again today!
+- Created preview page and upload to gh-pages
+- Feedback: MVC? SW doesn't really comply to MVC, does it make sense to "categorize" it as MVC?
+  - Ask supervisors
+- Reviewed conception, sent first draft to Tobi, moving on to implementation part
+- Add tech implementation on: UI and FDS. UI still need some docker file!
+
+## 07.06.22
+- 80% is done. Moving on to the writing part
+
+## 06.06.22
+- Project is quite in a good shape now. Will work on the service that listens to the MQ tomorrow
+- 80% is here. After working on service that listens -> Going to start the writing part real soon
+- E2E test might not be ready for now, but let's see where it goes!
+- Lob API -> Only 300 requests per month! Shutting the rule down for now
+- Do I need to build a service ONLY for the external checks, or is it enough with the current setup for the demo (external checks live within FDS)
+- Other refinements + enhancement tickets will be done on later stages. Add tickets to the board!
+
 ## 29.05.22
 - Been taking quite some days off to first take a step back before really focusing on writing the thesis
 - Going to talk with Raoul tomorrow about the current status and ask for time to focus solely on the thesis

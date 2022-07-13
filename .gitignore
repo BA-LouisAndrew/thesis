@@ -11,7 +11,10 @@ texput.log
 *.lot
 *.out
 *.run.xml
-*.synctex.gz
+*.synctex*
 *.toc
 *.pdf
 *.pdf
+template.pdf
+_minted-template
+node_modules

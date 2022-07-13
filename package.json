@@ -1,0 +1,29 @@
+{
+  "name": "thesis",
+  "version": "1.0.0",
+  "description": "## Important Note: - `template.tex` file is the original template downloaded from HTW *Bachelorarbeit* course - `original/template.tex` file is the entry file for the thesis document - Keep the number of files within the main directory minimal. Add everything else such as log files and other helper into the `.gitignore` file.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BA-LouisAndrew/thesis.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BA-LouisAndrew/thesis/issues"
+  },
+  "homepage": "https://github.com/BA-LouisAndrew/thesis#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "5.28.0",
+    "@typescript-eslint/parser": "5.28.0",
+    "eslint": "8.17.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "prettier": "2.7.1",
+    "tsoa": "4.1.0"
+  }
+}
