@@ -2,29 +2,12 @@
 
 Before implementing a specific functionality of the system, each component of the system needs to be setup and configured, so that an iterative development process can be done correctly. For certain components of the system, a live environment is configured, so that the system is accessible via a public URL, without having to set it up locally. 
 
-\subsection{Prerequisites}
-
-  There are certain prerequisites before setting up the projects locally. The prerequisites that need to be met are: 
-
-  \begin{itemize}
-  \item Node.JS version 16 is installed
-  \item NPM is installed
-  \item Docker is installed
-  \item Git is installed
-  \end{itemize}
-
  \subsection{User Interface}
 
-    As mentioned in \autoref{concept_ui}, the UI is a web application, built using Vue3 and TypeScript. The subsection describes how to set up the UI project locally and explains some technical details of the UI project. 
+    As mentioned in \autoref{concept_ui}, the UI is a web application, built using Vue3 and TypeScript. The subsection describes some technical details of the UI project. 
 
-  \subsubsection{Setup}
-   Nowadays, most front end projects use some kind of build tool to help build, test, and develop web applications\footnote{For detailed information on the role of a build tool in front end development, please take a look at \autocite{Odell2014}.}. \emph{Vite}\footnote{\emph{Vite} is an open source front end build tool. GitHub repository: \url{https://github.com/vitejs/vite}.} is used as the build tool for the UI project. A new Vite project is created by running the following command in a shell terminal:
-  
-  \begin{lstlisting}[caption={Creating a new Vite project (Shell)}]
- npm create vite@latest ui --template vue-ts
-  \end{lstlisting}
-
-  A version control to track and manage the progress done in this particular project is also used. The version control used in this project is git and a code hosting platform for version control is also used for the project (GitHub).
+  \subsubsection{Build Tool}
+   Nowadays, most front end projects use some kind of build tool to help build, test, and develop web applications\footnote{For detailed information on the role of a build tool in front end development, please take a look at \autocite{Odell2014}.}. \emph{Vite}\footnote{\emph{Vite} is an open source front end build tool. GitHub repository: \url{https://github.com/vitejs/vite}.} is used as the build tool for the UI project.
 
   \subsubsection{Component Library}
   A component library is used in this project to speed up the development of the UI. The component library used in this project is \emph{NaiveUI}\footnote{\emph{NaiveUI} is a Vue3 component library. GitHub repository: \url{https://github.com/TuSimple/naive-ui}.}. NaiveUI is chosen because it contains several components that are suitable for the project (for example: \verb;Timeline;, \verb;Menu;) and it also supports TypeScript out of the box.
@@ -64,45 +47,10 @@ CMD [ "http-server", "dist", "-p 3000"]
   A live environment is available for the UI, made possible by using \emph{Netlify}\footnote{\emph{Netlify} is a hosting platform with a git-based workflow. Homepage: \url{https://www.netlify.com/}.}. Every change made to the \verb;main; branch will be built and deployed on the Netlify platform automatically. 
 
  \subsection{FDS}
- As described in \autoref{concept_fds}, the FDS is a server side application, built with Node.JS and TypeScript. To build a REST API with ease, the Express.JS framework will also be used in this project. This subsection describes the setup and other technical details revolving the FDS project. 
-
-  \subsubsection{Setup}
-  To set up a new Node.JS project, run the following command in a shell terminal:
-
-   \begin{lstlisting}[caption={Creating a new Node.JS program (Shell)}]
- mkdir fds
- cd ./fds
- npm init -y
-   \end{lstlisting}
-   
-  To use the TypeScript language rather than plain JavaScript, the TypeScript compiler needs to be installed and used in this project. The TypeScript compiler can also be configured to be more suitable to the personal preferences of the developer as well as the requirements of third party libraries used by the project. To install TypeScript as a development dependency\footnote{In a Node.JS project, development dependency is a third party library used only for development purposes.} and to generate a configuration file for the TypeScript compiler, run the following commands in a shell terminal:
+ As described in \autoref{concept_fds}, the FDS is a server side application, built with Node.JS and TypeScript. To build a REST API with ease, the Express.JS framework will also be used in this project. This subsection describes the technical details revolving the FDS project. 
   
-   \begin{lstlisting}[caption={Installing and configuring TypeScript compiler (Shell)}]
- npm i -D typescript
- tsc --init
-   \end{lstlisting}
-  
-  To install Express.JS in the current project, run the following command in a shell terminal:
-  
-   \begin{lstlisting}[caption={Installing Express.JS (Shell)}]
- npm i express
-   \end{lstlisting}
-  
-  \subsubsection{Database Connection with ORM (Prisma)}
-   To set up a database connection with Prisma (the ORM library of choice for FDS), the Prisma package should be installed in the current project by running the following command in a shell terminal:
-
-   \begin{lstlisting}[caption={Installing Prisma (Shell)}]
- npm i -D prisma 
- npm i @prisma/client
-   \end{lstlisting}
-
-   After installing the Prisma package, set up the current project to work with Prisma ORM by running the following command in a shell terminal:
-
-   \begin{lstlisting}[caption={Set up project with Prisma}]
- npx prisma init
-   \end{lstlisting}
-   
-   After the project is set up, a \verb;prisma.schema; file will be created. The \verb;prisma.schema; file is used as a configuration file for the Prisma client and to define the database schema. The type of the database system as well as its URL should be configured in this \verb;prisma.schema; file. 
+  \subsubsection{Database Connection with ORM}
+   To set up a database connection with Prisma (the ORM library of choice for FDS), the Prisma package should be installed and configured in the current project. The primary configuration file for Prisma is the \verb;prisma.schema; file. The \verb;prisma.schema; file is used to define the database schema, the type of the database system as well as its URL. 
 
    \begin{lstlisting}[caption={Configuring database type and URL (Prisma)}]
  datasource db {
@@ -111,7 +59,7 @@ CMD [ "http-server", "dist", "-p 3000"]
  }  
    \end{lstlisting}
 
-   In this particular example, the database system for the current project is set to MongoDB, and the database URL will be set by the \verb;DB_URL; environment variable.
+   In this particular example, the database system for the current project is set to MongoDB, and the database URL will be provided by the \verb;DB_URL; environment variable.
 
    As the configuration is done and the database schema is created, the Prisma client API has to be updated to include the interfaces generated from the schema by running \verb;npx prisma generate;.
    
@@ -182,7 +130,7 @@ CMD [ "http-server", "dist", "-p 3000"]
  The command listed above will locally run the Redis instance on port \verb;6379;. Redis is not available on the live environment. Therefore, no caching is available and an in memory data store (a basic JavaScript class) is used to replace Redis as the temporary data store.
 
  \subsection{MongoDB}
- MongoDB is the database of choice for the system. MongoDB has an official Docker image that can be used to run the database instance in a Docker container. Prisma requires that the MongoDB instance connected to the ORM to be configured as a replica set, so that partial writes on nested queries can be prevented \autocite{primsa-mongo}. To configure the replication of a MongoDB instance, additional steps are needed and an example Dockerfile from the official GitHub repository is used \autocite{prisma-dockerfile}\footnote{The source code taken from the official GitHub repository is listed on \autoref{code:mongo}.}.
+ MongoDB is the database of choice for the system. MongoDB has an official Docker image that can be used to run the database instance in a Docker container. Prisma requires that the MongoDB instance connected to the ORM to be configured as a replica set, so that partial writes on nested queries can be prevented \autocite{primsa-mongo}. To configure the replication of a MongoDB instance, additional steps are needed and an example Dockerfile from the Prisma official GitHub repository is used \autocite{prisma-dockerfile}\footnote{The source code taken from the official GitHub repository is listed on \autoref{code:mongo}.}.
 
  On the live environment, a service called \emph{MongoDB Atlas}\footnote{\emph{MongoDB Atlas} is a service that provides a cloud-hosted MongoDB instances. Homepage: \url{https://www.mongodb.com/atlas}.} is used to help host a MongoDB instance in the cloud, making it more accessible by other components of the system.
  
