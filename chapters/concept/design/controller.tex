@@ -1,17 +1,16 @@
-\subsection{Controller}
+\subsection{Features}
  \label{subsection:controller}
 
-Krasner and Pope defined an application's controller in \autocite{krasner-pope-88} as an interface to associate the components of the system (\emph{model and view}) and incoming events (\emph{such as event coming from input devices}). In other words, the controller component is responsible in defining the flow or sequence of a system based on an incoming event, routing commands to the appropriate model and updating the view in the process.
-In this subsection, an analysis of the use cases listed on \autoref{use_cases} will be done, and consequentially a sequence of operations will be defined for each specific use case. An additional sequence will also be defined as a way complete the system and fulfill the requirements defined. 
-
+ By analyzing the use cases listed on \autoref{use_cases}, the functions of each component of the system can be defined, and consequentially a sequence of operations will be created for each specific use case. An additional sequence will also be defined as to complete the system and fulfill the requirements defined. 
 
 \subsubsection{Customer Validation on a Registration Event}
  \label{subsection:regis}
 
 \begin{figure}[!ht]
- \includegraphics[width=\textwidth]{diagrams/sequence_registration.jpeg}
- \caption{System sequence diagram for a customer validation when a new customer is registered}
- \label{fig:regis-sequence}
+  \centering
+  \includegraphics[width=0.6\textwidth]{diagrams/sequence-registration.png}
+  \caption{System sequence diagram for a customer validation when a new customer is registered}
+  \label{fig:regis-sequence}
 \end{figure}
 
 A system sequence can be defined by analyzing the following use case:
@@ -35,7 +34,7 @@ One of the opportunity to do a verification process is during a new customer reg
  \label{subsection:seq-notification}
 
 \begin{figure}[!h]
- \includegraphics[width=\textwidth]{diagrams/sequence_notification.jpeg}
+ \includegraphics[width=\textwidth]{diagrams/sequence-notification.png}
  \caption{System sequence diagram for notifications on suspicious cases}
  \label{fig:notif-sequence}
 \end{figure}
@@ -63,9 +62,10 @@ The FDS runs a rule evaluation by making an HTTP request to an external URL and 
  \label{subsection:management}
 
 \begin{figure}[!ht]
- \includegraphics[width=\textwidth]{diagrams/sequence_management.jpeg}
- \caption{System sequence diagram for validation rules management}
- \label{fig:management_sequence}
+  \centering
+  \includegraphics[width=0.8\textwidth]{diagrams/sequence-management.png}
+  \caption{System sequence diagram for validation rules management}
+  \label{fig:management_sequence}
 \end{figure}
 
 Another sequence can also be defined as a result of an analysis of the following use case:
@@ -93,7 +93,7 @@ A possibility for each team to manage their own validation rules without being d
 \subsubsection{Validation Real-Time Progress}
 
 \begin{figure}[!ht]
- \includegraphics[width=\textwidth]{diagrams/sequence_pubsub.jpeg}
+ \includegraphics[width=\textwidth]{diagrams/sequence-pubsub.png}
  \caption{System sequence diagram for validation rules management}
 \end{figure}
 

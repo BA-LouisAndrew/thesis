@@ -1,5 +1,21 @@
 {
   "[typescript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  }
+  },
+  "editor.wordWrap": "on",
+  "[latex]": {
+    "editor.formatOnPaste": false,
+    "editor.suggestSelection": "recentlyUsedByPrefix"
+  },
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+        "before": ["j"],
+        "after": ["g", "j"]
+    },
+    {
+        "before": ["k"],
+        "after": ["g", "k"]
+    }
+],
+  "vim.foldfix": true
 }

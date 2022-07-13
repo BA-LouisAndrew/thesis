@@ -1,8 +1,7 @@
-\subsection{Model}
+\subsection{Object Model}
   \label{subsection:model}
 
-  As mentioned by Krasner and Pope \autocite{krasner-pope-88}, an application's model is a domain specific simulation or implementation of a structure. The model component of an MVC application contains business logic and manages the state of an application as well as its storage. 
-  The essential models of the system can be defined by revisiting the sequences listed on \autoref{subsection:controller} and identifying the important structures needed to fulfill the requirements needed.
+  The essential object models of the system can be defined by revisiting the sequences listed on \autoref{subsection:controller} and identifying the important structures needed to fulfill the requirements.
   
   \subsubsection{Validation Rule}
     \label{subsub:rule}
@@ -29,7 +28,7 @@
     An additional \emph{priority} attribute is also provided to enable the possibility to run rule validations according to its priority order.
 
     \begin{figure}[!ht]
-      \includegraphics[width=\textwidth]{diagrams/entity_validation_rule.jpeg}
+      \includegraphics[width=0.8\textwidth]{diagrams/entity-validationrule.png}
       \caption{UML diagram of the validation rule model}
       \label{fig:uml_validation_rule}
     \end{figure}
@@ -130,7 +129,7 @@
     \end{itemize}
 
     \begin{figure}[!ht]
-      \includegraphics[width=\textwidth]{diagrams/entity_validation_result.jpeg}
+      \includegraphics[width=\textwidth]{diagrams/entity-validationresult.png}
       \caption{UML diagram of the validation result model}
       \label{fig:uml_validation_result}
     \end{figure}
