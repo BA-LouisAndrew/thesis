@@ -182,19 +182,31 @@ CMD [ "http-server", "dist", "-p 3000"]
  The command listed above will locally run the Redis instance on port \verb;6379;. Redis is not available on the live environment. Therefore, no caching is available and an in memory data store (a basic JavaScript class) is used to replace Redis as the temporary data store.
 
  \subsection{MongoDB}
- MongoDB is the database of choice for the system. MongoDB has an official Docker image and the following command should be run in a shell terminal to set up a MongoDB instance locally:
+ MongoDB is the database of choice for the system. MongoDB has an official Docker image that can be used to run the database instance in a Docker container. Prisma requires that the MongoDB instance connected to the ORM to be configured as a replica set, so that partial writes on nested queries can be prevented \autocite{primsa-mongo}. To configure the replication of a MongoDB instance, additional steps are needed and an example Dockerfile from the official GitHub repository is used \autocite{prisma-dockerfile}\footnote{The source code taken from the official GitHub repository is listed on \autoref{code:mongo}.}.
 
- \begin{lstlisting}[caption={Running a MongoDB instance with Docker (Shell)}]
- docker run --name mongodb -d -p 27017:27017 mongo 
- \end{lstlisting}
-
- By running the command listed above, a MongoDB instance will be run locally on port \verb;27017;. On the live environment, a service called \emph{MongoDB Atlas}\footnote{\emph{MongoDB Atlas} is a service that provides a cloud-hosted MongoDB instances. Homepage: \url{https://www.mongodb.com/atlas}.} will be used to help host a MongoDB instance in the cloud, making it more accessible by other components of the system.
+ On the live environment, a service called \emph{MongoDB Atlas}\footnote{\emph{MongoDB Atlas} is a service that provides a cloud-hosted MongoDB instances. Homepage: \url{https://www.mongodb.com/atlas}.} is used to help host a MongoDB instance in the cloud, making it more accessible by other components of the system.
  
   % Add info on creating user, connecting to shell, creating database
   % docker exec -it mongodb mongosh
   % use fds;
   % use admin; db.createUser({ user: "admin", pwd: "admin", roles: [{role: "dbAdmin" , db:"fds"}] }a)
 
-%  \subsection{Docker Compose}
-%  \textbf{TODO. Implementation not done}
+ \subsection{Docker Compose}
 
+    Docker Compose is used to as a tool to start and set up the components of the system as Docker containers using a single \verb;docker-compose up -d; command. To use Docker Compose, a configuration file is needed in a directory that contains the FDS and the UI project\footnote{Docker Compose configuration file is listed on \autoref{code:compose}.}.
+    
+    The environment variables of the FDS, such as the database URI and the RabbitMQ URI can be configured from the Docker Compose configuration file, making it easier to configure the current context of the system without having to introduce any change to the existing code base. 
+    
+    \begin{lstlisting}[caption={Configuring environment variables of FDS (YAML)}, language=yaml]
+environment:
+  - ENABLE_CACHE: true
+  - DATA_STORE: "redis"
+  - DATABASE_URL: "mongodb://root:prisma@mongo:27018/tests?authSource=admin/"
+  - REDIS: "redis://redis:6379/"
+  - RABBITMQ_URL: "amqp://rabbit:5672"
+  - RABBITMQ_MANAGEMENT_UI: "http://rabbit:15672"
+    \end{lstlisting}
+    
+    Running all the components of the system using a single command as Docker containers is useful, because it provides a solution on the added complexity of installing the needed dependencies and running each component individually. 
+
+    Unfortunately, even though each component of the system is started by using the \verb;docker-compose up -d; command, doesn't mean that every component is ready to be used directly. The RabbitMQ component needs a while to boot up, and therefore the FDS cannot yet be started until RabbitMQ is ready to accept any ongoing connection. Therefore, an additional function is implemented on the FDS to make sure that RabbitMQ is ready before attempting to connect, by waiting for the RabbitMQ management UI\footnote{The RabbitMQ management UI is available via a RabbitMQ plugin, also provided by the official Docker image.} to respond in a given time period.
