@@ -2,6 +2,29 @@
 
   This chapter describes the implementation of the features elicited on the previous chapters in details, specifically within the FDS component. All the HTTP routes of the FDS will be prefixed with \verb;/api/v1;.
 
+  \subsection{Validation Rules Management} 
+    The management of validation rules entries in the database are handled by the ORM library of choice (Prisma). This includes creating, reading, updating and deleting validation rule entries in the database. A Prisma schema\footnote{The \emph{Prisma} database schema is listed on \autoref{code:prisma}} is created to specify the shape of the data saved in the database. The schema must be created beforehand to generate the required types to be used by the client. After the schema is created, the Prisma Client API should be updated by running \verb;npx prisma generate;. 
+
+  \begin{lstlisting}[style=es6, caption={Establishing database connection with Prisma (TypeScript)}]
+import { PrismaClient } from '@prisma/client'
+
+const main = async () => {
+  const prisma = new PrismaClient() // Create new prisma instance
+  await prisma.$connect() // Establish connection to database
+}
+  \end{lstlisting}  
+
+  The ORM simplifies the access to the database entries by providing type-safe interfaces and a layer of abstraction on top of the database system. 
+
+  \begin{lstlisting}[style=es6, caption={Example usage of Prisma (TypeScript)}]
+await prisma.validationRule.findMany()
+await prisma.validationRule.delete({
+  where: {
+    name: validationRule.name
+  }
+})
+  \end{lstlisting}
+
   \subsection{Customer Validation on a Registration Event}
 
     An HTTP endpoint will be implemented to provide the possibility to schedule a validation process as soon as a new customer is registered. The endpoint should accept the customer information on the request body and return validation ID and additional information of the validation process as a response. 
