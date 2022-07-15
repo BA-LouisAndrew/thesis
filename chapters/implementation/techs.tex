@@ -18,7 +18,7 @@ Before implementing a specific functionality of the system, each component of th
   \subsubsection{Docker}
   The UI can also run as a Docker container. Below is the \verb;Dockerfile; implementation for the UI project. 
 
-  \begin{lstlisting}[caption={Dockerfile for FDS (Docker)}, language=docker]
+  \begin{lstlisting}[caption={Dockerfile for UI (Docker)}, language=docker]
 FROM node:16-alpine
 
 RUN npm install -g http-server
@@ -50,7 +50,7 @@ CMD [ "http-server", "dist", "-p 3000"]
  As described in \autoref{concept_fds}, the FDS is a server side application, built with Node.JS and TypeScript. To build a REST API with ease, the Express.JS framework will also be used in this project. This subsection describes the technical details revolving the FDS project. 
   
   \subsubsection{Database Connection with ORM}
-   To set up a database connection with Prisma (the ORM library of choice for FDS), the Prisma package should be installed and configured in the current project. The primary configuration file for Prisma is the \verb;prisma.schema; file. The \verb;prisma.schema; file is used to define the database schema, the type of the database system as well as its URL. 
+   To set up a database connection with Prisma (the ORM library of choice for FDS), the Prisma package should be installed and configured in the current project. The configuration file for Prisma is the \verb;prisma.schema; file. The \verb;prisma.schema; file is used to define the database schema, the type of the database system as well as its URL. 
 
    \begin{lstlisting}[caption={Configuring database type and URL (Prisma)}]
  datasource db {
