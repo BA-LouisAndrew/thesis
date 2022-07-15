@@ -1,9 +1,15 @@
+\newpage
 \subsection{User Interface}
   \label{sub:design_view}
 
 The UI is the interface for the user to interact with the system. The UI is specifically designed to facilitate the functionalities described in \autoref{subsection:controller}. Several mock-ups are created to better visualize how the user interface should be structured using a UI design tool called Figma.  
 
 \subsubsection{Rule Management Form}
+
+\begin{figure}[!h]
+  \includegraphics[width=\textwidth]{diagrams/mockup_rule_management.png}
+  \caption{Mock up of the rule management form page}
+\end{figure}
 
 To facilitate the validation rule management functionality visualized in \autoref{fig:management_sequence}, a page containing a form to create, edit, delete and read a validation rule will be created. The rule management form is intended to be used by internal employee, preferably with technical background\footnote{An understanding on how HTTP works is a prerequisite to use the form.} to manage a validation rule that will be used to validate a customer.
 
@@ -13,14 +19,9 @@ The \textsc{Rule Name} field is used to display or enter a unique name of the va
 
 The \textsc{Conditions} section can be used to add one or more condition to a validation rule. The form fields of each condition includes a dedicated input field for each attribute of a condition, as described in \autoref{subsub:rule}. The \textsc{Type} and \textsc{Operator} form fields are a selectable field, meaning the user has to select one out of several choices provided. This is intended to restrict input from the user, preventing an invalid condition being submitted to the FDS\footnote{For example, on \emph{type} field, user can only choose on of the following: (number, string, array, boolean).}. User can also delete a condition if necessary by clicking the \textsc{Delete} button available on each condition segment. If more than one condition is present, a selectable button will be displayed to select whether the "any" or "all" condition will be used. 
 
-As the \emph{retryStrategy} attribute of a validation rule is not required, it is possible to delete an existing retry strategy, by clicking on the \textsc{Delete} button available on the \textsc{Retry Strategy} section of the form. If no retry strategy is present, a button to add a new retry strategy and to display the \textsc{Limit} and \textsc{Status Codes} fields will be displayed.
+As the \verb;retryStrategy; attribute of a validation rule is not required, it is possible to delete an existing retry strategy, by clicking on the \textsc{Delete} button available on the \textsc{Retry Strategy} section of the form. If no retry strategy is present, a button to add a new retry strategy and to display the \textsc{Limit} and \textsc{Status Codes} fields will be displayed.
 
-According to the model of a validation rule, \emph{requestBody, requestHeader} and \emph{requestUrlParameter} should be a dictionary that could contain as many entries as possible. To mimic this functionality as a form field, the \textsc{Request Body, Request Header} and \textsc{Request URL Parameter} fields are a dynamic input field. A dynamic input field enables the user to add a new key-value pair to the dictionary by clicking on the \textsc{Add} button and inputting the values to the corresponding input fields. To delete an entry of a dictionary, a delete button is provided next to each key-value fields. 
-
-\begin{figure}[!h]
- \includegraphics[width=\textwidth]{diagrams/mockup_rule_management.png}
- \caption{Mock up of the rule management form page}
-\end{figure}
+According to the model of a validation rule, \verb;requestBody, requestHeader; and \verb;requestUrlParameter; should be a dictionary that could contain as many entries as possible. To mimic this functionality as a form field, the \textsc{Request Body, Request Header} and \textsc{Request URL Parameter} fields are a dynamic input field. A dynamic input field enables the user to add a new key-value pair to the dictionary by clicking on the \textsc{Add} button and inputting the values to the corresponding input fields. To delete an entry of a dictionary, a delete button is provided next to each key-value field. 
 
 \subsubsection{Validation Form}
 
@@ -42,4 +43,4 @@ To provide a transparency on an asynchronous validation process, a page that dis
  \caption{Mock up of the validation progress page}
 \end{figure}
 
-The page displays the current progress of a certain validation in real time. It represents the \emph{events} attribute of a validation result in a timeline, displaying the events in a list ordered by its \emph{dateEnded} attribute. The page gives the user information regarding the evaluation result of each validation rule (success, failure or in progress), the current fraud score and the names of validation rules that are skipped. If present, the messages of an event should also be displayed. 
+The page displays the current progress of a certain validation in real time. It represents the \verb;events; attribute of a validation result in a timeline, displaying the events in a list. The page gives the user information regarding the evaluation result of each validation rule (success, failure, in progress or not started), the current fraud score and the names of validation rules that are skipped. If present, the messages of an event should also be displayed. 
