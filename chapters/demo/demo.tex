@@ -21,7 +21,7 @@
    \caption{Screenshot of a runtime secret creation}
   \end{figure}
 
-  The lob API uses the \emph{Basic Auth} authentication scheme, which requires a client to send the \verb;Authorization; header that contains the \verb;Basic ; prefix, followed by the base64 encoded value of the Lob API key. As the runtime secret is created, it is now accessible to the validation rule using the \verb;$.secrets.LOB_API_KEY; JSONPath expression. A new validation rule is created by clicking on the \textsc{Add new rule} button. A rule management form is displayed, and the user can enter the values to each attribute of the validation rule. For the demonstration, the following validation rule is created: 
+  The lob API uses the \emph{Basic Auth} authentication scheme, which requires a client to send the \verb;Authorization; header that contains the \verb;"Basic "; prefix, followed by the base64 encoded value of the Lob API key. As the runtime secret is created, it is now accessible to the validation rule using the \verb;$.secrets.LOB_API_KEY; JSONPath expression. The creation of a new validation rule can be started by clicking on the \textsc{Add new rule} button. A rule management form is displayed, and the user can enter the values to each attribute of the validation rule. For the demonstration, the following validation rule is created: 
 
   \begin{itemize}
    \item Name: "Address Validation"
@@ -44,7 +44,7 @@
      \end{itemize}
   \end{itemize}
   
-  By visiting the URL \verb;http://localhost:3000/#/validations;, the list of ongoing and completed validation processes, saved in the data store of FDS will be displayed. A new validation process can be created by clicking on the \textsc{Create new validation} button and filling in the validation form with a sample customer data, on which a validation process should be executed. As mentioned before, several sample customers with different attributes are created to provide an even easier testing process. For the demonstration purpose, the user with the label \verb;Berlin-based customer (invalid address); will be chosen, as it will trigger a failed rule evaluation of the \verb;Address Validation; validation rule. 
+  By visiting the URL \verb;http://localhost:3000/#/validations;, the list of ongoing and completed validation processes, saved in the data store of the FDS will be displayed. A new validation process can be created by clicking on the \textsc{Create new validation} button and filling in the validation form with a sample customer data, on which a validation process should be executed. As mentioned before, several sample customers with different attributes are created to provide an even easier testing process. For this demonstration, the user with the label \verb;Berlin-based customer (invalid address); will be chosen, as it will trigger a failed rule evaluation of the \verb;Address Validation; validation rule. 
 
   \begin{figure}[!ht]
    \centering

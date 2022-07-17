@@ -25,7 +25,7 @@
 
     As the FDS interacts with external endpoints, there is no guarantee that the external endpoint will always be accessible. An additional attribute to specify and configure a retry strategy in such cases can be useful. However, a retry strategy can be really specific to its implementation and therefore will be discussed in \autoref{impl_model:rule__retry}.
 
-    An additional \emph{priority} attribute is also provided to enable the possibility to run rule validations according to its priority order.
+    An additional \verb;priority; attribute is also provided to enable the possibility to run rule validations according to its priority order.
 
     \begin{figure}[!ht]
       \includegraphics[width=0.8\textwidth]{diagrams/entity-validationrule.png}
@@ -33,8 +33,9 @@
       \label{fig:uml_validation_rule}
     \end{figure}
     
-    The \emph{condition} attribute plays an important role for a validation rule, as it defines how the response returned by the external endpoint should be structure to pass a rule evaluation. It is intended to design the condition attribute to be robust and configurable. The \emph{path} of a condition defines a JSONPath\autocite{Friesen2019} expression to access information available of the current validation scope, such as customer information or response returned by the external endpoint. The \emph{type} attribute of a condition determines the type of the attribute accessed by the \emph{path} attribute. The \emph{type} attribute determines which type of operators are available to use\footnote{For example: a condition with \emph{type} "string" cannot use the "incl" \emph{operator}, because the "incl" \emph{operator} is only available for "array" \emph{type}.}. The \emph{operator} attribute refers to a name of operator to be used to evaluate the condition (for example: "eq", "incl"). The available operator names are predefined and restricted to the condition's type attribute. More information regarding operators will be discussed in \autoref{impl_cl:op}. The \emph{failMessage} attribute of a condition refers to a message that is going to be appended to the validation result's \emph{messages} attribute after a validation is completed.
+    The \verb;condition; attribute plays an important role for a validation rule, as it defines how the response returned by the external endpoint should be structured to pass a rule evaluation. It is intended to design the condition attribute to be robust and configurable. The \verb;path; of a condition defines a JSONPath\autocite{Friesen2019} expression to access information available of the current validation scope, such as customer information or response returned by the external endpoint. The \verb;type; attribute of a condition determines the data type of the attribute accessed by the \verb;path; attribute. The \verb;type; attribute also determines which operators are available to use\footnote{For example: a condition with \emph{type} "string" cannot use the "incl" \emph{operator}, because the "incl" \emph{operator} is only available for "array" \emph{type}.}. The \verb;operator; attribute refers to a name of operator to be used to evaluate the condition (for example: "eq", "incl"). The available operator names are predefined and restricted to the condition's type attribute. More information regarding operators will be discussed in \autoref{impl_cl:op}. The \verb;failMessage; attribute of a condition refers to a message that is going to be appended to the validation result's \verb;messages; attribute after a validation is completed.
 
+    \newpage
     \begin{lstlisting}[caption={Validation rule example (JSON)}, language=json]
 {
   "name": "Example",
@@ -56,7 +57,7 @@
 }
     \end{lstlisting}
 
-    A validation rule might contain more than a single condition to pass an evaluation. In such cases, the user need to define whether how to determine whether an evaluation should pass: either pass an evaluation if \textbf{ALL} the conditions is true or pass an evaluation if \textbf{AT LEAST ONE (ANY)} of the conditions is true. This can be achieved by having the \emph{condition} attribute as an object with a single attribute, either \emph{all} or \emph{any} and an array of conditions as the attribute's value.
+    A validation rule might contain more than a single condition to pass an evaluation. In such cases, the user needs to define how to determine whether an evaluation should pass: either pass an evaluation if \textbf{ALL} the conditions is true or pass an evaluation if \textbf{AT LEAST ONE (ANY)} of the conditions is true. This can be achieved by having the \verb;condition; attribute as an object with a single attribute, either \emph{all} or \emph{any} and an array of conditions as the attribute's value.
 
     \begin{lstlisting}[caption={Validation rule \textbf{condition} attribute example with ALL condition (JSON)}, language=json]
 {
@@ -114,11 +115,11 @@
       \item A fraud score 
     \end{itemize}
 
-    Furthermore, information regarding the total checks, run checks, and additional information that contains the start and end date of the validation process as well as the customer information used for the validation are essential. The customer information is generic, and the system should be able to do a validation process regardless of its structure. The validation result should also return a list of validation rule names, whose evaluations are skipped due to its \emph{skip} attribute being set to \emph{true}.
+    Furthermore, information regarding the total checks, run checks, and additional information that contains the start and end date of the validation process as well as the customer information used for the validation are essential. The customer information is generic, and the system should be able to do a validation process regardless of its structure. The validation result should also return a list of validation rule names, whose evaluations are skipped due to its \verb;skip; attribute being set to \verb;true;.
 
     Even though the resulting fraud score determines the probability of a customer being a fraud, it is also important to further analyze the actual evaluation result of each validation rule. For example, a certain action can be run if the evaluation of a specific rule failed or the information regarding the rule evaluations can also be used to display the current progress of a validation process (implementation of this specific functionality will be discussed more in \autoref{impl_sse}). 
 
-    To provide such information on a validation result, the \emph{events} attribute will be introduced, which refers to rule evaluation events within a validation process. A rule evaluation event should contain the following attributes:
+    To provide such information on a validation result, the \verb;events; attribute will be introduced, which refers to rule evaluation events within a validation process. A rule evaluation event should contain the following attributes:
 
     \begin{itemize}
       \item Unique identifier of the event (name of the rule being evaluated)
@@ -129,11 +130,13 @@
     \end{itemize}
 
     \begin{figure}[!ht]
-      \includegraphics[width=\textwidth]{diagrams/entity-validationresult.png}
+      \centering
+      \includegraphics[width=0.8\textwidth]{diagrams/entity-validationresult.png}
       \caption{UML diagram of the validation result model}
       \label{fig:uml_validation_result}
     \end{figure}
     
+    \newpage
     \begin{lstlisting}[caption={Validation result example (JSON)}, language=json]
 {
   "validationId": "3112dc4a-45f5-41b8-883a-715dcbe9a490",

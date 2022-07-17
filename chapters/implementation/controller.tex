@@ -3,8 +3,9 @@
   This chapter describes the implementation of the features elicited on the previous chapters in details, specifically within the FDS component. All the HTTP routes of the FDS will be prefixed with \verb;/api/v1;.
 
   \subsection{Validation Rules Management} 
-    The management of validation rules entries in the database are handled by the ORM library of choice (Prisma). This includes creating, reading, updating and deleting validation rule entries in the database. A Prisma schema\footnote{The \emph{Prisma} database schema is listed on \autoref{code:prisma}} is created to specify the shape of the data saved in the database. The schema must be created beforehand to generate the required types to be used by the client. After the schema is created, the Prisma Client API should be updated by running \verb;npx prisma generate;. 
+    The management of validation rule entries in the database are handled by the ORM library of choice (Prisma). This includes creating, reading, updating and deleting validation rule entries in the database. A Prisma schema\footnote{The \emph{Prisma} database schema is listed on \autoref{code:prisma}} is created to specify the shape of the data saved in the database. The schema must be created beforehand to generate the required types to be used by the client. After the schema is created, the Prisma Client API should be updated by running \verb;npx prisma generate;. The ORM simplifies the access to the database entries by providing type-safe interfaces and a layer of abstraction on top of the database system. 
 
+  \newpage
   \begin{lstlisting}[style=es6, caption={Establishing database connection with Prisma (TypeScript)}]
 import { PrismaClient } from '@prisma/client'
 
@@ -13,8 +14,6 @@ const main = async () => {
   await prisma.$connect() // Establish connection to database
 }
   \end{lstlisting}  
-
-  The ORM simplifies the access to the database entries by providing type-safe interfaces and a layer of abstraction on top of the database system. 
 
   \begin{lstlisting}[style=es6, caption={Example usage of Prisma (TypeScript)}]
 await prisma.validationRule.findMany()
@@ -27,8 +26,33 @@ await prisma.validationRule.delete({
 
   \subsection{Customer Validation on a Registration Event}
 
-    An HTTP endpoint will be implemented to provide the possibility to schedule a validation process as soon as a new customer is registered. The endpoint should accept the customer information on the request body and return validation ID and additional information of the validation process as a response. 
+    An HTTP endpoint is implemented to provide the possibility to schedule a validation process as soon as a new customer is registered. The endpoint should accept the customer information on the request body and return validation ID and additional information of the validation process as a response. 
     
+    \begin{lstlisting}[style=es6, caption={HTTP controller to schedule a validation process (TypeScript)}]
+@Example<ValidationSchedule>(validationSchedule)
+@SuccessResponse(201, "Validation started")
+@Response<ValidationErrorJSON>(422, "Validation Failed")
+@Response<WentWrong>(400, "Bad Request")
+@Post()
+public async validateCustomer(
+    @Body() requestBody: Customer,
+  ): Promise<ValidationSchedule | WentWrong> {
+    const { error, data } =
+      await ValidationService.scheduleRulesetValidation(
+        requestBody,
+      )
+    if (error) {
+      this.setStatus(400)
+      return {
+        message: error.message,
+        details: error.details || "",
+      }
+    }
+
+    return data
+}
+    \end{lstlisting}
+
     The HTTP controller is intentionally kept as simple as possible. The logic behind the process to schedule a validation is done by the \verb;ValidationService; and \verb;ValidationEngine; (discussed in \autoref{sub:process}). The \verb;ValidationService; is responsible in this particular case to get the lists of existing validation rules and runtime secrets, then creating a new instance of \verb;ValidationEngine; as well as scheduling a new validation process. 
 
   \subsection{Validation Process}
@@ -52,6 +76,7 @@ await prisma.validationRule.delete({
       
       The flow listed above will be executed by creating a \verb;ValidationEngine; instance and calling a public \verb;secheduleRulesetValidation; method\footnote{Please take a look into \autoref{fig:flow_validation} to see a flow diagram for the validation process.}. Before running a validation process, the list of validation rules as well as runtime secrets\footnote{Runtime secrets are used to store confidential information such as API keys.} should be provided to the engine. The \verb;ValidationEngine; class uses method chaining\footnote{\emph{Method chaining} is a way to provide the possibility of invoking multiple method calls of an object without having to store an intermediary result in an additional variable.} as well as the \emph{Builder} design pattern discussed in \autocite[pp. 97-106]{gamma-1995} for its construction, to make the public API of a validation engine as simple as possible.
 
+      \newpage
       \begin{lstlisting}[style=es6, caption={ValidationEngine class builder pattern using method chaining (TypeScript)}]
 export class ValidationEngine<T> {
   private secrets: GenericObject = {}
@@ -73,7 +98,7 @@ export class ValidationEngine<T> {
       
       To be able to access essential information stored in the current runtime scope a validation process, a JSONPath expression can be used in certain attributes of a validation rule. The provided runtime information of a validation process includes the customer information, runtime secrets and during a \emph{condition} evaluation, the HTTP response from an external endpoint. 
 
-      The ability to access certain information from the runtime scope is needed before making an HTTP request and when evaluation a condition listed . To evaluate a JSONPath expression, the \verb;jsonpath; library is used. 
+      The ability to access certain information from the runtime scope is needed before making an HTTP request and when evaluating a condition. To evaluate a JSONPath expression, the \verb;jsonpath; library is used. 
 
       \begin{lstlisting}[style=es6, caption={Accessing runtime information using JSONPath expression (TypeScript)}]
 import jp from "jsonpath"
@@ -92,7 +117,7 @@ const accessDataFromPath = (runtimeData: any, expression: any) => {
 
     return dataFromPath
   } catch {
-    return expression // The expression is either not a valid JSONPath expression
+    return expression // The expression is not a valid JSONPath expression
   }
 }
       \end{lstlisting}
@@ -101,7 +126,7 @@ const accessDataFromPath = (runtimeData: any, expression: any) => {
 
       A dedicated class (\verb;Agent;) is created to make an HTTP request to the external endpoint. The class will provide a layer of abstraction on top of the Got library that is being used to actually make the HTTP requests. 
       
-      The class will also help in setting the request body, request header as well as to change the variables on the \verb;endpoint; attribute with its corresponding values. The class follows the \emph{Singleton} design pattern described in \autocite[pp. 127-134]{gamma-1995}, as there might only one instance needed for the whole application. The class is also implemented using the dependency injection in mind, for an easier access to the underlying library during the testing phase. The dependency injection is implemented by providing a \verb;context; object to the \verb;Agent; class beforehand. During runtime, the \verb;context; object contains a Got instance, used to make HTTP requests. In testing environment, the \verb;context; object contains a mocked Got instance.
+      The class will also help in setting the request body, request header as well as to change the variables on the \verb;endpoint; attribute with its corresponding values. The class follows the \emph{Singleton} design pattern described in \autocite[pp. 127-134]{gamma-1995}, as there is only one instance needed for the whole application. The class is also implemented using the dependency injection in mind, for an easier access to the underlying library during the testing phase. The dependency injection is implemented by providing a \verb;context; object to the \verb;Agent; class beforehand. During runtime, the \verb;context; object contains the actual Got instance, while during testing, the Got instance is mocked.
 
       \begin{lstlisting}[style=es6, caption={Usage of the singleton pattern and dependency injection in Agent class (TypeScript)}]
 export class Agent {
@@ -120,10 +145,11 @@ export class Agent {
     \subsubsection{Operators}
       \label{impl_cl:op}
 
-      \verb;Operators; are special classes that define the operation of a certain condition during a validation process. Each \verb;Operator; is grouped by its type and has two main properties \verb;identifier;, and \verb;operateFunction;
+      \verb;Operators; are special classes that define the operation of a certain condition during a validation process. Each \verb;Operator; is grouped by its type and has two main properties; \verb;identifier;, and \verb;operateFunction;
       
       The \verb;identifier; property of an operator refers to the operator's name, unique in its type group. The \verb;identifier; attribute of an operator will be passed into the \verb;operator; attribute of a condition to describe the specific operator to be used in evaluating the particular condition. The \verb;operateFunction; attribute of an operator is a function that accepts two arguments, and returns a boolean value that indicates whether the operation is successful. An additional validation process is also implemented using the \verb;validateFunction; property to make sure that the value being passed into the \verb;operateFunction; of an operator is valid. The \verb;identifier; and \verb;operateFunction; attributes of an operator are passed into the object constructor during its initialization, while the \verb;validateFunction; attribute of an operator is defined by each subclass of the operator, grouped by its type.  
       
+      \newpage
       \begin{lstlisting}[style=es6, caption={NumberOperator example (TypeScript)}]
 export class NumberOperator extends Operator<number, NumberOperatorIds> {
   const validateFunction = (value) =>
@@ -144,7 +170,7 @@ export const numberOperators: Record<NumberOperatorIds, NumberOperator> = {
 
     \subsubsection{Evaluating a Rule} 
       
-      To evaluate a certain validation rule, the \verb;Evaluator; class is created. The \verb;Evaluator; class is responsible in running an evaluation on a certain condition. An evaluator works together with the \verb;Operator; class in evaluating the conditions given. The specific operator to evaluate a condition is accessed via the \verb;OperatorFactory;. The \verb;Evaluator; class encapsulates the internal logic of evaluating a condition by accessing the required data described by a JSONPath expression from the runtime information and running the operation defined by the particular condition's \verb;type; and \verb;operator; attributes. 
+      To evaluate a certain validation rule, the \verb;Evaluator; class is created. The \verb;Evaluator; class is responsible in running an evaluation on a certain condition by working together with the \verb;Operator; class. The specific operator to evaluate a condition is accessed via the \verb;OperatorFactory;. The \verb;Evaluator; class encapsulates the internal logic of evaluating a condition by accessing the required data described by a JSONPath expression from the runtime information and running the operation defined by the particular condition's \verb;type; and \verb;operator; attributes. 
 
       \begin{lstlisting}[style=es6, caption={The usage of OperatorFactory class in the Evaluator class (TypeScript)}]
 // Evaluate JSONPath expressions.
@@ -179,6 +205,7 @@ const evaluationResult = evaluator.evaluate({
   \subsection{Notification on Suspicious Cases}
       
     In \autocite{amqp}, Subramoni et al. describes an AMQP \emph{exchange} as a routing mediator that copies and sends the message published by a message publisher to zero or more message queues. The FDS acts as the message publisher of the system and publishes a message to a pre-defined exchange on every completion of a validation process. 
+    
     An interface to access and publish a message to the exchange is implemented using the \emph{Singleton} \autocite[pp. 127-134]{gamma-1995} design pattern, to only have a single connection to the RabbitMQ, since an AMQP connection are designed to be long-lived and opening a new connection to a RabbitMQ instance is an expensive operation. The type of the exchange used in the system is the \emph{fanout} exchange. When a message is published to a fanout exchange, the message will be routed to all the queues bound to the exchange, which is ideal for the use case of the current notification system. 
 
     \begin{lstlisting}[style=es6, caption={Openning a connection to RabbitMQ instance (TypeScript)}]
@@ -209,7 +236,7 @@ export class Notification {
 Notification.publish(JSON.stringify(this.validationResult))
     \end{lstlisting}
     
-    There can be many consumers consuming the messages published to the exchange, and the consumers can run certain actions regarding based on their internal logic. The message consumer can, for example email the concerned parties if the fraud score exceeds a certain threshold or even automatically block a customer if a specific rule evaluation failed. To consume a message published to the exchange, a connection to the RabbitMQ instance should be opened, and a dedicated message queue (ideally created only for internal usage of the consumer itself) is required. 
+    There can be many consumers consuming the messages published to the exchange, and the consumers can run certain actions based on their internal logic. The message consumer can, for example email the concerned parties if the fraud score exceeds a certain threshold or even automatically block a customer if a specific rule evaluation failed. To consume a message published to the exchange, a connection to the RabbitMQ instance should be opened, and a dedicated message queue (ideally created only for internal usage of the consumer itself) is required. 
 
     \begin{lstlisting}[style=es6, caption={Consuming a message published to the RabbitMQ exchange (TypeScript)}]
 import { connect } from "amqplib"
@@ -237,7 +264,7 @@ export const start = async (url: string) => {
 
   \subsection{Database Connection}
   
-    To manage the validation rules and runtime secrets, a database connection to modify the database entries via the ORM (Prisma) is required. The \emph{Singleton} \autocite[pp. 127-134]{gamma-1995} design pattern is also used here to make sure, that only a single connection to the database is created. \emph{Dependency injection} is also used here to be able to provide a mocked Prisma instance during testing. 
+    To manage the validation rules and runtime secrets, a database connection to modify the database entries via the ORM (Prisma) is required. The \emph{Singleton} \autocite[pp. 127-134]{gamma-1995} design pattern is also used here to make sure, that only a single connection to the database is created. Dependency injection is also used here to be able to provide a mocked Prisma instance during testing. 
 
     Caching can also be enabled in the \verb;Database; class, by providing a \verb;DataStore; instance to the static \verb;setCache; method. By enabling caching, the values retrieved and updated can be cached to provide a faster response time\footnote{Runtime secrets are not cached.}. 
 
@@ -249,11 +276,11 @@ export const start = async (url: string) => {
     \begin{lstlisting}[style=es6, caption={Publishing events on certain validation events using the EventEmitter (TypeScript)}]
 // Published when a rule evaluation is completed
 EventBus.emit(
-  `${EventBus.EVENTS.VALIDATION_EVENT_UPDATE}--${validationId}`,
+  `validation_event:update--${validationId}`,
   this.validationResult,
 )
 // Published when a validation process is completed
-EventBus.emit(`${EventBus.EVENTS.VALIDATION_DONE}--${this.validation.validationId}`)
+EventBus.emit(`validation_done--${this.validation.validationId}`)
     \end{lstlisting}
     
     To continually provide a client with the latest progress of a validation event without having to set up a dedicated instance of a WebSocket server, the Server-Sent Events (SSE)\autocite{rfc8895} technology is used. The SSE enables the possibility to send new data to the client multiple times by only opening a single HTTP connection. 
@@ -269,8 +296,8 @@ static async subscribeToValidationProgress (
   validationId: string,
   responseObject: Response,
 ) {
-  const updateEvent = `${EventBus.EVENTS.VALIDATION_EVENT_UPDATE}--${validationId}`
-  const closeEvent = `${EventBus.EVENTS.VALIDATION_DONE}--${validationId}`
+  const updateEvent = `validation_event:update--${validationId}`
+  const closeEvent = `validation_done--${validationId}`
 
   EventBus.once(closeEvent, () => {
     closeConnection()

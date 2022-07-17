@@ -1,10 +1,10 @@
 \section{Unit Test}
 
-  Unit tests play an important role during the development process, as it make sure that each component of the system works perfectly and fulfills its function. In a unit test, each component of the system is tested in isolation.
+  Unit tests play an important role during the development process, as it make sure that each component of the system works perfectly and fulfills its function in isolation.
 
   \subsection{FDS}
 
-    The main component of the FDS, the \verb;ValidationEngine; consists of many components. To make sure that even the slightest change to the codebase won't break the whole system, each component is tested in isolation to ensure its function. \emph{Dependency injection} pattern is also used here as a way to mock underlying third party libraries used by the component. 
+    The main component of the FDS, the \verb;ValidationEngine; consists of many components. To make sure that even the slightest change to the codebase won't break the whole system, each component is tested in isolation to ensure its function. Dependency injection pattern is also used here as a way to mock underlying third party libraries used by the component. 
 
     \begin{lstlisting}[style=es6, caption={Dependency injection usage in a unit test within FDS project (TypeScript)}]
 describe("Agent", () => {
@@ -21,6 +21,7 @@ describe("Agent", () => {
 })
     \end{lstlisting}
 
+    \newpage
     \begin{lstlisting}[style=es6, caption={Example unit test of the condition evaluator (TypeScript)}]
 describe("Condition Evaluator", () => {
   const condition: Condition = {
@@ -45,24 +46,25 @@ describe("Condition Evaluator", () => {
 
   \subsection{UI}
 
-    Testing a client-side web application might not be as straightforward in comparison a server-side application. What's being tested in a client-side application is actually the behavior of each component and how it interacts to the user input. Unit testing on the UI is done by isolating the smallest component and making sure it is behaving properly according to its specification. An additional library is needed to simulate the browser runtime-environment during testing. The library \emph{Vue testing library}\footnote{\emph{Testing library} is a family of packages for several front-end frameworks built to help test UI components. Homepage: \url{https://testing-library.com/}} is chosen as it provides several APIs to test the behavior of a UI component by resembling on what the user actually sees in the browser. 
+    Testing a client-side web application might not be as straightforward in comparison to testing a server-side application. What's being tested in a client-side application is actually the behavior of each component and how it interacts to the user input. 
+    
+    Unit testing on the UI is done by isolating the smallest component and making sure it is behaving properly according to its specification. An additional library is needed to simulate the browser runtime-environment during testing. The library \emph{Vue testing library}\footnote{\emph{Testing library} is a family of packages for several front-end frameworks built to help test UI components. Homepage: \url{https://testing-library.com/}} is chosen as it provides several APIs to test the behavior of a UI component by resembling on what the user actually sees in the browser. 
 
     \begin{lstlisting}[style=es6, caption={Example unit test of a UI component (TypeScript)}]
 describe("Key-Value input", () => {
   const renderComponent = (options: RenderOptions) => render(KeyValueInput, options)
-
+  
   it("renders a new key-value input fields when `Add` is clicked", async () => {
     const { getByRole, queryAllByTestId } = renderComponent({})
+    const addButton = getByRole("button", {
+      name: "Add" 
+    })
 
     expect(queryAllByTestId("key-value-field").length).toBe(0)
-    await fireEvent.click(getByRole("button", {
-      name: "Add" 
-    }))
+    await fireEvent.click(addButton)
 
     expect(queryAllByTestId("key-value-field").length).toBe(1)
-    await fireEvent.click(getByRole("button", {
-      name: "Add" 
-    }))
+    await fireEvent.click(addButton)
 
     expect(queryAllByTestId("key-value-field").length).toBe(2)
   })

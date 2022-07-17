@@ -163,3 +163,23 @@ it("GET /rules/:ruleName should return a single rule", async () => {
     id: "", ...sampleRule 
   })
 })
+
+class I {
+  public async validateCustomer(
+    @Body() requestBody: Customer,
+  ): Promise<ValidationSchedule | WentWrong> {
+    const { error, data } =
+      await ValidationService.scheduleRulesetValidation(
+        requestBody,
+      )
+    if (error) {
+      this.setStatus(400)
+      return {
+        message: error.message,
+        details: error.details || "",
+      }
+    }
+
+    return data
+  }
+}
