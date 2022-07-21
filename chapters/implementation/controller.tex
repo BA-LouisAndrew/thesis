@@ -1,6 +1,6 @@
-\section{Features}
+\section{Business Layer}
 
-  This chapter describes the implementation of the features elicited on the previous chapters in details, specifically within the FDS component. All the HTTP routes of the FDS will be prefixed with \verb;/api/v1;.
+  This chapter describes the implementation of the business logics described on the previous chapters in details, specifically within the FDS component. All the HTTP routes of the FDS will be prefixed with \verb;/api/v1;.
 
   \subsection{Validation Rules Management} 
     The management of validation rule entries in the database are handled by the ORM library of choice (Prisma). This includes creating, reading, updating and deleting validation rule entries in the database. A Prisma schema\footnote{The \emph{Prisma} database schema is listed on \autoref{code:prisma}} is created to specify the shape of the data saved in the database. The schema must be created beforehand to generate the required types to be used by the client. After the schema is created, the Prisma Client API should be updated by running \verb;npx prisma generate;. The ORM simplifies the access to the database entries by providing type-safe interfaces and a layer of abstraction on top of the database system. 
