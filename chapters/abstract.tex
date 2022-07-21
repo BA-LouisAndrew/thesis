@@ -2,5 +2,23 @@
 \thispagestyle{empty}       % keine Seitennummer
 
 \section*{Abstract}
-[Summary of the thesis]
 
+% motivation goals, features architecture, summary, evaluation
+
+The necessity of detecting and preventing fraud activities should be one of the main focus for businesses, to minimize the damage done through the unlawful activity while trying to increase their profit. Nowadays, businesses are usually built upon multiple teams that work independently within different domain and specialties. This paper explores the possibility to build a fraud detection system that enables collaboration between multiple autonomous teams in a single fraud detection process. 
+
+A requirement analysis is done to properly define the requirements and features of the system built as the proposed solution. The system enables the teams to incorporate their own security check as one of the validation rule, based on their view and understanding on how a fraudulent customer might be. Each team can manage their own validation rule independently, without the communication overhead to other teams using the graphical user interface, provided as part of the system. During a validation process, each validation rule will be evaluated, and each rule evaluation result affects the resulting fraud score to determine the probability of the customer being a fraud. The result of a validation process will then be published to an AMQP exchange, where an additional message consumer can be implemented to process the data when needed.
+
+The quality standards listed on ISO/IEC 25010 is used as a metric to evaluate the system built as the result of this research project. 
+
+\newpage
+\thispagestyle{empty}
+\section*{Zusammenfassung}
+
+\begin{otherlanguage}{ngerman}
+Betrugsaktivit\"aten aufzudecken und zu verhindern, sollte einer der Schwerpunkte f\"ur Unternehmen sein, um den durch unrechtm\"a{\ss}ige Aktivit\"aten verursachten Schaden zu minimieren, w\"ahrend sie versuchen, ihren Gewinn zu erh\"ohen. Heutzutage sind Unternehmen in der Regel aus mehreren Teams aufgebaut, die unabh\"angig voneinander in verschiedenen Bereichen und Spezialgebieten arbeiten. In diesem Forschungsprojekt wird die M\"oglichkeit untersucht, ein Betrugserkennungssystem zu entwickeln, das die Zusammenarbeit zwischen mehreren autonomen Teams in einem einzigen Betrugserkennungsprozess erm\"oglicht. 
+
+Eine Anforderungsanalyse wird durchgef\"uhrt, um die Anforderungen und Funktionen des Systems, das als vorgeschlagene L\"osung entwickelt wird, genau zu definieren. Das System erm\"oglicht den Teams, ihre eigene Sicherheits\"uberpr\"ufung als eine der Validierungsregeln einzubauen, basierend auf ihrer Sicht und ihrem Verst\"andnis, wie ein betr\"ugerischer Kunde sein k\"onnte. Jedes Team kann seine eigene Validierungsregel unabh\"angig und ohne Kommunikationsaufwand mit anderen Teams verwalten, indem es die im System enthaltene grafische Benutzeroberfl\"ache nutzt. W\"ahrend eines Validierungsprozesses wird jede Validierungsregel bewertet, und jedes Ergebnis der Regelbewertung wirkt sich auf die resultierende Betrugsbewertung aus, um die Wahrscheinlichkeit zu bestimmen, dass es sich bei dem Kunden um einen Betr\"uger handelt. Das Ergebnis eines Validierungsprozesses wird dann in einem \emph{AMQP-Exchange} ver\"offentlicht, wo ein zus\"atzlicher \emph{message consumer} implementiert werden kann, um die Daten bei Bedarf zu verarbeiten.
+
+Die in ISO/IEC 25010 aufgef\"uhrten Qualit\"atsstandards werden als Ma{\ss}stab f\"ur die Bewertung des im Rahmen dieses Forschungsprojekts entwickelten Systems verwendet. 
+\end{otherlanguage}
