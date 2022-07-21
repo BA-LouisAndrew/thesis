@@ -17,7 +17,7 @@ export const initTestingServer = async () => {
 
   return { app, mockContext, store }
 }
-    \end{lstlisting}
+\end{lstlisting}
 
     The database connection is mocked during integration testing, to prevent unintentional mutation of the data stored in the database and to prevent any outgoing network requests during the automated testing process. The integration tests are written to make sure that all the components, from the HTTP controller to the underlying services that retrieve the data work correctly as a whole.
 
@@ -46,7 +46,7 @@ describe("Rules CRUD endpoint", () => {
     })
   })
 })
-    \end{lstlisting}
+\end{lstlisting}
 
   \subsection{UI}
 
@@ -73,4 +73,4 @@ describe("Rule form component", () => {
     expect(newRule.condition.path).toEqual("XX")
   })
 })
-    \end{lstlisting}
+\end{lstlisting}

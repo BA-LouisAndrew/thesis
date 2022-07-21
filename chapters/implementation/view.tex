@@ -108,13 +108,14 @@
       \caption{Screenshot of the validation form}
     \end{figure}
 
+    \newpage
     \begin{lstlisting}[style=es6, caption={Prefilling form values with a sample customer data (TypeScript)}]
 const applySampleCustomer = (sampleCustomer: Customer) => {
   Object.assign(formValues, {
     ...sampleCustomer,
   })
 }
-    \end{lstlisting}
+\end{lstlisting}
 
     When the user filled the fields properly and clicked the \textsc{Validate customer} button, the UI sends an HTTP POST request to the FDS with the customer data as the payload to schedule a new validation process. As the FDS returns an ID of the validation process, the UI will then redirect the user to the validation progress page, showing the progress of the particular validation process in real time. 
 
@@ -123,7 +124,7 @@ const { data } = await createNewValidation(customer)
 if (data.validationId) {
   router.push(`/validations/${data.validationId}`)
 }
-    \end{lstlisting}
+\end{lstlisting}
 
   \subsection{Validation Progress}
   
@@ -133,14 +134,9 @@ if (data.validationId) {
 const source = new EventSource(url)
 
 source.onmessage = messageEvent => {
-  try {
-    const data = JSON.parse(messageEvent.data)
-    // Do data processing
-  } catch {
-    // Handle error, if the message data is not a valid JSON object
-  }
+  const data = JSON.parse(messageEvent.data)
 }
-    \end{lstlisting}
+\end{lstlisting}
 
     As the content of the message is parsed and identified as a valid \verb;ValidationResult; object, it is saved into the current state of the \verb;Validation; component, which renders the events of a validation process into a timeline component to give the user a better graphical overview of the current process. Vue3 uses the \emph{Proxy}\autocite[pp. 207-217]{gamma-1995} design pattern under the hood to establish a reactivity system on the UI, providing the possibility to update the timeline component every time a new validation result is published by the FDS. 
 
