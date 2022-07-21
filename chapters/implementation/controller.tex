@@ -1,11 +1,10 @@
-\section{Features}
+\section{Business Layer}
 
-  This chapter describes the implementation of the features elicited on the previous chapters in details, specifically within the FDS component. All the HTTP routes of the FDS will be prefixed with \verb;/api/v1;.
+  This chapter describes the implementation of the business logics described on the previous chapters in details, specifically within the FDS component. All the HTTP routes of the FDS will be prefixed with \verb;/api/v1;.
 
   \subsection{Validation Rules Management} 
     The management of validation rule entries in the database are handled by the ORM library of choice (Prisma). This includes creating, reading, updating and deleting validation rule entries in the database. A Prisma schema\footnote{The \emph{Prisma} database schema is listed on \autoref{code:prisma}} is created to specify the shape of the data saved in the database. The schema must be created beforehand to generate the required types to be used by the client. After the schema is created, the Prisma Client API should be updated by running \verb;npx prisma generate;. The ORM simplifies the access to the database entries by providing type-safe interfaces and a layer of abstraction on top of the database system. 
 
-  \newpage
   \begin{lstlisting}[style=es6, caption={Establishing database connection with Prisma (TypeScript)}]
 import { PrismaClient } from '@prisma/client'
 
@@ -13,7 +12,7 @@ const main = async () => {
   const prisma = new PrismaClient() // Create new prisma instance
   await prisma.$connect() // Establish connection to database
 }
-  \end{lstlisting}  
+\end{lstlisting}  
 
   \begin{lstlisting}[style=es6, caption={Example usage of Prisma (TypeScript)}]
 await prisma.validationRule.findMany()
@@ -22,7 +21,7 @@ await prisma.validationRule.delete({
     name: validationRule.name
   }
 })
-  \end{lstlisting}
+\end{lstlisting}
 
   \subsection{Customer Validation on a Registration Event}
 
@@ -51,7 +50,7 @@ public async validateCustomer(
 
     return data
 }
-    \end{lstlisting}
+\end{lstlisting}
 
     The HTTP controller is intentionally kept as simple as possible. The logic behind the process to schedule a validation is done by the \verb;ValidationService; and \verb;ValidationEngine; (discussed in \autoref{sub:process}). The \verb;ValidationService; is responsible in this particular case to get the lists of existing validation rules and runtime secrets, then creating a new instance of \verb;ValidationEngine; as well as scheduling a new validation process. 
 
@@ -92,7 +91,7 @@ export class ValidationEngine<T> {
     return this
   }
 }
-      \end{lstlisting}
+\end{lstlisting}
 
     \subsubsection{Accessing Data by Evaluating JSONPath Expressions}
       
@@ -120,7 +119,7 @@ const accessDataFromPath = (runtimeData: any, expression: any) => {
     return expression // The expression is not a valid JSONPath expression
   }
 }
-      \end{lstlisting}
+\end{lstlisting}
 
     \subsubsection{Making an HTTP Request to External Endpoints}
 
@@ -140,7 +139,7 @@ export class Agent {
     this.context = context
   }
 }
-      \end{lstlisting}
+\end{lstlisting}
 
     \subsubsection{Operators}
       \label{impl_cl:op}
@@ -164,7 +163,7 @@ export const numberOperators: Record<NumberOperatorIds, NumberOperator> = {
   lt: new NumberOperator("lt", (a, b) => b < a), // lesser than
   lte: new NumberOperator("lte", (a, b) => b <= a), // lesser than equals
 } 
-      \end{lstlisting}
+\end{lstlisting}
 
       The \emph{Flyweight} design pattern mentioned in \autocite[pp. 195-206]{gamma-1995} is used here, by instantiating all the available operators beforehand, and using the instantiated object during a condition evaluation. For an even easier access to the operators, a \emph{flyweight factory} is also created. The \verb;OperatorFactory; will return the appropriate operator to be used based on the type and identifier passed. If the combination of type and identifier of an operator doesn't point into a specific operator, a \verb;NullishOperator; will be returned, which always return \verb;false; as its operation result. 
 
@@ -182,7 +181,7 @@ const operator = OperatorFactory.getOperator(
   validationRule.operator,
 )
 const isEvaluationPassed = operator.operate(valueFromPath, dataFromPath)
-      \end{lstlisting}
+\end{lstlisting}
       
       A condition can either be a single condition, or multiple conditions, wrapped inside an \textbf{\emph{ANY}} or \textbf{\emph{ALL}} attribute. The evaluation of a single condition is different from the evaluation of multiple conditions. To facilitate the different logic of evaluating conditions, two subclasses of the \verb;Evaluator; class is created. \verb;ConditionEvaluator; evaluates a single condition, while the \verb;BooleanConditionEvaluator; is responsible in evaluating multiple conditions and handling the logic behind evaluating the \textbf{\emph{ANY}} and \textbf{\emph{ALL}} modifier. To simplify the instantiation of the suitable \verb;Evaluator; subclass, the \verb;EvaluatorFactory; class is created, following the \emph{Factory Method} design pattern described in \autocite[pp. 107-116]{gamma-1995}. 
 
@@ -198,7 +197,7 @@ const evaluationResult = evaluator.evaluate({
   customer: customerData,
   secrets: this.secrets
 })
-      \end{lstlisting}
+\end{lstlisting}
 
       As the evaluation result, an \verb;Evaluator; instance will return an object with the \verb;pass; attribute to determine whether the evaluation passed and an additional \verb;messages; attribute, which contains essential information regarding the evaluation (including the value of \verb;failMessage; attribute of a condition, if the evaluation failed). 
 
@@ -216,8 +215,7 @@ export class Notification {
   async init(url: string) {
     try {
       const connection = await connect(url)
-      const channel = await connection.createChannel() // Create a new channel
-      // Assert whether the exchange exists, create new if it doesn't exist
+      const channel = await connection.createChannel() 
       await channel.assertExchange("FDS", "fanout", {
         durable: true 
       }) 
@@ -228,13 +226,13 @@ export class Notification {
     }
   }
 }
-    \end{lstlisting}
+\end{lstlisting}
     
     The \verb;Notification; class also provides the \verb;publish; static method, which can be used to publish a new message to the exchange if the connection is opened successfully. The \verb;ValidationEngine; class calls the \verb;publish; method every time a validation process is completed, publishing the validation result of the particular validation process to the exchange.
 
     \begin{lstlisting}[style=es6, caption={Publishing a validation result to the RabbitMQ exchange (TypeScript)}]
 Notification.publish(JSON.stringify(this.validationResult))
-    \end{lstlisting}
+\end{lstlisting}
     
     There can be many consumers consuming the messages published to the exchange, and the consumers can run certain actions based on their internal logic. The message consumer can, for example email the concerned parties if the fraud score exceeds a certain threshold or even automatically block a customer if a specific rule evaluation failed. To consume a message published to the exchange, a connection to the RabbitMQ instance should be opened, and a dedicated message queue (ideally created only for internal usage of the consumer itself) is required. 
 
@@ -244,15 +242,12 @@ export const start = async (url: string) => {
   try {
     const connection = await connect(url)
     const channel = await connection.createChannel()
-    await channel.assertExchange("FDS", "fanout", { durable: true })
-    // Create an exclusive queue (created only for internal usage)
-    const { queue } = await channel.assertQueue("", { exclusive: true })
 
-    // Bind the exclusive queue to the exchange
+    await channel.assertExchange("FDS", "fanout", { durable: true })
+    const { queue } = await channel.assertQueue("", { exclusive: true })
     channel.bindQueue(queue, "FDS", "") 
 
     await channel.consume(queue, async (message: string) => {
-      // Do actions
     }, {
       noAck: true
     })
@@ -260,7 +255,7 @@ export const start = async (url: string) => {
     console.error(err)
   }
 }
-    \end{lstlisting}
+\end{lstlisting}
 
   \subsection{Database Connection}
   
@@ -281,7 +276,7 @@ EventBus.emit(
 )
 // Published when a validation process is completed
 EventBus.emit(`validation_done--${this.validation.validationId}`)
-    \end{lstlisting}
+\end{lstlisting}
     
     To continually provide a client with the latest progress of a validation event without having to set up a dedicated instance of a WebSocket server, the Server-Sent Events (SSE)\autocite{rfc8895} technology is used. The SSE enables the possibility to send new data to the client multiple times by only opening a single HTTP connection. 
     
@@ -315,5 +310,5 @@ static async subscribeToValidationProgress (
       `data: ${JSON.stringify(data)}\n\n`,
     )
 }
-    \end{lstlisting}
+\end{lstlisting}
 

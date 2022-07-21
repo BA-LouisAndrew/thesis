@@ -1,7 +1,7 @@
-\subsection{Object Model}
+\subsection{Object Models}
   \label{subsection:model}
 
-  The essential object models of the system can be defined by revisiting the sequences listed on \autoref{subsection:controller} and identifying the important structures needed to fulfill the requirements.
+  This chapter describes the design of the object models used by the business layer. The essential object models of the system can be defined by revisiting the sequences listed on \autoref{subsection:controller} and identifying the important structures needed to fulfill the requirements.
   
   \subsubsection{Validation Rule}
     \label{subsub:rule}
@@ -80,8 +80,9 @@
     ]
   }
 }
-    \end{lstlisting}
+\end{lstlisting}
 
+    \newpage
     \begin{lstlisting}[caption={Validation rule \textbf{condition} attribute example with ANY condition (JSON)}, language=json]
 {
   "condition": {
@@ -136,7 +137,6 @@
       \label{fig:uml_validation_result}
     \end{figure}
     
-    \newpage
     \begin{lstlisting}[caption={Validation result example (JSON)}, language=json]
 {
   "validationId": "3112dc4a-45f5-41b8-883a-715dcbe9a490",
@@ -147,19 +147,7 @@
   ],
   "additionalInfo": {
     "startDate": "2022-06-12T09:16:24.618Z",
-    "customerInformation": {
-      "firstName": "Scooby",
-      "lastName": "Doo",
-      "address": {
-        "streetName": "Suite 5000 185 Berry St",
-        "city": "San Fransisco",
-        "state": "CA",
-        "country": "United States",
-        "postalCode": 94107
-      },
-      "email": "scooby-doo@fraud.co",
-      "phoneNumber": "123131123"
-    }
+    "customerInformation": {}
   },
   "events": [
     {
