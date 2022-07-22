@@ -41,7 +41,7 @@ services:
     depends_on:
       - redis
       - mongo
-    #   - rabbit
+      - rabbit
     networks:
       - app-network
   ui:
