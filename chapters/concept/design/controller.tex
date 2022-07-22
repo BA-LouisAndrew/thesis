@@ -1,7 +1,7 @@
 \subsection{Business Layer}
  \label{subsection:controller}
 
- The business layer handles the internal logic of the application to solve the problem listed as the requirements of the system. In this particular case, the \emph{persistence layer} mentioned by Richards in \autocite{richards2015software} is combined with the business layer. By analyzing the use cases listed on \autoref{use_cases}, the functions of each component of the system can be defined, and consequentially a sequence of operations will be created for each specific use case. An additional sequence will also be defined as to complete the system and fulfill the requirements defined. 
+ The business layer handles the internal logic of the application to solve the problem listed as the requirements of the system. In this particular case, the \emph{persistence layer} mentioned by Richards in \autocite{richards2015software} is combined with the business layer. By analyzing the use cases listed on \autoref{use_cases}, the functions of each component of the system can be defined, and consequentially a sequence of operations will be created for each specific use case. An additional sequence will also be defined to complete the system and fulfill the requirements defined. 
 
 \subsubsection{Customer Validation on a Registration Event}
  \label{subsection:regis}
@@ -23,7 +23,7 @@ One of the opportunity to do a verification process is during a new customer reg
 
 \begin{itemize}
  \item A new customer inputs his or her personal data to a customer facing UI and clicks the \emph{"Register"} button
- \item The customer facing UI makes an HTTP Post request to the FDS, containing the user's personal data on its request payload
+ \item The customer facing UI makes an HTTP POST request to the FDS, containing the user's personal data on its request payload
  \item The FDS receives the HTTP request, and schedules a new validation process to be executed asynchronously
  \item The FDS responds to the HTTP request by returning a validation ID pointing to the scheduled validation process
  \item Customer facing UI shows a success message and continues registration to the next step while the validation process runs 

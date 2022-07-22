@@ -70,7 +70,7 @@ CMD [ "http-server", "dist", "-p 3000"]
     \item Generate Swagger\footnote{\emph{Swagger} is a tool to document server side APIs. Homepage: \url{https://swagger.io/}.} specification based on HTTP controller code
     \item Generate Swagger schema based on TypeScript interfaces
     \item Generate Swagger schema descriptions based on \emph{jsDoc}\footnote{\emph{jsDoc} is a tool to generate API documentation, similar to \emph{JavaDoc}. Homepage: \url{https://jsdoc.app/}.} comments on the source code
-    \item Validates an HTTP request body based on TypeScript interfaces
+    \item Validate an HTTP request body based on TypeScript interfaces
    \end{itemize}
   
   Tsoa provides an alternative syntax to build an Express.JS application in a more object-oriented way. Tsoa works by compiling the code, using the TypeScript and openAPI compiler into a regular Express.JS application. 
@@ -141,7 +141,7 @@ CMD [ "http-server", "dist", "-p 3000"]
 
  \subsection{Docker Compose}
 
-    Docker Compose is used to as a tool to start and set up the components of the system as Docker containers using a single \verb;docker-compose up -d; command. To use Docker Compose, a configuration file is needed in a directory that contains the FDS and the UI project\footnote{Docker Compose configuration file is listed on \autoref{code:compose}.}.
+    Docker Compose is used as a tool to start and set up the components of the system as Docker containers using a single \verb;docker-compose up -d; command. To use Docker Compose, a configuration file is needed in a directory that contains the FDS and the UI project\footnote{Docker Compose configuration file is listed on \autoref{code:compose}.}.
     
     The environment variables of the FDS, such as the database URI and the RabbitMQ URI can be configured from the Docker Compose configuration file, making it easier to configure the current context of the system without having to introduce any change to the existing code base. 
     
